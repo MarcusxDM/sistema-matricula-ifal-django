@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="pt-br" xml:lang="pt-br" class="">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="">
+
+    <!-- Bootstrap CSS CDN -->
+    {% load static %}
+    <link rel="stylesheet" href="{% static "coordenacao/coordenador-aba-aluno/bootstrap.min.css"%}">
+
+    <link rel="stylesheet" href="{% static "coordenacao/coordenador-aba-aluno/style.css"%}">
+
+
+</head>
+
+<body>
+
+    <div class="wrapper">
+
+        <!-- Sidebar  -->
+        <nav id="sidebar">
+            <div class="sidebar-header">
+                <h3>{{request.session.user_name}}</h3>
+            </div>
+
+            <ul class="list-unstyled components">
+
+
+                <li>
+                    <a href="{% url 'home' %}">Home</a>
+                </li>
+
+                <li>
+                    <a href="#2">Perfil</a>
+                </li>
+                <li>
+                    <a href="{% url 'alunos' %}">Alunos</a>
+                </li>
+
+                <li>
+                    <a href="{% url 'professores' %}">Professores</a>
+                </li>
+
+                <li>
+                    <a href="#5">Períodos Letivos</a>
+                </li>
+
+            </ul>
+            <li>
+                <a href="{% url 'logout' %}" class="article">TELA LOGIN</a>
+            </li>
+            
+        </nav>
+
+
+
+        <div id="conteudo">
+            
+            <!-- Input Busca cpf -->
+            <div class="input-group mb-3">
+                <input type="text" class="form-control" placeholder="Buscar por CPF" aria-label="123.456.789-10" aria-describedby="button-addon2">
+                <div class="input-group-append">
+                  <button class="btn btn-outline-secondary" type="button" id="button-addon2">Buscar</button>
+                </div>
+            </div>
+
+
+
+
+            <div id="table1">
+                <H5>Professores Cadastrados Recentemente</H5>
+                {% if professores %}
+                <table>
+                    <thead>
+                        <tr>
+                            <td>CPF</td>
+                            <td>Nome</td>
+                            <td>Área de Atuação</td>
+                            <td>Lattes</td>
+                        </tr>
+                        {% for professor in professores %}
+                        <tr>
+                            <td>{{professor.user.cpf}}</td>
+                            <td>{{professor.user.nome}}</td>
+                            <td>{{professor.area_atuacao}}</td>
+                            <td>{{professor.lattes}}</td>
+                        </tr>
+                        {% endfor %}
+                    </thead>
+                </table>
+                {% else %}
+                <H6>Sem professores cadastrados.</H6>
+                {% endif %}
+                <div class="text-right">
+                    <a class="btn btn-primary mb-2" href="{% url 'form_professor' %}" role="button">
+                        <span class="glyphicon glyphicon-plus" aria-hidden="true">+</span>
+                    </a>
+                </div>
+            </div>  
+
+           
+
+        </div>
+    </div>
+
+
+
+</body>
+
+</html>

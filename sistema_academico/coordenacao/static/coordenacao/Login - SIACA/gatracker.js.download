@@ -1,0 +1,55 @@
+﻿const GATracker = {
+    /**
+     * Envia um evento para o Google Analytics
+     * @param {string} action Nome da ação do evento
+     * @param {string} label Label do evento
+     * @param {string} category Categoria do evento (default: pit)
+     */
+    sendEvent: (action, label, category = 'pit') => {
+        try {
+            const gaEvent = {
+                event: "eventGA",
+                eventGA: {
+                    category: category,
+                    action: action,
+                    label: label
+                }
+            };
+
+            if (window.dataLayer) {
+                window.dataLayer.push(gaEvent);
+            }
+        } catch (e) {
+            console.error('Não foi possível enviar dados pro Google Analytics.');
+            console.error(e);
+        }
+    },
+    /**
+     * Envia um evento com nome do fluxo para o Google Analytics
+     * @param {string} flowName Nome do fluxo para o evento
+     * @param {string} action Nome da ação do evento
+     * @param {string} label Label do evento
+     * @param {string} category Categoria do evento (default: pit)
+     */
+    sendFlowEvent: (flowName, action, label, category = 'pit') => {
+        try {
+            const gaEvent = {
+                event: "eventGA",
+                eventGA: {
+                    category: category,
+                    action: action,
+                    label: label,
+                    value: null
+                },
+                fluxo: flowName
+            };
+
+            if (window.dataLayer) {
+                window.dataLayer.push(gaEvent);
+            }
+        } catch (e) {
+            console.error('Não foi possível enviar dados pro Google Analytics.');
+            console.error(e);
+        }
+    }
+};
