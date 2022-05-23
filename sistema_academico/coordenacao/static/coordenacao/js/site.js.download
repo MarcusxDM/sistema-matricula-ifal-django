@@ -1,0 +1,39 @@
+﻿$(document).ready(function () {
+    var $errors = $('.container .cont_right .validation-summary-errors');
+    var $indetificationInput = $("#identificationNumber");
+    var $dobInput = $('#dob');
+    var passInput = $('#password');
+
+    if ($errors.length) {
+        $errors.fadeIn(800);
+        $errors.find('#close_error').on('click', function (e) {
+            e.preventDefault();
+
+            $errors
+                .removeClass('validation-summary-errors')
+                .fadeOut(800);
+        });
+    }
+
+    $dobInput.mask('00/00/0000');
+    passInput.mask('000000');
+
+    var options = {
+        onKeyPress: function (cpfCnpj, ev, el, op) {
+            var masks = ['000.000.000-000', '00.000.000/0000-00'];
+            if (cpfCnpj.length > 14) {
+                $indetificationInput.mask(masks[1], op);
+                $(".filledIdentificationNumber>label").text("CNPJ");
+            } else {
+                $indetificationInput.mask(masks[0], op);
+                $(".filledIdentificationNumber>label").text("CPF");
+            }
+        }
+    }
+
+    if ($indetificationInput && $indetificationInput.length > 0) {
+        $indetificationInput.val().length > 14 ?
+            $indetificationInput.mask('00.000.000/0000-00', options) :
+            $indetificationInput.mask('000.000.000-00#', options);
+    }
+});

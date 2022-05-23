@@ -2,6 +2,12 @@
     DEMO STYLE
 */
 
+@font-face {
+    font-family: 'Glyphicons Halflings';
+    src: url('../fonts/glyphicons-halflings-regular.eot');
+    src: url('../fonts/glyphicons-halflings-regular.eot?#iefix') format('embedded-opentype'), url('../fonts/glyphicons-halflings-regular.woff') format('woff'), url('../fonts/glyphicons-halflings-regular.ttf') format('truetype'), url('../fonts/glyphicons-halflings-regular.svg#glyphicons-halflingsregular') format('svg');
+  }
+
 @import "https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700";
 body {
     font-family: 'Poppins', sans-serif;
@@ -149,14 +155,54 @@ a.article:hover {
     position: absolute;
     top: 0;
     right: 0;
-    padding-top: 15vh;
 }
 
-#title  {
-    padding-bottom: 2rem;
-}
+
 
 #table1{
+    width: 72%;
+    margin: 100px 160px;
+    box-sizing: border-box;
+    border: 1px solid #5b78ec;
+    display: block;
+    justify-content: left;
+    align-items: center;
+    flex-wrap: wrap;
+    padding-top: 1rem;
+    padding-left: 4rem;
+    padding-right: 4rem;
+    padding-bottom: 1rem;
+    background-color: #7386D5;
+    border-radius: 15px;
+    color: #fafafa;
+    min-height: 52vh;
+}
+
+h5 {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+    th, td{
+        padding: 10px 20px;
+        border: 2px solid #fff; 
+}
+
+table{
+    width: 100%;
+}
+
+/* ---------------------------------------------------
+    Bootstrap Override
+----------------------------------------------------- */
+.btn-primary {
+    color: #fff;
+    background-color: #002bff;
+    border-color: #002bff;
+    margin-top: 1.5rem;
+}
+
+#table-form{
     width: 60%;
     margin: 0px 160px;
     box-sizing: border-box;
@@ -172,22 +218,4 @@ a.article:hover {
     background-color: #7386D5;
     border-radius: 15px;
     color: #fafafa;
-}
-    h5 {
-        text-align: center;
-    }
-
-
-    th, td {
-    padding: 10px 20px;
-    border: 1px solid #000;
-}
-
-/* ---------------------------------------------------
-    Bootstrap Override
------------------------------------------------------ */
-.btn-primary {
-    color: #fff;
-    background-color: #002bff;
-    border-color: #002bff;
 }

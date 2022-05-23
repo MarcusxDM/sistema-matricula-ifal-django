@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="pt-br" xml:lang="pt-br" class="">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    {% load static %}
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - SIACA | Sistema Acadêmico</title>
+    <link rel="stylesheet" href="{% static "coordenacao/css/bootstrap.min.css"%}">
+    <link rel="stylesheet" href="{% static "coordenacao/css/login.min.css"%}">
+    <link rel="shortcut icon" href="{% static "coordenacao/images/school.ico"%}">
+
+</head>
+
+<body>
+    <div class="container body-content">
+        <div id="default-view" class="cont_login">
+            <div class="cont_left">
+
+                <div class="cont_account">
+                    <span class="title">SIACA</span>
+                    <span class="sub_title">Sistema Acadêmico</span>
+                </div>
+
+
+
+            </div>
+
+            <!-- precisamos editar essa parte do login de entrada-->
+            <div class="cont_right">
+                <form id="accountForm" name="accountForm" method="post" action="{% url 'login' %}">
+                    {% csrf_token %}
+                    <div class="cont_error_login validation-summary-valid" data-valmsg-summary="true">
+                        <span class="title">Erro no processo de autenticação</span>
+                        <ul>
+                            <li style="display:none"></li>
+
+                        </ul>
+                    </div>
+                    <div class="cont_form">
+                        <h1 class="title">Bem-vindo ao SIACA.</h1>
+                        <h2 class="sub_title">Faça seu login para continuar.</h2>
+                        <div class="form-group cont_inputs filledIdentificationNumber">
+                            <!--campo com erro adicionar a classe invalid-->
+                            <label class="form-label tit_inputs" for="cpf">CPF</label>
+                            <input class="form-input form-input-center inputs" placeholder="123.456.789-10" id="identificationNumber" type="text" data-val="true" data-val-cpf="Número de documento inválido." data-val-cpf-validationcallback="validateCpfCnpj" data-val-required="Campo obrigatório."
+                                name="cpf" value="" field_signature="2408420769" form_signature="10783365050367454143" visibility_annotation="true" pm_parser_annotation="cpf_element">
+                            <span class="text-danger field-validation-valid" data-valmsg-for="cpf" data-valmsg-replace="true"></span>
+                        </div>
+
+
+                        <div class="form-group cont_inputs fifty field filledPassword">
+                            <label class="form-label tit_inputs" for="Password">Senha</label>
+                            <div class="input-group">
+                                <input class="form-input form-input-center inputs" id="password" placeholder="●●●●●●" type="password" maxlength="12" autocomplete="off" data-val="true" data-val-length="O campo Senha deve possuir 6 caracteres numéricos." data-val-length-max="6" data-val-length-min="6"
+                                    data-val-required="Campo obrigatório." name="password" field_signature="3935904101" form_signature="10783365050367454143" visibility_annotation="true" pm_parser_annotation="password_element">
+                                <span id="show_hide_password" class="field-icon icon-eye"></span>
+                            </div>
+                            <span class="text-danger field-validation-valid" data-valmsg-for="Password" data-valmsg-replace="true"></span>
+                        </div>
+                        <div class="form-group">
+                            <button type="submit" value="login" class="bt_signin">ACESSAR MINHA CONTA</button>
+                        </div>
+                        <div class="cont_links">
+                            <a href="" class="fpass">Esqueci minha senha</a>
+
+                        </div>
+                    </div>
+                    <input name="__RequestVerificationToken" type="hidden" value="CfDJ8Ct0OvdjehJKu8bO-JFuFErg5a3uEAiUc1djJCrAZGwbGTDCk-yRK57f0TTbNaeaXPMHOsrH2djG8H9hbLXbUSnwzrgfZNlB-QDBitBBVggoO-K4IqM-DkKyzbR23wAIAq3718bRRyafCCEpaUBDqY4"></form>
+            </div>
+        </div>
+    </div>
+
+    <script src="{% static "coordenacao/js/cpf.validation.js.download"%}"></script>
+    <script src="{% static "coordenacao/js/site.js.download"%}"></script>
+
+    <script type="text/javascript" src="{% static "coordenacao/js/login.js.download"%}"></script>
+    <script type="text/javascript" src="{% static "coordenacao/js/OFDB.js.download"%}"></script>
+
+    <script type="text/javascript" src="{% static "coordenacao/js/IhdFUkRTY"%}"></script>
+
+
+
+</body>
+
+</html>

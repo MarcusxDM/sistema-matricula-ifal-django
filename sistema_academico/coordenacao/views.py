@@ -7,7 +7,7 @@ def index(request):
     Página de index
     '''
     request.session.flush()
-    return render(request, 'coordenacao/Login - SIACA.html', {})
+    return render(request, 'coordenacao/login.html', {})
 
 def login(request):
     '''
@@ -50,11 +50,11 @@ def home(request):
         user_name = User.objects.get(cpf=request.session['user_id']).nome
         request.session['user_name'] = user_name
         if request.session['user_type'] == 1:
-            home_name = 'Home - Coordenador'
+            home_name = 'home-coordenador'
         elif request.session['user_type'] == 2:
-            home_name = 'Home - Professor'
+            home_name = 'home-professor'
         else:
-            home_name = 'Home - Aluno'
+            home_name = 'home-aluno'
         return render(request, f'coordenacao/{home_name}.html')
     except:
         return redirect(reverse('index'))
