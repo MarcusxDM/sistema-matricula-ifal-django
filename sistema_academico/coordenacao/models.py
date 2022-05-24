@@ -1,4 +1,5 @@
 from django.db import models
+from django.urls import reverse
 from django.utils.translation import gettext as _
 
 class User(models.Model):
@@ -74,4 +75,97 @@ class Aluno(models.Model):
 
     def get_absolute_url(self):
         return reverse("aluno_detail", kwargs={"pk": self.pk})
+
+class Curso(models.Model):
+    id = models.IntegerField(primary_key=True)
+    nome = models.CharField(max_length=50, null=False, blank=False)
+    descricao = models.TextField(null=True, blank=True)
+    periodos = models.IntegerField(null=False, blank=False)
+    ementa = models.BinaryField(null=True, blank=True)
+    create_date = models.DateField(auto_now_add=True)
+    update_date = models.DateField(auto_now=True)
+
+    class Meta:
+        verbose_name = _("curso")
+        verbose_name_plural = _("cursos")
+
+    def __str__(self):
+        return f"{self.id} | {self.nome}"
+
+    def get_absolute_url(self):
+        return reverse("curso_detail", kwargs={"pk": self.pk})
+
+class Disciplina(models.Model):
+    id = models.IntegerField(primary_key=True)
+    nome = models.CharField(max_length=50, null=False)
+    descricao = models.TextField(null=True, blank=True)
+    periodo = models.IntegerField(null=False, blank=False)
+    ementa = models.BinaryField(null=True)
+    create_date = models.DateField(auto_now_add=True)
+    update_date = models.DateField(auto_now=True)
+
+    class Meta:
+        verbose_name = _("disciplina")
+        verbose_name_plural = _("disciplinas")
+
+    def __str__(self):
+        return f"{self.id} | {self.nome}"
+
+    def get_absolute_url(self):
+        return reverse("disciplina_detail", kwargs={"pk": self.pk})
+
+class Periodo(models.Model):
+    id = models.CharField(max_length=50, primary_key=True)
+    start_date = models.DateField(null=False)
+    end_date = models.DateField(null=False)
+
+    class Meta:
+        verbose_name = _("periodo")
+        verbose_name_plural = _("periodos")
+
+    def __str__(self):
+        return self.pk
+
+    def get_absolute_url(self):
+        return reverse("periodo_detail", kwargs={"pk": self.pk})
+
+class Oferta(models.Model):
+    id = models.IntegerField(primary_key=True)
+    disciplina = models.ForeignKey(Disciplina, on_delete=models.CASCADE, null=False, blank=False)
+    professor = models.ForeignKey(Professor, on_delete=models.CASCADE, null=False, blank=False)
+    aula_dias = models.CharField(max_length=7, null=False, blank=False) # '{0-6}' cada numero representa um dia da semana
+    aula_hora_inicio = models.TimeField(null=False, blank=False)
+    aula_hora_fim = models.TimeField(null=False, blank=False)
+    create_date = models.DateField(auto_now_add=True)
+    update_date = models.DateField(auto_now=True)
+
+    class Meta:
+        verbose_name = _("oferta")
+        verbose_name_plural = _("ofertas")
+
+    def __str__(self):
+        return f"{self.id} | {self.disciplina.nome} | {self.professor.nome}"
+
+    def get_absolute_url(self):
+        return reverse("oferta_detail", kwargs={"pk": self.pk})
+
+class Matricula(models.Model):
+    id = models.IntegerField(primary_key=True)
+    disciplina = models.ForeignKey(Disciplina, on_delete=models.CASCADE)
+    aluno = models.ForeignKey(Aluno, on_delete=models.CASCADE)
+    create_date = models.DateField(auto_now_add=True)
+    
+    class Meta:
+        verbose_name = _("matricula")
+        verbose_name_plural = _("matriculas")
+
+    def __str__(self):
+        return f"{self.id} | {self.disciplina.nome} | {self.aluno.nome}"
+
+    def get_absolute_url(self):
+        return reverse("matricula_detail", kwargs={"pk": self.pk})
+
+
+
+
 
