@@ -178,14 +178,70 @@ a.article:hover {
     min-height: 52vh;
 }
 
+/* ---------------------------------------------------
+    CSS de perfil
+----------------------------------------------------- */
+#dados-pessoa   {
+    width: 60%;
+    margin: 80px 160px;
+    box-sizing: border-box;
+    display: block;
+    justify-content: left;
+    align-items: center;
+    flex-wrap: wrap;
+    padding-top: 1rem;
+    padding-left: 4rem;
+    padding-right: 4rem;
+    padding-bottom: 1rem;
+    background-color: #7386D5;
+    border-radius: 15px;
+    color: #fafafa;
+}
+
+#pf{
+   text-align: left; 
+}
+
+
+#pf2{
+   text-align: right;
+     
+}
+
+
+
+/* -------------------*/
+
+
+#table2{
+    width: 60%;
+    margin: 60px 160px;
+    box-sizing: border-box;
+    display: block;
+    justify-content: left;
+    align-items: center;
+    flex-wrap: wrap;
+    padding-top: 1rem;
+    padding-left: 4rem;
+    padding-right: 4rem;
+    padding-bottom: 1rem;
+    background-color: #7386D5;
+    border-radius: 15px;
+    color: #fafafa; 
+
+
+}
+
 h5 {
     text-align: center;
     margin-bottom: 2rem;
 }
 
-    th, td{
-        padding: 10px 20px;
-        border: 2px solid #fff; 
+
+
+td{
+    padding: 10px 20px;
+    border: 2px solid #fff; 
 }
 
 table{
@@ -205,6 +261,24 @@ table{
 #table-form{
     width: 60%;
     margin: 0px 160px;
+    box-sizing: border-box;
+    border: 1px solid #5b78ec;
+    display: block;
+    justify-content: left;
+    align-items: center;
+    flex-wrap: wrap;
+    padding-top: 1rem;
+    padding-left: 4rem;
+    padding-right: 4rem;
+    padding-bottom: 1rem;
+    background-color: #7386D5;
+    border-radius: 15px;
+    color: #fafafa;
+}
+
+#table-form2{
+    width: 60%;
+    margin: 40px 160px;
     box-sizing: border-box;
     border: 1px solid #5b78ec;
     display: block;
