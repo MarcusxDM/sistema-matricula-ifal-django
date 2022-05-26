@@ -1,0 +1,36 @@
+<nav id="sidebar">
+    <div class="sidebar-header">
+        <h3>{{request.session.user_name}}</h3>
+    </div>
+
+    <ul class="list-unstyled components">
+
+
+        <li>
+            <a href="home-aluno.html">Home</a>
+        </li>
+
+        <li>
+            <a href="perfil-aluno.html">Perfil</a>
+        </li>
+        <li>
+            <a href="#3">Boletim</a>
+        </li>
+
+        <li>
+            <a href="#4">Certificados</a>
+        </li>
+
+        <li>
+            <a href="#5">Matrícula</a>
+        </li>
+
+        <li>
+            <a href="#6">Calendário</a>
+        </li>
+    </ul>
+    <li>
+        <a href="{% url 'logout' %}" class="article">TELA LOGIN</a>
+    </li>
+    </ul>
+</nav>
