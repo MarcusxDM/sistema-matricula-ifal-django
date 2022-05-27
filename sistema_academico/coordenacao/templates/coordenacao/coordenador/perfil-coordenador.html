@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="pt-br" xml:lang="pt-br" class="">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="">
+
+    <!-- Bootstrap CSS CDN -->
+    {% load static %}
+    <link rel="stylesheet" href="{% static "coordenacao/css/bootstrap.min.css"%}">
+
+    <link rel="stylesheet" href="{% static "coordenacao/css//style.css"%}">
+
+
+</head> 
+
+<body>
+
+    <div class="wrapper">
+        <!-- Sidebar -->
+        {% include "coordenacao/coordenador/navbar-coordenador.html" %}
+       
+        <div id="conteudo">
+          <div id="dados-pessoa">
+            <H5>Dados Pessoais</H5>
+              <h6>Nome: </h6>
+              <h6>E-mail: </h6>
+              <h6>Telefone: </h6>
+              <div class="text-right">
+                <a class="btn btn-primary mb-2" href="PÁGINA-EDITAR-DADOS" role="button">
+                    <span class="glyphicon glyphicon-plus" aria-hidden="true">Editar</span>
+                </a>
+              </div>
+          </div>  
+
+        </div>
+    </div>
+
+
+
+</body>
+
+</html>

@@ -1,7 +1,21 @@
 from django.shortcuts import render, get_object_or_404, redirect, HttpResponse
 from django.urls import reverse
 from coordenacao.models import User, Coordenador, Professor, Aluno
+from django.core.mail import send_mail
+import secrets
+import string
 
+def generate_password(): 
+    alphabet = string.ascii_letters + string.digits
+    return ''.join(secrets.choice(alphabet) for i in range(8))
+
+def send_email_new_user(email_destinatario, password, user_nome):
+    send_mail('SIACA - Sua conta foi criada!', 
+    
+    f'Olá {user_nome}!\nSua conta do Sistema Acadêmico foi criada, utilize seu CPF e a senha: {password} para fazer login.', 
+    
+    'mvgp1@aluno.ifal.edu.br',
+    [email_destinatario], fail_silently=False)
 def index(request):
     '''
     Página de index
@@ -50,11 +64,11 @@ def home(request):
         user_name = User.objects.get(cpf=request.session['user_id']).nome
         request.session['user_name'] = user_name
         if request.session['user_type'] == 1:
-            home_name = 'home-coordenador'
+            home_name = 'coordenador/home-coordenador'
         elif request.session['user_type'] == 2:
-            home_name = 'home-professor'
+            home_name = 'professor/home-professor'
         else:
-            home_name = 'home-aluno'
+            home_name = 'aluno/home-aluno'
         return render(request, f'coordenacao/{home_name}.html')
     except:
         return redirect(reverse('index'))
@@ -73,7 +87,7 @@ def list_alunos(request):
     '''
     if request.method == 'GET' and request.session['user_type'] == 1:
         alunos = Aluno.objects.all()
-        return render(request, f'coordenacao/coordenador-aba-aluno.html', {'alunos':alunos})
+        return render(request, f'coordenacao/coordenador/coordenador-aba-aluno.html', {'alunos':alunos})
     else:
         return redirect(reverse('index'))
 
@@ -82,7 +96,7 @@ def form_aluno(request):
     Retorna html com formulário de criação de aluno
     '''
     if request.method == 'GET' and request.session['user_type'] == 1:
-        return render(request, f'coordenacao/create-aluno.html')
+        return render(request, f'coordenacao/coordenador/create-aluno.html')
     else:
         return redirect(reverse('index'))
 
@@ -92,17 +106,21 @@ def create_aluno(request):
     '''
     if request.method == 'POST' and request.session['user_type'] == 1:
         try:
+            # Gera Senha
+            passwrd = generate_password()
             # Cria Usuário
-            new_user = User(cpf=request.POST['cpf'], nome=request.POST['nome'], telefone=request.POST['telefone'],
+            new_user = User(cpf=request.POST['cpf'], email=request.POST['email'], password=passwrd, nome=request.POST['nome'], telefone=request.POST['telefone'],
                             endereco=request.POST['endereco'], bairro=request.POST['bairro'], cidade=request.POST['cidade'], estado=request.POST['estado'])
             new_user.save()
-            
+
+            # Envia email com senha gerada
+            send_email_new_user(request.POST['email'], passwrd, request.POST['nome'])
             # Cria Aluno com novo Usuário
             new_aluno = Aluno(user=new_user)
             new_aluno.save()
             return redirect(reverse('alunos'))
         except:
-            render(request, f'coordenacao/create-aluno.html')
+            render(request, f'coordenacao/coordenador/create-aluno.html')
     else:
         return redirect(reverse('index'))
 
@@ -113,7 +131,7 @@ def list_professores(request):
     '''
     if request.method == 'GET' and request.session['user_type'] == 1:
         professores = Professor.objects.all()
-        return render(request, f'coordenacao/coordenador-aba-professores.html', {'professores':professores})
+        return render(request, f'coordenacao/coordenador/coordenador-aba-professores.html', {'professores':professores})
     else:
         return redirect(reverse('index'))
 
@@ -122,7 +140,7 @@ def form_professor(request):
     Retorna html com formulário de criação de professores
     '''
     if request.method == 'GET' and request.session['user_type'] == 1:
-        return render(request, f'coordenacao/create-professor.html')
+        return render(request, f'coordenacao/coordenador/create-professor.html')
     else:
         return redirect(reverse('index'))
 
@@ -132,16 +150,21 @@ def create_professor(request):
     '''
     if request.method == 'POST' and request.session['user_type'] == 1:
         try:
+            # Gera Senha
+            passwrd = generate_password()
             # Cria Usuário
-            new_user = User(cpf=request.POST['cpf'], nome=request.POST['nome'], telefone=request.POST['telefone'],
+            new_user = User(cpf=request.POST['cpf'], email=request.POST['email'], password=passwrd, nome=request.POST['nome'], telefone=request.POST['telefone'],
                             endereco=request.POST['endereco'], bairro=request.POST['bairro'], cidade=request.POST['cidade'], estado=request.POST['estado'])
             new_user.save()
+
+            # Envia email com senha gerada
+            send_email_new_user(request.POST['email'], passwrd, request.POST['nome'])
             
             # Cria Aluno com novo Usuário
             new_professor = Professor(user=new_user, lattes=request.POST['lattes'], area_atuacao=request.POST['atuacao'])
             new_professor.save()
             return redirect(reverse('professores'))
         except:
-            render(request, f'coordenacao/create-professor.html')
+            render(request, f'coordenacao/coordenador/create-professor.html')
     else:
         return redirect(reverse('index'))

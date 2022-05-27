@@ -21,7 +21,7 @@
     <div class="wrapper">
 
         <!-- Sidebar  -->
-        {% include "coordenacao/navbar.html" %}
+        {% include "coordenacao/coordenador/navbar-coordenador.html" %}
 
         <div id="conteudo">
             
@@ -33,32 +33,35 @@
                 </div>
             </div>
 
+
+
+
             <div id="table1">
-                <H5>Alunos Cadastrados Recentemente</H5>
-                {% if alunos %}
+                <H5>Professores Cadastrados Recentemente</H5>
+                {% if professores %}
                 <table>
                     <thead>
                         <tr>
                             <td>CPF</td>
                             <td>Nome</td>
-                            <td>Curso</td>
-                            <td>Período de Ingresso</td>
+                            <td>Área de Atuação</td>
+                            <td>Lattes</td>
                         </tr>
-                        {% for aluno in alunos %}
+                        {% for professor in professores %}
                         <tr>
-                            <td>{{aluno.user.cpf}}</td>
-                            <td>{{aluno.user.nome}}</td>
-                            <td>{{aluno.curso}}</td>
-                            <td>{{aluno.periodo}}</td>
+                            <td>{{professor.user.cpf}}</td>
+                            <td>{{professor.user.nome}}</td>
+                            <td>{{professor.area_atuacao}}</td>
+                            <td>{{professor.lattes}}</td>
                         </tr>
                         {% endfor %}
                     </thead>
                 </table>
                 {% else %}
-                <H6>Sem alunos cadastrados.</H6>
+                <H6>Sem professores cadastrados.</H6>
                 {% endif %}
                 <div class="text-right">
-                    <a class="btn btn-primary mb-2" href="{% url 'form_aluno' %}" role="button">
+                    <a class="btn btn-primary mb-2" href="{% url 'form_professor' %}" role="button">
                         <span class="glyphicon glyphicon-plus" aria-hidden="true">+</span>
                     </a>
                 </div>
@@ -72,4 +75,5 @@
 
 
 </body>
+
 </html>

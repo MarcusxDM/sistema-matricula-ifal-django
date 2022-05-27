@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="pt-br" xml:lang="pt-br" class="">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="">
+
+    <!-- Bootstrap CSS CDN -->
+    {% load static %}
+    <link rel="stylesheet" href="{% static "coordenacao/css/bootstrap.min.css"%}">
+
+    <link rel="stylesheet" href="{% static "coordenacao/css/style-home-aluno-professor.css"%}">
+
+
+</head>
+
+<body>
+
+    <div class="wrapper">
+        <!-- Sidebar DETALHE: A NAVBAR DE ALUNO É DIFERENTE. USE navbar-aluno.html  -->
+        {% include "coordenacao/aluno/navbar-aluno.html" %}
+       
+        <div id="conteudo">
+          <div id="table1">
+            <H5>Lista de Disciplinas Matriculadas no Semestre</H5>
+              <table id = "first">
+                <!--  {% for disciplina in disciplinas %}  -->
+                <tr>
+                  <td>Disciplina X</td>
+                </tr>
+                <!--  {% endfor %}  -->
+                
+              </table>
+          </div>  
+            
+
+
+          <div id="table2">
+            <H5>Lista de Tarefas Pendentes</H5>
+
+            <!-- {% if tarefas %} -->
+            <table id = "second">
+              <thead>
+                  <tr>
+                      <th>Atividades</th>
+                      <th>Disciplina</th>
+                      <th>Data de Entrega</th>
+                  </tr>
+
+                  <!--  {% for aluno in alunos %}  -->
+                  <tr>
+                      <td>atividade 1</td>
+                      <td>disciplina PROINT</td>
+                      <td>09/06/2022</td> 
+                  </tr>
+                 <!--  {% endfor %}  -->
+
+              </thead>
+          </table>
+
+
+          </div>  
+
+        </div>
+    </div>
+
+
+
+</body>
+
+</html>
