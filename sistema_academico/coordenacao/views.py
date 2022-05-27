@@ -36,16 +36,20 @@ def login(request):
     if request.method == 'POST':
         try:
             user = User.objects.get(cpf=request.POST['cpf'])
+            print(user)
             if user.password == request.POST['password']:
                 # Success Login
                 request.session['login_error'] = ""
                 request.session['user_id'] = user.cpf
-                if Coordenador.objects.get(user_id=request.session['user_id']):
+                try:
+                    Coordenador.objects.get(user_id=request.session['user_id'])
                     request.session['user_type'] = 1
-                elif Professor.objects.get(user_id=request.session['user_id']):
-                    request.session['user_type'] = 2
-                else:
-                    request.session['user_type'] = 3
+                except Coordenador.DoesNotExist:
+                    try:
+                        Professor.objects.get(user_id=request.session['user_id'])
+                        request.session['user_type'] = 2
+                    except Professor.DoesNotExist:
+                        request.session['user_type'] = 3
                 return redirect('home')
             else:
                 request.session['login_error'] = 'Senha incorreta'
@@ -69,6 +73,7 @@ def home(request):
             home_name = 'professor/home-professor'
         else:
             home_name = 'aluno/home-aluno'
+        print(f'coordenacao/{home_name}.html')
         return render(request, f'coordenacao/{home_name}.html')
     except:
         return redirect(reverse('index'))

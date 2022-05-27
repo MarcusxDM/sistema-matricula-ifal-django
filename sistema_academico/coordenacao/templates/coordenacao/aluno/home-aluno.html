@@ -40,7 +40,7 @@
           <div id="table2">
             <H5>Lista de Tarefas Pendentes</H5>
 
-            <!-- {% if tarefas %} -->
+            {% comment %} {% if tarefas %} {% endcomment %}
             <table id = "second">
               <thead>
                   <tr>
@@ -49,13 +49,14 @@
                       <th>Data de Entrega</th>
                   </tr>
 
-                  <!--  {% for aluno in alunos %}  -->
+                  {% comment %} {% for aluno in alunos %} {% endcomment %}
                   <tr>
                       <td>atividade 1</td>
                       <td>disciplina PROINT</td>
                       <td>09/06/2022</td> 
                   </tr>
-                 <!--  {% endfor %}  -->
+                 {% comment %} {% endfor %} {% endcomment %}
+            {% comment %} {% endif %} {% endcomment %}
 
               </thead>
           </table>
