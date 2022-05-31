@@ -84,6 +84,7 @@ class Curso(models.Model):
     ementa = models.BinaryField(null=True, blank=True)
     create_date = models.DateField(auto_now_add=True)
     update_date = models.DateField(auto_now=True)
+    created_by = models.ForeignKey(Coordenador, on_delete=models.CASCADE)
 
     class Meta:
         verbose_name = _("curso")
@@ -103,6 +104,7 @@ class Disciplina(models.Model):
     ementa = models.BinaryField(null=True)
     create_date = models.DateField(auto_now_add=True)
     update_date = models.DateField(auto_now=True)
+    curso = models.ForeignKey(Curso, on_delete=models.CASCADE)
 
     class Meta:
         verbose_name = _("disciplina")
