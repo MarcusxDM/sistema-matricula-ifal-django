@@ -10,9 +10,7 @@
     <!-- Bootstrap CSS CDN -->
     {% load static %}
     <link rel="stylesheet" href="{% static "coordenacao/css/bootstrap.min.css"%}">
-
     <link rel="stylesheet" href="{% static "coordenacao/css/style.css"%}">
-
 
 </head>
 
@@ -28,6 +26,11 @@
                 <div id="title">
                     <H5>Cadastrar Novo Aluno</H5>
                 </div>
+                {% if msg %}
+                <div id="title">
+                  <H6>{{msg}}</H6>
+              </div>
+                {% endif %}
                 <form method="post" action="{% url 'create_aluno' %}">
                   {% csrf_token %}
                     <div class="form-group row">
@@ -57,7 +60,16 @@
                     <div class="form-group row">
                       <label for="curso" class="col-sm-2 col-form-label">Curso</label>
                       <div class="col-sm-10">
-                        <input type="text" required="True" class="form-control" id="curso" name="curso" placeholder="'Sistemas de Informação'">
+                      {% if cursos %}
+                        <select id="curso" required="True"  name="curso" class="form-control">
+                          <option selected>Escolher...</option>
+                          {% for curso in cursos %}
+                          <option value={{curso}}>{{curso}}</option>
+                          {% endfor %}
+                      </select>
+                      {% else %}
+                      <input type="text" required="True" class="form-control" id="curso" name="curso" placeholder="'Sistemas de Informação'">
+                      {% endif %}
                       </div>
                     </div>
                     <div class="form-group row">
@@ -120,9 +132,6 @@
                   </form>
             </div> 
         </div>
-        
-        <!-- <script src="./static/create-aluno/table.js"></script> -->
-
     </div>
 
 

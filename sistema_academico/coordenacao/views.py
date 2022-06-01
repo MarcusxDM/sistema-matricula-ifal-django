@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404, redirect, HttpResponse
 from django.urls import reverse
-from coordenacao.models import User, Coordenador, Professor, Aluno, Curso, Disciplina
+from coordenacao.models import User, Coordenador, Professor, Aluno, Curso, Disciplina, Periodo, Oferta, Matricula
 from django.core.mail import send_mail
 import secrets
 import string
@@ -101,7 +101,10 @@ def form_aluno(request):
     Retorna html com formulário de criação de aluno
     '''
     if request.method == 'GET' and request.session['user_type'] == 1:
-        return render(request, f'coordenacao/coordenador/create-aluno.html')
+        cursos = Curso.objects.filter(created_by=Coordenador.objects.get(user_id=request.session['user_id']))
+        periodos = Periodo.objects.all()
+        return render(request, f'coordenacao/coordenador/create-aluno.html', {'cursos'   : cursos,
+                                                                              'periodos' : periodos})
     else:
         return redirect(reverse('index'))
 
@@ -111,6 +114,11 @@ def create_aluno(request):
     '''
     if request.method == 'POST' and request.session['user_type'] == 1:
         try:
+
+            user = User.objects.get(cpf=request.POST['cpf'])
+            msg = 'CPF já cadastrado!'
+            return render(request, f'coordenacao/coordenador/create-aluno.html', {'msg' : msg})
+        except:
             # Gera Senha
             passwrd = generate_password()
             # Cria Usuário
@@ -118,14 +126,13 @@ def create_aluno(request):
                             endereco=request.POST['endereco'], bairro=request.POST['bairro'], cidade=request.POST['cidade'], estado=request.POST['estado'])
             new_user.save()
 
+            # Cria Aluno com novo Usuário
+            new_aluno = Aluno(user=new_user, curso=request.POST['curso'], periodo_ingresso=request.POST['periodo'])
+            new_aluno.save()
+
             # Envia email com senha gerada
             send_email_new_user(request.POST['email'], passwrd, request.POST['nome'])
-            # Cria Aluno com novo Usuário
-            new_aluno = Aluno(user=new_user)
-            new_aluno.save()
             return redirect(reverse('alunos'))
-        except:
-            render(request, f'coordenacao/coordenador/create-aluno.html')
     else:
         return redirect(reverse('index'))
 
@@ -155,6 +162,10 @@ def create_professor(request):
     '''
     if request.method == 'POST' and request.session['user_type'] == 1:
         try:
+            user = User.objects.get(cpf=request.POST['cpf'])
+            msg = 'CPF já cadastrado!'
+            render(request, f'coordenacao/coordenador/create-professor.html', {'msg' : msg})
+        except:
             # Gera Senha
             passwrd = generate_password()
             # Cria Usuário
@@ -168,9 +179,7 @@ def create_professor(request):
             # Cria Aluno com novo Usuário
             new_professor = Professor(user=new_user, lattes=request.POST['lattes'], area_atuacao=request.POST['atuacao'])
             new_professor.save()
-            return redirect(reverse('professores'))
-        except:
-            render(request, f'coordenacao/coordenador/create-professor.html')
+            return redirect(reverse('professores'))            
     else:
         return redirect(reverse('index'))
 
@@ -249,6 +258,92 @@ def create_disciplina(request, curso_id):
         # except:
     else:
         return redirect(reverse('index'))
+
+def list_periodo(request):
+    '''
+    Retorna html com lista de cursos
+    '''
+    if request.method == 'GET' and request.session['user_type'] == 1:
+        periodos = Periodo.objects.all()
+        render(request, f'coordenacao/coordenador/list-periodos.html', {'periodos':periodos})
+    else:
+        return redirect(reverse('index'))
+
+def form_periodo(request):
+    '''
+    Retorna html com formulário de criação de periodo
+    '''
+    if request.method == 'GET' and request.session['user_type'] == 1:
+        return render(request, f'coordenacao/coordenador/create-periodo.html')
+    else:
+        return redirect(reverse('index'))
+
+def create_periodo(request):
+    if request.method == 'POST' and request.session['user_type'] == 1:
+        if get_object_or_404(Periodo, pk=request.POST['ano']+request.POST['semestre']):
+            # ERRO objeto já existe
+            return redirect(reverse('create_periodo'))
+        else:
+            new_periodo = Periodo(pk=request.POST['ano']+request.POST['semestre'], 
+                            start_date=request.POST['data_inicio'], end_date=request.POST['data_fim'])
+            new_periodo.save()
+            return redirect(reverse('view_periodo')) #get com id como param
+    else:
+        return redirect(reverse('index'))
+
+def view_periodo(request, id_param):
+    '''
+    Retorna html com lista de ofertas do periodo
+    OBS.: apenas ofertas com disciplinas pertencentes aos cursos criados pelo coordenador
+    '''
+    if request.method == 'GET' and request.session['user_type'] == 1:
+        # try:
+        periodo = get_object_or_404(Periodo, pk=id_param)
+        cursos = Curso.objects.filter(created_by__pk=request.session['user_id'])
+        disciplinas = Disciplina.objects.filter(curso__in=cursos)
+        ofertas = Oferta.objects.filter(disciplina__in=disciplinas)
+        professores = Professor.objects.all()
+        render(request, f'coordenacao/coordenador/list-ofertas.html', {'ofertas'     : ofertas,
+                                                                       'disciplinas' : disciplinas,
+                                                                       'professores' : professores,
+                                                                       'curso'       : id_param,
+                                                                       'periodo'     : periodo})
+        # except:
+        #     pass
+    else:
+        return redirect(reverse('index'))
+
+def create_oferta(request):
+    if request.method == 'POST' and request.session['user_type'] == 1:
+        try:
+            professor = request.POST['professor']
+        except:
+            professor = None
+        new_oferta = Oferta(periodo=request.POST['periodo'],
+                            disciplina=request.POST['disciplina'], 
+                            professor=professor,
+                            aula_dias=request.POST['aula_dias'], 
+                            aula_hora_inicio=request.POST['hora_inicio'],
+                            aula_hora_fim=request.POST['hora_fim'])
+        return redirect(reverse('view_periodo'))
+    else:
+        return redirect(reverse('index'))
+
+def view_oferta_matriculados(request, id_param):
+    if request.method == 'GET' and request.session['user_type'] == 1:
+        matriculas = Matricula.objects.filter(oferta__pk=id_param)
+        return render(request, f'coordenacao/coordenador/oferta-matriculas.html', {'matriculas' : matriculas})
+    else:
+        return redirect(reverse('index'))
+
+
+
+
+
+
+
+
+
 
 
             

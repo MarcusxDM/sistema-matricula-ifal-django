@@ -27,13 +27,13 @@ urlpatterns = [
 
     # Coordenadores - Cursos e Disciplinas
     path('cursos/', include([
-        path('', views.list_cursos,name='cursos'),
+        path('', views.list_curso,name='cursos'),
         path('<int:curso_id>/', views.view_curso, name='view_curso'),
         path('<int:curso_id>/create-disciplina/', views.view_curso, name='create_disciplina')
     ])),
 
     # Periodo Letivo
-    path('periodos/', views.list_periodos, name='periodos'),
+    path('periodos/', views.list_periodo, name='periodos'),
 
 
 

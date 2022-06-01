@@ -60,22 +60,6 @@ class Professor(models.Model):
     def get_absolute_url(self):
         return reverse("professor_detail", kwargs={"pk": self.pk})
 
-class Aluno(models.Model):
-    user = models.OneToOneField(
-        User,
-        on_delete=models.CASCADE,
-        primary_key=True,
-    )
-    class Meta:
-        verbose_name = _("aluno")
-        verbose_name_plural = _("alunos")
-
-    def __str__(self):
-        return f"{self.user.cpf} | {self.user.nome}"
-
-    def get_absolute_url(self):
-        return reverse("aluno_detail", kwargs={"pk": self.pk})
-
 class Curso(models.Model):
     id = models.IntegerField(primary_key=True)
     nome = models.CharField(max_length=50, null=False, blank=False)
@@ -95,6 +79,39 @@ class Curso(models.Model):
 
     def get_absolute_url(self):
         return reverse("curso_detail", kwargs={"pk": self.pk})
+
+class Periodo(models.Model):
+    id = models.CharField(max_length=50, primary_key=True)
+    start_date = models.DateField(null=False)
+    end_date = models.DateField(null=False)
+
+    class Meta:
+        verbose_name = _("periodo")
+        verbose_name_plural = _("periodos")
+
+    def __str__(self):
+        return self.pk
+
+    def get_absolute_url(self):
+        return reverse("periodo_detail", kwargs={"pk": self.pk})
+
+class Aluno(models.Model):
+    user = models.OneToOneField(
+        User,
+        on_delete=models.CASCADE,
+        primary_key=True,
+    )
+    curso = models.ForeignKey(Curso, on_delete=models.CASCADE, null=False, blank=False)
+    periodo_ingresso = models.ForeignKey(Periodo, on_delete=models.CASCADE, null=False, blank=False)
+    class Meta:
+        verbose_name = _("aluno")
+        verbose_name_plural = _("alunos")
+
+    def __str__(self):
+        return f"{self.user.cpf} | {self.user.nome}"
+
+    def get_absolute_url(self):
+        return reverse("aluno_detail", kwargs={"pk": self.pk})
 
 class Disciplina(models.Model):
     id = models.IntegerField(primary_key=True)
@@ -116,25 +133,11 @@ class Disciplina(models.Model):
     def get_absolute_url(self):
         return reverse("disciplina_detail", kwargs={"pk": self.pk})
 
-class Periodo(models.Model):
-    id = models.CharField(max_length=50, primary_key=True)
-    start_date = models.DateField(null=False)
-    end_date = models.DateField(null=False)
-
-    class Meta:
-        verbose_name = _("periodo")
-        verbose_name_plural = _("periodos")
-
-    def __str__(self):
-        return self.pk
-
-    def get_absolute_url(self):
-        return reverse("periodo_detail", kwargs={"pk": self.pk})
-
 class Oferta(models.Model):
     id = models.IntegerField(primary_key=True)
+    periodo = models.ForeignKey(Periodo, on_delete=models.CASCADE, null=False, blank=False)
     disciplina = models.ForeignKey(Disciplina, on_delete=models.CASCADE, null=False, blank=False)
-    professor = models.ForeignKey(Professor, on_delete=models.CASCADE, null=False, blank=False)
+    professor = models.ForeignKey(Professor, on_delete=models.CASCADE, null=True, blank=True)
     aula_dias = models.CharField(max_length=7, null=False, blank=False) # '{0-6}' cada numero representa um dia da semana
     aula_hora_inicio = models.TimeField(null=False, blank=False)
     aula_hora_fim = models.TimeField(null=False, blank=False)
@@ -153,7 +156,7 @@ class Oferta(models.Model):
 
 class Matricula(models.Model):
     id = models.IntegerField(primary_key=True)
-    disciplina = models.ForeignKey(Disciplina, on_delete=models.CASCADE)
+    oferta = models.ForeignKey(Oferta, on_delete=models.CASCADE)
     aluno = models.ForeignKey(Aluno, on_delete=models.CASCADE)
     create_date = models.DateField(auto_now_add=True)
     
