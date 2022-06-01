@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="pt-br" xml:lang="pt-br" class="">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Períodos Cadastrados - Coordenador</title>
+    <!-- Bootstrap CSS CDN -->
+    <link rel="stylesheet" href="./static/bootstrap.min.css">
+    <link rel="stylesheet" href="./static/style01.css">
+    <link rel="shortcut icon" href="./static/school.ico">
+<body>
+  <div class="wrapper">
+      <!-- Sidebar  -->
+      <nav id="sidebar">
+          <div class="sidebar-header">
+              <h3>Nome do coordenador</h3>            
+          </div>
+          <ul class="list-unstyled components">
+              <li><a href="Home-Coordenador.html">Home</a></li>
+              <li><a href="#2">Perfil</a></li>
+              <li><a href="#3">Cursos</a></li>
+              <li><a href="coordenador-aba-aluno.html">Alunos</a></li>
+              <li><a href="coordenador-aba-professores.html">Professores</a></li>
+              <li><a href="#5">Período Letivo</a></li>
+              <li><a href="Login - SIACA.html" class="article">Logout</a></li>
+          </ul> 
+      </nav>
+        <div id="conteudo">
+          <div id="table1">
+            <div id="title">                
+            </div>
+            <form>
+                <div class="form-group row">  
+                    <div class="col-sm-12">
+                      <input type="text" class="form-control" id="nome" placeholder="Busca por data">
+                    </div>
+                </div>
+            </form>
+        </div> 
+            <div id="table2">    <!--Mudar arquivo da tabela e propriedades no CSS para funcionar -->
+                <div id="title">
+                    <H5>Períodos Recentes</H5>
+                </div>
+                <table class = "table">
+                   <!--  {% for curso in  %}  -->
+                   <h6>Período</h6>                  
+                  <tbody>                                                                                                              
+                          <tr>
+                            <td>2019.1</td>   <!--  Editar espaçamento da celula da tabela no style.css linha 242.  -->   
+                            <td>
+                                 <div class="text-right col-lg-10">
+                                 <button type="submit" class="btn btn-primary mb-3">Abrir</button>
+                                 </div>
+                            </td>
+                          </tr>  
+                         <tr>
+                            <td>2019.2</td>
+                            <td>
+                                 <div class="text-right col-lg-10">
+                                 <button type="submit" class="btn btn-primary mb-3">Abrir</button>
+                                 </div>
+                            </td>
+                          </tr>  
+                         <tr>
+                            <td>2020.1</td>
+                            <td>
+                                 <div class="text-right col-lg-10">
+                                 <button type="submit" class="btn btn-primary mb-3">Abrir</button>
+                                 </div>
+                            </td>
+                          </tr>                                  
+                    </tbody>
+                     <!--  {% endfor %}  -->                                   
+              </table>
+              <div class="text-right col-lg-14">  <!--  Configurar este botão  -->   
+                <button type="submit" class="btn btn-primary mb-3">+</button>
+              </div>
+            </div> 
+        </div>
+    </div>
+</body>
+</html>
