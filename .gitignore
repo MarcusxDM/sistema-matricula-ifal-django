@@ -157,3 +157,4 @@ env/
 
 # Django
 sistema_academico/coordenacao/migrations/
+sistema_academico/sistema_academico/settings.py
