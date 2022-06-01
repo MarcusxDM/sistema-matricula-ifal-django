@@ -76,9 +76,17 @@ WSGI_APPLICATION = 'sistema_academico.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.mysql', 
+        'NAME': 'siaca',
+        'USER': 'root',
+        # 'PASSWORD': 'Rg7gibta1995',
+        'HOST': 'localhost', 
+        'PORT': '3306',
     }
+    # 'default': {
+    #     'ENGINE': 'django.db.backends.sqlite3',
+    #     'NAME': BASE_DIR / 'db.sqlite3',
+    # }
 }
 
 

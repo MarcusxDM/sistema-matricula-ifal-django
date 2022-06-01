@@ -154,3 +154,6 @@ cython_debug/
 # ENV
 env/
 .vscode/
+
+# Django
+sistema_academico/coordenacao/migrations/

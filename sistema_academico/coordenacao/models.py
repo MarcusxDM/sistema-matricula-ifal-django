@@ -61,7 +61,7 @@ class Professor(models.Model):
         return reverse("professor_detail", kwargs={"pk": self.pk})
 
 class Curso(models.Model):
-    id = models.IntegerField(primary_key=True)
+    # id = models.IntegerField(primary_key=True)
     nome = models.CharField(max_length=50, null=False, blank=False)
     descricao = models.TextField(null=True, blank=True)
     periodos = models.IntegerField(null=False, blank=False)
@@ -114,7 +114,7 @@ class Aluno(models.Model):
         return reverse("aluno_detail", kwargs={"pk": self.pk})
 
 class Disciplina(models.Model):
-    id = models.IntegerField(primary_key=True)
+    # id = models.IntegerField(primary_key=True)
     nome = models.CharField(max_length=50, null=False)
     descricao = models.TextField(null=True, blank=True)
     periodo = models.IntegerField(null=False, blank=False)
@@ -134,7 +134,7 @@ class Disciplina(models.Model):
         return reverse("disciplina_detail", kwargs={"pk": self.pk})
 
 class Oferta(models.Model):
-    id = models.IntegerField(primary_key=True)
+    # id = models.IntegerField(primary_key=True)
     periodo = models.ForeignKey(Periodo, on_delete=models.CASCADE, null=False, blank=False)
     disciplina = models.ForeignKey(Disciplina, on_delete=models.CASCADE, null=False, blank=False)
     professor = models.ForeignKey(Professor, on_delete=models.CASCADE, null=True, blank=True)
@@ -155,7 +155,7 @@ class Oferta(models.Model):
         return reverse("oferta_detail", kwargs={"pk": self.pk})
 
 class Matricula(models.Model):
-    id = models.IntegerField(primary_key=True)
+    # id = models.IntegerField(primary_key=True)
     oferta = models.ForeignKey(Oferta, on_delete=models.CASCADE)
     aluno = models.ForeignKey(Aluno, on_delete=models.CASCADE)
     create_date = models.DateField(auto_now_add=True)
