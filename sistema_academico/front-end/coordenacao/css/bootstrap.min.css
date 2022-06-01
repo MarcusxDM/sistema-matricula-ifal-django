@@ -638,7 +638,7 @@ pre code {
     margin-right: -15px;
     margin-left: -15px
 }
-/* CSS cadastrar-periodo*/
+/* CSS cadastrar-periodo / cadastras-disciplina*/
 .row2 {
     display: -ms-flexbox;
     display: flex;
@@ -656,7 +656,15 @@ pre code {
     margin-left: 2rem;
 }
 
-/*----------*/
+.row2 #slt{
+    margin-left: 1rem;
+}
+.row2 #slt1{
+    margin-left: -1rem;
+}
+/*------------------*/
+
+
 .no-gutters {
     margin-right: 0;
     margin-left: 0
