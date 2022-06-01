@@ -64,7 +64,7 @@
                         <select id="curso" required="True"  name="curso" class="form-control">
                           <option selected>Escolher...</option>
                           {% for curso in cursos %}
-                          <option value={{curso}}>{{curso}}</option>
+                          <option value={{curso.id}}>{{curso}}</option>
                           {% endfor %}
                       </select>
                       {% else %}

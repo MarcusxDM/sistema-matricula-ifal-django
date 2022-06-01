@@ -127,7 +127,7 @@ def create_aluno(request):
             new_user.save()
 
             # Cria Aluno com novo Usuário
-            new_aluno = Aluno(user=new_user, curso=request.POST['curso'], periodo_ingresso=request.POST['periodo'])
+            new_aluno = Aluno(user=new_user, curso_id=request.POST['curso'], periodo_ingresso_id=request.POST['periodo'])
             new_aluno.save()
 
             # Envia email com senha gerada
@@ -189,7 +189,7 @@ def list_curso(request):
     '''
     if request.method == 'GET' and request.session['user_type'] == 1:
         cursos = Curso.objects.filter(created_by=Coordenador.objects.get(user_id=request.session['user_id']))
-        render(request, f'coordenacao/coordenador/list-cursos.html', {'cursos':cursos})
+        return render(request, f'coordenacao/coordenador/curso-vigentes-coordenador.html', {'cursos':cursos})
     else:
         return redirect(reverse('index'))
 
@@ -198,7 +198,7 @@ def form_curso(request):
     Retorna html com formulário de criação de curso
     '''
     if request.method == 'GET' and request.session['user_type'] == 1:
-        return render(request, f'coordenacao/coordenador/create-curso.html')
+        return render(request, f'coordenacao/coordenador/cadastrar-novo-curso-coordenador.html')
     else:
         return redirect(reverse('index'))
 

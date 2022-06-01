@@ -27,7 +27,8 @@ urlpatterns = [
 
     # Coordenadores - Cursos e Disciplinas
     path('cursos/', include([
-        path('', views.list_curso,name='cursos'),
+        path('', views.list_curso, name='cursos'),
+        path('create/', views.form_curso, name='form_curso'),
         path('<int:curso_id>/', views.view_curso, name='view_curso'),
         path('<int:curso_id>/create-disciplina/', views.view_curso, name='create_disciplina')
     ])),
