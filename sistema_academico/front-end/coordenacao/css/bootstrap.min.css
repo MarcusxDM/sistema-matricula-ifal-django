@@ -638,7 +638,25 @@ pre code {
     margin-right: -15px;
     margin-left: -15px
 }
+/* CSS cadastrar-periodo*/
+.row2 {
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-wrap: wrap;
+    flex-wrap: nowrap;
+    margin-right: -15px;
+    margin-left: -15px
+}
 
+.row2 #ano{
+    margin-left: 1rem;
+}
+
+.row2 #semestre{
+    margin-left: 2rem;
+}
+
+/*----------*/
 .no-gutters {
     margin-right: 0;
     margin-left: 0
