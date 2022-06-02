@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="pt-br" xml:lang="pt-br" class="">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastrar Nova Disciplina - Coordenador</title>
+    <!-- Bootstrap CSS CDN -->
+    {% load static %}
+    <link rel="stylesheet" href="{% static "coordenacao/css/bootstrap.min.css"%}">
+    <link rel="stylesheet" href="{% static "coordenacao/css/style01.css"%}">
+    <link rel="shortcut icon" href="{% static "coordenacao/images/school.ico"%}">
+<body>
+  <div class="wrapper">
+      <!-- Sidebar  -->
+      {% include "coordenacao/coordenador/navbar-coordenador.html" %}
+        <div id="conteudo">
+            <div id="table1">
+                <div id="title">
+                    <H5>Nova Disciplina</H5>
+                </div>
+                <form>
+                    <div class="form-group row">
+                        <label for="nome" class="col-sm-2 col-form-label">Nome:</label>
+                        <div class="col-sm-10">
+                          <input type="input" class="form-control" id="nome" placeholder="Nome" >
+                        </div>
+                      </div>                    
+                    <div class="form-group row">
+                      <label for="descrição" class="col-sm-2 col-form-label">Descrição:</label>
+                      <div class="col-sm-10">
+                        <textarea class="form-control" id="descrição" rows="3" placeholder="Insira aqui sua descrição"></textarea>
+                      </div>                       
+                    </div>
+
+                    <div class="form-group row">
+                      <label for="periodo" class="col-sm-2 col-form-label">Período:</label>
+                      <div class="col-sm-2">
+                        <input type="text" class="form-control" id="periodo">
+                      </div>
+                      <label for="carga" class="col-sm-3 col-form-label">Carga Horária:</label>
+                      <div class="col-sm-5">
+                        <input type="text" class="form-control" id="carga">
+                      </div>
+                    </div>
+
+                    <div class="form-group row">
+                      <label for="ementa" class="col-sm-2 col-form-label">Ementa:</label>
+                      <div class="col-sm-10">
+                        <input type="file" class="form-control-file" id="ementa">                
+                      </div>
+                    </div>
+                    <div class="text-right col-lg-14">
+                        <button type="submit" class="btn btn-primary mb-3">Salvar</button>
+                    </div>   
+                  </form>
+            </div> 
+        </div>
+    </div>
+</body>
+</html>

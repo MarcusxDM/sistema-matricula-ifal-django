@@ -20,38 +20,28 @@
                     <H5>Disciplinas Vigentes</H5>
                 </div>
                 <table class = "table">
-                   {% comment %} {% for curso in  %} {% endcomment %}
-                   <h6>Disciplina</h6>                  
-                  <tbody>                                                                                                              
-                          <tr>
-                            <td>Disciplina  1</td>   <!--  Editar espaçamento da celula da tabela no style.css linha 242.  -->   
-                            <td>
-                                 <div class="text-right col-lg-10">
-                                 <button type="submit" class="btn btn-primary mb-3">Abrir</button>
-                                 </div>
-                            </td>
-                          </tr>  
-                         <tr>
-                            <td>Disciplina 2</td>
-                            <td>
-                                 <div class="text-right col-lg-10">
-                                 <button type="submit" class="btn btn-primary mb-3">Abrir</button>
-                                 </div>
-                            </td>
-                          </tr>  
-                         <tr>
-                            <td>Disciplina 3</td>
-                            <td>
-                                 <div class="text-right col-lg-10">
-                                 <button type="submit" class="btn btn-primary mb-3">Abrir</button>
-                                 </div>
-                            </td>
-                          </tr>                                  
+                  {% if disciplinas %} 
+                  <td>Nome</td>                 
+                  <tbody>
+                    {% for disciplina in disciplinas  %}
+                        <tr>
+                          <td>{{disciplina}}</td>   <!--  Editar espaçamento da celula da tabela no style.css linha 242.  -->   
+                          <td>
+                                <div class="text-right col-lg-10">
+                                <button type="submit" class="btn btn-primary mb-3">Abrir</button>
+                                </div>
+                          </td>
+                        </tr>
+                    {% endfor %}                          
                     </tbody>
-                    {% comment %} {% endfor %} {% endcomment %}
+                    {% else %}
+                    <H6>Sem disciplinas cadastradas.</H6>
+                    {% endif %}
               </table>
-              <div class="text-right col-lg-14">  <!--  Configurar este botão  -->   
+              <div class="text-right col-lg-14">  <!--  Configurar este botão  --> 
+                <a href="cadastrar-disciplina/">  
                 <button type="submit" class="btn btn-primary mb-3">+</button>
+                </a>
               </div>
             </div> 
         </div>

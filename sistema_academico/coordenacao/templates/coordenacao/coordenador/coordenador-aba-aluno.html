@@ -34,7 +34,7 @@
             </div>
 
             <div id="table1">
-                <H5>Alunos Cadastrados Recentemente</H5>
+                <H5>Alunos Cadastrados</H5>
                 {% if alunos %}
                 <table>
                     <thead>
@@ -44,6 +44,8 @@
                             <td>Curso</td>
                             <td>Período de Ingresso</td>
                         </tr>
+                    </thead>
+                    <tbody>
                         {% for aluno in alunos %}
                         <tr>
                             <td>{{aluno.user.cpf}}</td>
@@ -52,6 +54,7 @@
                             <td>{{aluno.periodo_ingresso}}</td>
                         </tr>
                         {% endfor %}
+                    </tbody>
                     </thead>
                 </table>
                 {% else %}

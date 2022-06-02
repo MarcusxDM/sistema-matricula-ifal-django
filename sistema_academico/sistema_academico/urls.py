@@ -28,9 +28,14 @@ urlpatterns = [
     # Coordenadores - Cursos e Disciplinas
     path('cursos/', include([
         path('', views.list_curso, name='cursos'),
-        path('create/', views.form_curso, name='form_curso'),
-        path('<int:id_param>/', views.view_curso, name='view_curso'),
-        path('<int:id_param>/create-disciplina/', views.view_curso, name='create_disciplina')
+        path('cadastrar/', views.form_curso, name='form_curso'),
+        path('<int:id_param>/', include([
+            path('', views.view_curso, name='view_curso'),
+            path('cadastrar-disciplina/', include([
+                path('', views.form_disciplina, name='form_disciplina'),
+                path('success/', views.create_disciplina, name='create_disciplina')
+            ]))
+        ]))
     ])),
 
     # Periodo Letivo
