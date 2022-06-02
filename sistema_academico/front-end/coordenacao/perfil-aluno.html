@@ -42,15 +42,26 @@
             <!-- {% if tarefas %} -->
             
             <table id = "second">
+              <header id="pf">Lista de Disciplinas Concluídas</header>
+
+              <div class="form-group row3">
+                <div class="progress">
+                  <div class="progress-bar" style="width: 65%;">
+                   <!--TAXA DE CONCLUSAO    NESSE  width ----- e  AQUI --> 65%
+                </div>
+              </div>
+              <h6 >Concluído: </h6>
+
+              </div>
+
+
               <thead>
-                <header id="pf">Lista de Disciplinas Concluídas</header>
-                <header id="pf2">Concluído: x%</header>
-               
+
                 <tr>
                       <th>Disciplina</th>
                       <th>Nota Média</th>
                       <th>Data de Conclusão</th>
-                  </tr>
+                </tr>
 
                   <!--  {% for aluno in alunos %}  -->
                   <tr>
@@ -67,8 +78,6 @@
           </div>  
 
         </div>
-    </div>
-
 
 
 </body>

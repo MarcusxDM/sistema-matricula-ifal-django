@@ -680,7 +680,19 @@ pre code {
 }   
 
 /*------------------*/
+/* CSS perfil-aluno*/
+.row3 {
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-wrap: wrap;
+    flex-wrap: nowrap;
+    flex-direction: row-reverse;
+    margin-right: -2rem;
+    margin-left: -15px
+}
 
+
+/*------------------*/
 
 .no-gutters {
     margin-right: 0;
@@ -5508,12 +5520,14 @@ input[type=submit].btn-block {
 }
 
 .progress {
+    margin-left: 1rem;
+    width: 20%; /* COMPRIMENTO DA BARRA*/
     display: -ms-flexbox;
     display: flex;
     height: 1rem;
     overflow: hidden;
     font-size: .75rem;
-    background-color: #e9ecef;
+    background-color: #fff; /* COR FUNDO */ 
     border-radius: .25rem
 }
 
@@ -5527,7 +5541,7 @@ input[type=submit].btn-block {
     color: #fff;
     text-align: center;
     white-space: nowrap;
-    background-color: #007bff;
+    background-color: #002bff; /* COR PREENCHIMENTO*/ 
     transition: width .6s ease
 }
 
