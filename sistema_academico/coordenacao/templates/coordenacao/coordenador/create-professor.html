@@ -117,6 +117,11 @@
                     </div>
                     
                   </form>
+                  {% if request.session.professor_create_error %}
+                  <div id="alert" class="alert alert-danger" role="alert">
+                    CPF já cadastrado!
+                  </div>
+                  {% endif %}
             </div> 
         </div>
         

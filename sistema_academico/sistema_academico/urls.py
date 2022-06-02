@@ -29,8 +29,8 @@ urlpatterns = [
     path('cursos/', include([
         path('', views.list_curso, name='cursos'),
         path('create/', views.form_curso, name='form_curso'),
-        path('<int:curso_id>/', views.view_curso, name='view_curso'),
-        path('<int:curso_id>/create-disciplina/', views.view_curso, name='create_disciplina')
+        path('<int:id_param>/', views.view_curso, name='view_curso'),
+        path('<int:id_param>/create-disciplina/', views.view_curso, name='create_disciplina')
     ])),
 
     # Periodo Letivo

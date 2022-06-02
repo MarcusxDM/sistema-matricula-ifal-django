@@ -91,6 +91,7 @@ def list_alunos(request):
     Retorna html com lista de Alunos Cadastrados
     '''
     if request.method == 'GET' and request.session['user_type'] == 1:
+        request.session['aluno_create_error'] = False
         alunos = Aluno.objects.all()
         return render(request, f'coordenacao/coordenador/coordenador-aba-aluno.html', {'alunos':alunos})
     else:
@@ -114,10 +115,9 @@ def create_aluno(request):
     '''
     if request.method == 'POST' and request.session['user_type'] == 1:
         try:
-
             user = User.objects.get(cpf=request.POST['cpf'])
-            msg = 'CPF já cadastrado!'
-            return render(request, f'coordenacao/coordenador/create-aluno.html', {'msg' : msg})
+            request.session['aluno_create_error'] = True
+            return redirect(reverse('form_aluno'))
         except:
             # Gera Senha
             passwrd = generate_password()
@@ -142,6 +142,7 @@ def list_professores(request):
     Retorna html com lista de Professores Cadastrados
     '''
     if request.method == 'GET' and request.session['user_type'] == 1:
+        request.session['professor_create_error'] = False
         professores = Professor.objects.all()
         return render(request, f'coordenacao/coordenador/coordenador-aba-professores.html', {'professores':professores})
     else:
@@ -163,8 +164,8 @@ def create_professor(request):
     if request.method == 'POST' and request.session['user_type'] == 1:
         try:
             user = User.objects.get(cpf=request.POST['cpf'])
-            msg = 'CPF já cadastrado!'
-            render(request, f'coordenacao/coordenador/create-professor.html', {'msg' : msg})
+            request.session['professor_create_error'] = True
+            return redirect(reverse('form_professor'))
         except:
             # Gera Senha
             passwrd = generate_password()
@@ -222,7 +223,7 @@ def view_curso(request, id_param):
         # try:
         curso = get_object_or_404(Curso, pk=id_param)
         disciplinas = Disciplina.objects.filter(curso=curso)
-        render(request, f'coordenacao/coordenador/list-disciplinas.html', {'disciplinas':disciplinas})
+        return render(request, f'coordenacao/coordenador/disciplinas-vigentes-coordenador.html', {'disciplinas':disciplinas})
         # except:
         #     pass
     else:
@@ -234,7 +235,7 @@ def list_disciplina(request):
     '''
     if request.method == 'GET' and request.session['user_type'] == 1:
         disciplinas = Disciplina.objects.filter(curso=Curso.objects.get(pk=request.GET['curso_id']))
-        render(request, f'coordenacao/coordenador/list-disciplinas.html', {'disciplinas':disciplinas})
+        return render(request, f'coordenacao/coordenador/list-disciplinas.html', {'disciplinas':disciplinas})
     else:
         return redirect(reverse('index'))
 
@@ -265,7 +266,7 @@ def list_periodo(request):
     '''
     if request.method == 'GET' and request.session['user_type'] == 1:
         periodos = Periodo.objects.all()
-        render(request, f'coordenacao/coordenador/list-periodos.html', {'periodos':periodos})
+        return render(request, f'coordenacao/coordenador/list-periodos.html', {'periodos':periodos})
     else:
         return redirect(reverse('index'))
 
@@ -303,7 +304,7 @@ def view_periodo(request, id_param):
         disciplinas = Disciplina.objects.filter(curso__in=cursos)
         ofertas = Oferta.objects.filter(disciplina__in=disciplinas)
         professores = Professor.objects.all()
-        render(request, f'coordenacao/coordenador/list-ofertas.html', {'ofertas'     : ofertas,
+        return render(request, f'coordenacao/coordenador/list-ofertas.html', {'ofertas'     : ofertas,
                                                                        'disciplinas' : disciplinas,
                                                                        'professores' : professores,
                                                                        'curso'       : id_param,

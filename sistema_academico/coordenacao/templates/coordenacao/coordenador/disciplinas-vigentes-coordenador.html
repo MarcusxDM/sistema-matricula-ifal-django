@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="pt-br" xml:lang="pt-br" class="">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Disciplinas Vigentes - Coordenador</title>
+    <!-- Bootstrap CSS CDN -->
+    {% load static %}
+    <link rel="stylesheet" href="{% static "coordenacao/css/bootstrap.min.css"%}">
+    <link rel="stylesheet" href="{% static "coordenacao/css/style01.css"%}">
+    <link rel="shortcut icon" href="{% static "coordenacao/images/school.ico"%}">
+<body>
+  <div class="wrapper">
+      <!-- Sidebar  -->
+      {% include "coordenacao/coordenador/navbar-coordenador.html" %}
+
+        <div id="conteudo">
+            <div id="table1">    <!--Mudar arquivo da tabela e propriedades no CSS para funcionar -->
+                <div id="title">
+                    <H5>Disciplinas Vigentes</H5>
+                </div>
+                <table class = "table">
+                   {% comment %} {% for curso in  %} {% endcomment %}
+                   <h6>Disciplina</h6>                  
+                  <tbody>                                                                                                              
+                          <tr>
+                            <td>Disciplina  1</td>   <!--  Editar espaçamento da celula da tabela no style.css linha 242.  -->   
+                            <td>
+                                 <div class="text-right col-lg-10">
+                                 <button type="submit" class="btn btn-primary mb-3">Abrir</button>
+                                 </div>
+                            </td>
+                          </tr>  
+                         <tr>
+                            <td>Disciplina 2</td>
+                            <td>
+                                 <div class="text-right col-lg-10">
+                                 <button type="submit" class="btn btn-primary mb-3">Abrir</button>
+                                 </div>
+                            </td>
+                          </tr>  
+                         <tr>
+                            <td>Disciplina 3</td>
+                            <td>
+                                 <div class="text-right col-lg-10">
+                                 <button type="submit" class="btn btn-primary mb-3">Abrir</button>
+                                 </div>
+                            </td>
+                          </tr>                                  
+                    </tbody>
+                    {% comment %} {% endfor %} {% endcomment %}
+              </table>
+              <div class="text-right col-lg-14">  <!--  Configurar este botão  -->   
+                <button type="submit" class="btn btn-primary mb-3">+</button>
+              </div>
+            </div> 
+        </div>
+    </div>
+</body>
+</html>

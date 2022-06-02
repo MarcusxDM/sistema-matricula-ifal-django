@@ -19,16 +19,16 @@
                     <H5>Cursos Vigentes</H5>
                 </div>
                 <table class = "table">
-                   {% comment %} {% for curso in cursos  %} {% endcomment %}
-                   <h6>Curso</h6>   
+                   {% comment %} {% for curso in cursos  %} {% endcomment %}  
                   {% if cursos %}                 
                     <tbody>
+                          <td>Nome</td>
                       {% for curso in cursos%}                                                                                                  
                           <tr>
                             <td>{{curso}}</td>   <!--  Editar espaçamento da celula da tabela no style.css linha 242.  -->   
                             <td>
                                  <div class="text-right col-lg-10">
-                                 <a href="{% url 'view_curso' curso_id=curso.id %}"><button type="submit" class="btn btn-primary mb-3">Abrir</button>
+                                 <a href="{% url 'view_curso' id_param=curso.id %}"><button type="submit" class="btn btn-primary mb-3">Abrir</button>
                                  </div>
                             </td>
                           </tr>

@@ -62,20 +62,29 @@
                       <div class="col-sm-10">
                       {% if cursos %}
                         <select id="curso" required="True"  name="curso" class="form-control">
-                          <option selected>Escolher...</option>
+                          {% comment %} <option selected>Escolher...</option> {% endcomment %}
                           {% for curso in cursos %}
                           <option value={{curso.id}}>{{curso}}</option>
                           {% endfor %}
                       </select>
                       {% else %}
-                      <input type="text" required="True" class="form-control" id="curso" name="curso" placeholder="'Sistemas de Informação'">
+                      <input type="text" required="True" class="form-control readonly" autocomplete="off" id="curso" name="curso" placeholder="Cadastre um novo curso antes!">
                       {% endif %}
                       </div>
                     </div>
                     <div class="form-group row">
                       <label for="periodo" class="col-sm-2 col-form-label">Período de Ingresso</label>
                       <div class="col-sm-10">
-                        <input type="text" required="True" class="form-control" id="periodo"  name="periodo" placeholder="Período">
+                        {% if periodos %}
+                        <select id="curso" required="True"  name="periodo" class="form-control">
+                          {% comment %} <option selected>Escolher...</option> {% endcomment %}
+                          {% for periodo in periodos %}
+                          <option value={{periodo.id}}>{{periodo}}</option>
+                          {% endfor %}
+                      </select>
+                      {% else %}
+                      <input type="text" required="True" class="form-control readonly" autocomplete="off" id="periodo" name="periodo" placeholder="Cadastre um novo periodo antes!">
+                      {% endif %}
                       </div>
                     </div>
                     <div class="form-group">
@@ -130,12 +139,21 @@
                     </div>
                     
                   </form>
+                  {% if request.session.aluno_create_error %}
+                  <div id="alert" class="alert alert-danger" role="alert">
+                    CPF já cadastrado!
+                  </div>
+                  {% endif %}
             </div> 
         </div>
     </div>
 
-
-
+    <script>
+        $(".readonly").on('keydown paste focus mousedown', function(e){
+            if(e.keyCode != 9) // ignore tab
+                e.preventDefault();
+        });
+    </script>
 </body>
 
 </html>

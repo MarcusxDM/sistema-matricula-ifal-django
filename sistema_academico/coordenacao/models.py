@@ -89,7 +89,7 @@ class Periodo(models.Model):
         verbose_name_plural = _("periodos")
 
     def __str__(self):
-        return self.pk
+        return f"{self.pk[0:-1]}.{self.pk[-1]}"
 
     def get_absolute_url(self):
         return reverse("periodo_detail", kwargs={"pk": self.pk})
