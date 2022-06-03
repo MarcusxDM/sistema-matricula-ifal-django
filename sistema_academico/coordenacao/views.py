@@ -253,7 +253,7 @@ def list_periodo(request):
     '''
     if request.method == 'GET' and request.session['user_type'] == 1:
         periodos = Periodo.objects.all()
-        return render(request, f'coordenacao/coordenador/list-periodos.html', {'periodos':periodos})
+        return render(request, f'coordenacao/coordenador/periodos-cadastrados-coordenador.html', {'periodos':periodos})
     else:
         return redirect(reverse('index'))
 
