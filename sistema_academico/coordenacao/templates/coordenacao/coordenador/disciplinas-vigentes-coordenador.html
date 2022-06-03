@@ -39,7 +39,7 @@
                     {% endif %}
               </table>
               <div class="text-right col-lg-14">  <!--  Configurar este botão  --> 
-                <a href="cadastrar-disciplina/">  
+                <a href="{% url 'form_disciplina' id_param=curso.id %}">  
                 <button type="submit" class="btn btn-primary mb-3">+</button>
                 </a>
               </div>

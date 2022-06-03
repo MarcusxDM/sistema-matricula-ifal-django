@@ -77,7 +77,7 @@ class Curso(models.Model):
         return f"{self.id} | {self.nome}"
 
     def get_absolute_url(self):
-        return reverse("curso_detail", kwargs={"pk": self.pk})
+        return reverse("view_curso", kwargs={"id_param": self.pk})
 
 class Periodo(models.Model):
     id = models.CharField(max_length=50, primary_key=True)
@@ -117,6 +117,7 @@ class Disciplina(models.Model):
     descricao = models.TextField(null=True, blank=True)
     periodo = models.IntegerField(null=False, blank=False)
     ementa = models.BinaryField(null=True)
+    carga_horaria = models.IntegerField(null=False, blank=False)
     create_date = models.DateField(auto_now_add=True)
     update_date = models.DateField(auto_now=True)
     curso = models.ForeignKey(Curso, on_delete=models.CASCADE)
