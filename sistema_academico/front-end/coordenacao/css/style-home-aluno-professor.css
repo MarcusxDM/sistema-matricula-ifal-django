@@ -200,13 +200,22 @@ a.article:hover {
 } 
 
 #second td{
-    padding: 10px 40px;
+    padding:10px 50px;
     border: 2px solid #fff;
 }
 
 
+
 H5{
     text-align:center;
+}
+
+#aln{
+    text-align: left;
+}
+#dsc{
+    text-align: right;
+
 }
 
 button#botao{
