@@ -12,7 +12,8 @@
 <body>
   <div class="wrapper">
       <!-- Sidebar  -->
-      {% include "coordenacao/coordenador/navbar-coordenador.html" %}<div id="conteudo">
+      {% include "coordenacao/coordenador/navbar-coordenador.html" %}
+      <div id="conteudo">
             
         <!-- Input Busca cpf -->
         <div class="input-group mb-3">
@@ -49,7 +50,7 @@
             <H6>Sem períodos cadastrados.</H6>
             {% endif %}
             <div class="text-right">
-                <a class="btn btn-primary mb-2" href="" role="button">
+                <a class="btn btn-primary mb-2" href="{% url 'form_periodo' %}" role="button">
                     <span class="glyphicon glyphicon-plus" aria-hidden="true">+</span>
                 </a>
             </div>

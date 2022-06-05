@@ -262,20 +262,21 @@ def form_periodo(request):
     Retorna html com formulário de criação de periodo
     '''
     if request.method == 'GET' and request.session['user_type'] == 1:
-        return render(request, f'coordenacao/coordenador/create-periodo.html')
+        return render(request, f'coordenacao/coordenador/cadastrar-periodo.html')
     else:
         return redirect(reverse('index'))
 
 def create_periodo(request):
     if request.method == 'POST' and request.session['user_type'] == 1:
-        if get_object_or_404(Periodo, pk=request.POST['ano']+request.POST['semestre']):
-            # ERRO objeto já existe
-            return redirect(reverse('create_periodo'))
-        else:
-            new_periodo = Periodo(pk=request.POST['ano']+request.POST['semestre'], 
+        try:
+            periodo = Periodo.objects.get(pk=request.POST['ano']+request.POST['semestre'])
+            request.session['periodo_create_error'] = True
+            return redirect(reverse('form_periodo'))
+        except:
+            new_periodo = Periodo(id=request.POST['ano']+request.POST['semestre'], 
                             start_date=request.POST['data_inicio'], end_date=request.POST['data_fim'])
             new_periodo.save()
-            return redirect(reverse('view_periodo')) #get com id como param
+            return redirect(reverse('periodos')) #get com id como param
     else:
         return redirect(reverse('index'))
 
@@ -285,7 +286,6 @@ def view_periodo(request, id_param):
     OBS.: apenas ofertas com disciplinas pertencentes aos cursos criados pelo coordenador
     '''
     if request.method == 'GET' and request.session['user_type'] == 1:
-        # try:
         periodo = get_object_or_404(Periodo, pk=id_param)
         cursos = Curso.objects.filter(created_by__pk=request.session['user_id'])
         disciplinas = Disciplina.objects.filter(curso__in=cursos)

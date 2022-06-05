@@ -39,7 +39,13 @@ urlpatterns = [
     ])),
 
     # Periodo Letivo
-    path('periodos/', views.list_periodo, name='periodos'),
+    path('periodos/', include([
+        path('', views.list_periodo, name='periodos'),
+        path('cadastrar/', include([
+                path('', views.form_periodo, name='form_periodo'),
+                path('success/', views.create_periodo, name='create_periodo')
+        ]))
+    ]))
 
 
 
