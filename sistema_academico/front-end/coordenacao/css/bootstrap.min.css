@@ -251,6 +251,10 @@ th {
     text-align: inherit
 }
 
+#txt1{
+  text-align: center;
+}
+
 label {
     display: inline-block;
     margin-bottom: .5rem
@@ -693,6 +697,22 @@ pre code {
 
 
 /*------------------*/
+
+/* CSS alunos-matriculados*/
+.row4 {
+    text-align: right;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+    flex-direction: column;
+    margin-right: -2rem;
+    margin-left: -15px
+}
+
+
+/*------------------*/
+
 
 .no-gutters {
     margin-right: 0;
