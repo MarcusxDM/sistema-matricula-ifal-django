@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="pt-br" xml:lang="pt-br" class="">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="">
+
+    <!-- Bootstrap CSS CDN -->
+    {% load static %}
+    <link rel="stylesheet" href="./css/bootstrap.min.css">
+
+    <link rel="stylesheet" href="./css/style-home-aluno-professor.css">
+
+
+</head>
+
+<body>
+
+    <div class="wrapper">
+        <!-- Sidebar DETALHE: A NAVBAR DE PROFESSOR É DIFERENTE. USE navbar-professor.html  -->
+        {% include "coordenacao/navbar.html" %}
+        <h6 style="text-align: left;">Périodo 2020.1</h6>
+        <div id="conteudo">
+          
+
+          <div id="table2"> 
+            <!-- {% if tarefas %} -->
+            <h6 style="text-align: left;">Périodo 2020.1</h6>
+            <table id = "second">
+              <h5 id="pf" style="text-align: left;">Alunos Matriculados</h5>
+
+              <div class="form-group row4">
+              <h5 style="text-align: right;">Disciplina 1</h5>
+              <h6>Professor 1</h6>
+
+              </div>
+
+
+              <thead>
+
+                <tr>
+                      <th id="txt1">Alunos</th>
+                      <th id="txt1">CPF</th>
+                      <th id="txt1">Data Matrícula</th>
+                </tr>
+
+                  <!--  {% for aluno in alunos %}  -->
+                  <tr>
+                      <td>Isaac Mello</td>
+                      <td >888.000.333-32</td>
+                      <td>09/06/2022</td> 
+                  </tr>
+                 <!--  {% endfor %}  -->
+
+              </thead>
+          </table>
+
+
+          </div> 
+
+        
+
+        </div>
+    </div>
+
+
+
+</body>
+
+</html>
