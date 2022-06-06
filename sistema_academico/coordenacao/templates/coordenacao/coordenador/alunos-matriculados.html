@@ -9,9 +9,9 @@
 
     <!-- Bootstrap CSS CDN -->
     {% load static %}
-    <link rel="stylesheet" href="./css/bootstrap.min.css">
-
-    <link rel="stylesheet" href="./css/style-home-aluno-professor.css">
+    <link rel="stylesheet" href="{% static "coordenacao/css/bootstrap.min.css"%}">
+    <link rel="stylesheet" href="{% static "coordenacao/css/style-home-aluno-professor.css"%}">
+    <link rel="shortcut icon" href="{% static "coordenacao/images/school.ico"%}">
 
 
 </head>
@@ -20,41 +20,83 @@
 
     <div class="wrapper">
         <!-- Sidebar DETALHE: A NAVBAR DE PROFESSOR É DIFERENTE. USE navbar-professor.html  -->
-        {% include "coordenacao/navbar.html" %}
-        <h6 style="text-align: left;">Périodo 2020.1</h6>
+        {% include "coordenacao/coordenador/navbar-coordenador.html" %}
+        {% comment %} <h6 style="text-align: left;">{{oferta.periodo}}</h6>
+        <div id="conteudo">
+          
+
+          <div id="table2">  {% endcomment %}
+            {% comment %} <!-- {% if tarefas %} --> {% endcomment %}
+            {% comment %} <table id = "second">
+              <h5 id="pf" style="text-align: left;">Alunos Matriculados</h5>
+
+              <div class="form-group row4">
+              <h5 style="text-align: right;">{{oferta.disciplina}}</h5>
+              <h6>{{oferta.professor}}</h6>
+
+              </div>
+
+
+              <thead>
+                <td>
+                <tr>
+                      <th id="txt1">Alunos</th>
+                      <th id="txt1">CPF</th>
+                      <th id="txt1">Data Matrícula</th>
+                </tr>
+              </td>
+            </thead>
+            {% if matricula %}
+            <tbody>
+
+                  {% for matricula in matriculas %}
+                  <td>
+                  <tr>
+                      <td>{{matricula.aluno.user.nome}}</td>
+                      <td >{{matricula.aluno.user.nome}}</td>
+                      <td>{{matricula.create_date}}</td> 
+                  </tr>
+                  <td>
+                 {% endfor %}
+              </tbody>
+            {% endif %} {% endcomment %}
         <div id="conteudo">
           
 
           <div id="table2"> 
-            <!-- {% if tarefas %} -->
-            <h6 style="text-align: left;">Périodo 2020.1</h6>
+            
+            <h6 style="text-align: left;">Período: {{oferta.periodo}}</h6>
             <table id = "second">
               <h5 id="pf" style="text-align: left;">Alunos Matriculados</h5>
 
               <div class="form-group row4">
-              <h5 style="text-align: right;">Disciplina 1</h5>
-              <h6>Professor 1</h6>
-
+              <h5 style="text-align: right;">{{oferta.disciplina}}</h5>
+              {% if oferta.professor == None %}
+              <h6>Sem professor</h6>
+              {% else %}
+              <h6>{{oferta.professor}}</h6>
+              {% endif %}
               </div>
 
 
               <thead>
 
                 <tr>
-                      <th id="txt1">Alunos</th>
+                      <th id="txt1">Aluno</th>
                       <th id="txt1">CPF</th>
                       <th id="txt1">Data Matrícula</th>
                 </tr>
-
-                  <!--  {% for aluno in alunos %}  -->
+                  {% if matriculas %}
+                  {% for matricula in matriculas %}
                   <tr>
-                      <td>Isaac Mello</td>
-                      <td >888.000.333-32</td>
-                      <td>09/06/2022</td> 
+                      <td>{{matricula.aluno.user.nome}}</td>
+                      <td> {{matricula.aluno.user.cpf}}</td>
+                      <td>{{matricula.create_date | date:"d/m/Y"}}</td> 
                   </tr>
-                 <!--  {% endfor %}  -->
-
+                  {% endfor %}
+                  {% endif %}
               </thead>
+      
           </table>
 
 

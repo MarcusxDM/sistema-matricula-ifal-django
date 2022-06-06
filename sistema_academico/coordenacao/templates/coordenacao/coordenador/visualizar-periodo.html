@@ -56,7 +56,7 @@
                     {% comment %} <td>{{oferta.professor}}</td> {% endcomment %}
                     <td>  
                         <div class="text-right">
-                            <a class="btn btn-primary mb-2" href="alunos" role="button">
+                            <a class="btn btn-primary mb-2" href="{% url 'view_oferta' id_oferta=oferta.id id_param=periodo.id %}" role="button">
                                 <span class="glyphicon glyphicon-plus" aria-hidden="true">alunos</span>
                             </a>
                             <a class="btn btn-primary mb-2" href="editar" role="button">

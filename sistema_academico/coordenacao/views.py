@@ -323,7 +323,7 @@ def view_periodo(request, id_param):
         periodo = get_object_or_404(Periodo, pk=id_param)
         cursos = Curso.objects.filter(created_by__pk=request.session['user_id'])
         disciplinas = Disciplina.objects.filter(curso__in=cursos)
-        ofertas = Oferta.objects.filter(disciplina__in=disciplinas)
+        ofertas = Oferta.objects.filter(disciplina__in=disciplinas, periodo=periodo)
         return render(request, f'coordenacao/coordenador/visualizar-periodo.html', {'ofertas'     : ofertas,
                                                                                     'periodo'     : periodo})
     else:
@@ -456,12 +456,13 @@ def create_matricula(request):
     else:   
         return redirect(reverse('index'))
 
-def list_alunos_matriculados(request, id_param):
+def list_alunos_matriculados(request, id_param, id_oferta):
     if request.method == 'GET' and request.session['user_id']:
         # try:
-            oferta = get_object_or_404(Oferta, pk=id_param)
-            matriculas = Matricula.objects.filter(oferta__in=oferta)
-            render(request, f'coordenacao/coordenador/alunos-matriculados.html', {'matriculas' : matriculas})
+            oferta = get_object_or_404(Oferta, pk=id_oferta)
+            matriculas = Matricula.objects.filter(oferta=oferta)
+            return render(request, f'coordenacao/coordenador/alunos-matriculados.html', {'matriculas' : matriculas,
+                                                                                  'oferta' : oferta})
     else:   
         return redirect(reverse('index'))
             

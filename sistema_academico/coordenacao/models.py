@@ -166,7 +166,7 @@ class Matricula(models.Model):
         verbose_name_plural = _("matriculas")
 
     def __str__(self):
-        return f"{self.id} | {self.disciplina.nome} | {self.aluno.nome}"
+        return f"{self.id} | {self.oferta.disciplina.nome} | {self.aluno.user.nome}"
 
     def get_absolute_url(self):
         return reverse("matricula_detail", kwargs={"pk": self.pk})
