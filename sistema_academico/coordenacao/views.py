@@ -240,8 +240,9 @@ def form_curso(request):
 def create_curso(request):
     if request.method == 'POST' and request.session['user_type'] == 1:
         # try:
+        file = request.FILES['ementa'].file.getvalue()
         new_curso = Curso(nome=request.POST['nome'], descricao=request.POST['descricao'],
-                        periodos=request.POST['periodos'], ementa=request.POST['ementa'], 
+                        periodos=request.POST['periodos'], ementa=file, 
                         created_by=Coordenador.objects.get(pk=request.session['user_id']))
         new_curso.save()
         return redirect(reverse('cursos'))

@@ -28,7 +28,10 @@ urlpatterns = [
     # Coordenadores - Cursos e Disciplinas
     path('cursos/', include([
         path('', views.list_curso, name='cursos'),
-        path('cadastrar/', views.form_curso, name='form_curso'),
+        path('cadastrar/', include([
+            path('', views.form_curso, name='form_curso'),
+            path('success/', views.create_curso, name='create_curso')
+            ])),
         path('<int:id_param>/', include([
             path('', views.view_curso, name='view_curso'),
             path('cadastrar-disciplina/', include([
