@@ -9,6 +9,40 @@ def generate_password():
     alphabet = string.ascii_letters + string.digits
     return ''.join(secrets.choice(alphabet) for i in range(8))
 
+def checkbox_week_days(request):
+    result = ''
+    try:
+        result = result+request.POST['segunda']
+    except:
+        pass
+    try:
+        result = result+request.POST['terca']
+    except:
+        pass
+    try:
+        result = result+request.POST['quarta']
+    except:
+        pass
+    try:
+        result = result+request.POST['quinta']
+    except:
+        pass
+    try:
+        result = result+request.POST['sexta']
+    except:
+        pass
+    try:
+        result = result+request.POST['sabado']
+    except:
+        pass
+    try:
+        result = result+request.POST['domingo']
+    except:
+        pass
+    return result
+
+
+
 def send_email_new_user(email_destinatario, password, user_nome):
     send_mail('SIACA - Sua conta foi criada!', 
     
@@ -290,30 +324,47 @@ def view_periodo(request, id_param):
         cursos = Curso.objects.filter(created_by__pk=request.session['user_id'])
         disciplinas = Disciplina.objects.filter(curso__in=cursos)
         ofertas = Oferta.objects.filter(disciplina__in=disciplinas)
-        professores = Professor.objects.all()
         return render(request, f'coordenacao/coordenador/visualizar-periodo.html', {'ofertas'     : ofertas,
-                                                                                    'disciplinas' : disciplinas,
-                                                                                    'professores' : professores,
-                                                                                    'curso'       : id_param,
                                                                                     'periodo'     : periodo})
-        # except:
-        #     pass
     else:
         return redirect(reverse('index'))
 
-def create_oferta(request):
+def form_oferta(request, id_param):
+    '''
+    Retorna html com lista de ofertas do periodo
+    OBS.: apenas ofertas com disciplinas pertencentes aos cursos criados pelo coordenador
+    '''
+    if request.method == 'GET' and request.session['user_type'] == 1:
+        periodo = get_object_or_404(Periodo, pk=id_param)
+        cursos = Curso.objects.filter(created_by__pk=request.session['user_id'])
+        disciplinas = Disciplina.objects.filter(curso__in=cursos)
+        professores = Professor.objects.all()
+        return render(request, f'coordenacao/coordenador/cadastrar-oferta.html',   {'professores' : professores,
+                                                                                    'disciplinas' : disciplinas,
+                                                                                    'periodo'     : periodo})
+    else:
+        return redirect(reverse('index'))
+
+def create_oferta(request, id_param):
     if request.method == 'POST' and request.session['user_type'] == 1:
-        try:
-            professor = request.POST['professor']
-        except:
+        print(request.POST['professor'])
+        if request.POST['professor'] == "None":
             professor = None
-        new_oferta = Oferta(periodo=request.POST['periodo'],
-                            disciplina=request.POST['disciplina'], 
+        else:
+            professor = Professor.objects.get(pk=request.POST['professor'])
+            
+        aula_dias = checkbox_week_days(request)
+        periodo = get_object_or_404(Periodo, pk=id_param)
+        disciplina = get_object_or_404(Disciplina, pk=request.POST['disciplina'])
+        new_oferta = Oferta(periodo=periodo,
+                            disciplina=disciplina, 
                             professor=professor,
-                            aula_dias=request.POST['aula_dias'], 
+                            capacidade=request.POST['capacidade'],
+                            aula_dias=aula_dias, 
                             aula_hora_inicio=request.POST['hora_inicio'],
                             aula_hora_fim=request.POST['hora_fim'])
-        return redirect(reverse('view_periodo'))
+        new_oferta.save()
+        return redirect(periodo)
     else:
         return redirect(reverse('index'))
 

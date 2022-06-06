@@ -92,7 +92,7 @@ class Periodo(models.Model):
         return f"{self.pk[0:-1]}.{self.pk[-1]}"
 
     def get_absolute_url(self):
-        return reverse("periodo_detail", kwargs={"pk": self.pk})
+        return reverse("view_periodo", kwargs={"id_param": self.pk})
 
 class Aluno(models.Model):
     user = models.OneToOneField(
@@ -139,6 +139,7 @@ class Oferta(models.Model):
     aula_dias = models.CharField(max_length=7, null=False, blank=False) # '{0-6}' cada numero representa um dia da semana
     aula_hora_inicio = models.TimeField(null=False, blank=False)
     aula_hora_fim = models.TimeField(null=False, blank=False)
+    capacidade = models.IntegerField(null=False, blank=False, default=1)
     create_date = models.DateField(auto_now_add=True)
     update_date = models.DateField(auto_now=True)
 
@@ -147,7 +148,10 @@ class Oferta(models.Model):
         verbose_name_plural = _("ofertas")
 
     def __str__(self):
-        return f"{self.id} | {self.disciplina.nome} | {self.professor.nome}"
+        if self.professor == None:
+            return f"{self.pk} | {self.disciplina.nome} | Sem professor"
+        else:
+            return f"{self.pk} | {self.disciplina.nome} | {self.professor.user.nome}"
 
     def get_absolute_url(self):
         return reverse("oferta_detail", kwargs={"pk": self.pk})

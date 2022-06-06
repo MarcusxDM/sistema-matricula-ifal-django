@@ -45,8 +45,15 @@ urlpatterns = [
                 path('', views.form_periodo, name='form_periodo'),
                 path('success/', views.create_periodo, name='create_periodo')
         ])),
-        path('<int:id_param>/', views.view_periodo, name='view_periodo'),
+        path('<int:id_param>/', include([
+            path('', views.view_periodo, name='view_periodo'),
+            path('cadastrar-oferta/', include([
+                path('', views.form_oferta, name='form_oferta'),
+                path('success', views.create_oferta, name='create_oferta'),
+            ]))
+        ]))
     ])),
+    
 
     # Perfil
     path('perfil/',  include([
@@ -56,8 +63,7 @@ urlpatterns = [
             path('success', views.edit_user, name='edit_user'),
             path('change-password', views.edit_password, name='edit_password')
             ]))
-        ]))
-
+        ])),
 
 
 

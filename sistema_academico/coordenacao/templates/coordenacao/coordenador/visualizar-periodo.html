@@ -34,14 +34,26 @@
 
 
           <div id="table2">
+            <div class="text-right">
+              <a class="btn btn-primary mb-2" href="{% url 'form_oferta' id_param=periodo.id %}" role="button">
+                  <span class="glyphicon glyphicon-plus" aria-hidden="true">+</span>
+              </a>
+            </div>
             
-            {% if ofertas %}
             <table id = "second">
               <thead>
+                <tr>
+                  <td>
+                    Código | Disciplina | Professor
+                </td>
+                </tr>
+              </thead>
+              {% if ofertas %}
+              <tbody>
                    {% for oferta in ofertas %} 
                   <tr>
-                    <td>{{oferta.disciplina}}</td>
-                    <td>{{oferta.professor.nome}}</td>
+                    <td>{{oferta}}</td>
+                    {% comment %} <td>{{oferta.professor}}</td> {% endcomment %}
                     <td>  
                         <div class="text-right">
                             <a class="btn btn-primary mb-2" href="alunos" role="button">
@@ -54,8 +66,8 @@
                     </td>
                   </tr>
                   {% endfor %}
-
-              </thead>
+                </tbody>
+              
           </table>
           {% else %}
           <h6>Sem ofertas cadastradas.</h6>
