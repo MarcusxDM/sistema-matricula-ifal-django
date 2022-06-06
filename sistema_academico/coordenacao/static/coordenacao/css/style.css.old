@@ -204,8 +204,9 @@ a.article:hover {
 
 
 #pf2{
-   text-align: right;
-     
+    text-align: right;
+    padding-bottom: 2rem;
+
 }
 
 
@@ -228,8 +229,6 @@ a.article:hover {
     background-color: #7386D5;
     border-radius: 15px;
     color: #fafafa; 
-
-
 }
 
 h5 {
@@ -293,3 +292,33 @@ table{
     border-radius: 15px;
     color: #fafafa;
 }
+
+
+/*CSS cadastrar-disciplina */
+#table-form3{
+    width: 60%;
+    margin: 40px 160px;
+    box-sizing: border-box;
+    border: 1px solid #5b78ec;
+    display: block;
+    justify-content: left;
+    align-items: center;
+    flex-wrap: wrap;
+    padding-top: 1rem;
+    padding-left: 4rem;
+    padding-right: 4rem;
+    padding-bottom: 1rem;
+    background-color: #7386D5;
+    border-radius: 15px;
+    color: #fafafa;
+}
+
+#title-dp{
+    text-align: left;
+}
+
+#second td{
+    padding: 10px 20px;
+    border: 2px solid transparent; 
+}
+/*------------ */

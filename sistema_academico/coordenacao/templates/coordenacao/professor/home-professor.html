@@ -10,7 +10,6 @@
     <!-- Bootstrap CSS CDN -->
     {% load static %}
     <link rel="stylesheet" href="{% static "coordenacao/css/bootstrap.min.css"%}">
-
     <link rel="stylesheet" href="{% static "coordenacao/css/style-home-aluno-professor.css"%}">
 
 
@@ -26,11 +25,11 @@
           <div id="table1">
             <H5>Lista de Disciplinas Lecionadas no Semestre</H5>
               <table id = "first">
-                <!--  {% for disciplina in disciplinas %}  -->
+                {% comment %} <!--  {% for disciplina in disciplinas %}  --> {% endcomment %}
                 <tr>
                   <td>Disciplina X</td>
                 </tr>
-                <!--  {% endfor %}  -->
+                {% comment %} <!--  {% endfor %}  --> {% endcomment %}
                 
               </table>
           </div>  
@@ -40,7 +39,7 @@
           <div id="table2">
             <H5>Lista de Tarefas Sem Nota</H5>
 
-            <!-- {% if tarefas %} -->
+            {% comment %} <!-- {% if tarefas %} --> {% endcomment %}
             <table id = "second">
               <thead>
                   <tr>
@@ -49,13 +48,13 @@
                       <th>Data de Entrega</th>
                   </tr>
 
-                  <!--  {% for aluno in alunos %}  -->
+                  {% comment %} <!--  {% for aluno in alunos %}  --> {% endcomment %}
                   <tr>
                       <td>atividade 4</td>
                       <td>ESTRUTURA DE DADOS</td>
                       <td>14/05/22</td> 
                   </tr>
-                 <!--  {% endfor %}  -->
+                 {% comment %} <!--  {% endfor %}  --> {% endcomment %}
 
               </thead>
           </table>

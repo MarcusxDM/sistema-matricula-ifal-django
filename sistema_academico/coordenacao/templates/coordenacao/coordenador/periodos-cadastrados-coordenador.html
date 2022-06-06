@@ -38,7 +38,7 @@
                         <td>{{periodo}}</td>
                         <td>
                           <div class="text-right col-lg-10">
-                            <button type="submit" class="btn btn-primary mb-3">Abrir</button>
+                            <a href="{% url 'view_periodo' id_param=periodo.id %}" ><button type="submit" class="btn btn-primary mb-3">Abrir</button></a>
                           </div>
                         </td>
                     </tr>

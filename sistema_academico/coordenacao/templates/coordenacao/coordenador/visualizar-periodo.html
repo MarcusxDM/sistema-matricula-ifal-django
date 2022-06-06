@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="pt-br" xml:lang="pt-br" class="">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="">
+
+    <!-- Bootstrap CSS CDN -->
+    {% load static %}
+    <link rel="stylesheet" href="{% static "coordenacao/css/bootstrap.min.css"%}">
+    <link rel="stylesheet" href="{% static "coordenacao/css/style.css"%}">
+    <link rel="shortcut icon" href="{% static "coordenacao/images/school.ico"%}">
+
+
+</head> 
+
+<body>
+
+    <div class="wrapper">
+        <!-- Sidebar DETALHE: A NAVBAR DE PROFESSOR É DIFERENTE. USE navbar-professor.html  -->
+        {% include "coordenacao/coordenador/navbar-coordenador.html" %}
+       
+        <div id="conteudo">
+          <div id="dados-pessoa">
+            {% if periodo %}
+            <H5 id="titulo-periodo">Período {{periodo}}</H5>
+              <h6>Data de Início: {{periodo.start_date | date:"d/m/Y"}}</h6>
+              <h6>Data de Término: {{periodo.end_date | date:"d/m/Y"}}</h6>
+            {% endif %}
+          </div>  
+            
+
+
+          <div id="table2">
+            
+            {% if ofertas %}
+            <table id = "second">
+              <thead>
+                   {% for oferta in ofertas %} 
+                  <tr>
+                    <td>{{oferta.disciplina}}</td>
+                    <td>{{oferta.professor.nome}}</td>
+                    <td>  
+                        <div class="text-right">
+                            <a class="btn btn-primary mb-2" href="alunos" role="button">
+                                <span class="glyphicon glyphicon-plus" aria-hidden="true">alunos</span>
+                            </a>
+                            <a class="btn btn-primary mb-2" href="editar" role="button">
+                                <span class="glyphicon glyphicon-plus" aria-hidden="true">editar</span>
+                            </a>
+                          </div>
+                    </td>
+                  </tr>
+                  {% endfor %}
+
+              </thead>
+          </table>
+          {% else %}
+          <h6>Sem ofertas cadastradas.</h6>
+          {% endif %}
+
+
+          </div>  
+
+        </div>
+    </div>
+
+
+
+</body>
+
+</html>

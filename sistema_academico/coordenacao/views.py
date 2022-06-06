@@ -291,11 +291,11 @@ def view_periodo(request, id_param):
         disciplinas = Disciplina.objects.filter(curso__in=cursos)
         ofertas = Oferta.objects.filter(disciplina__in=disciplinas)
         professores = Professor.objects.all()
-        return render(request, f'coordenacao/coordenador/list-ofertas.html', {'ofertas'     : ofertas,
-                                                                       'disciplinas' : disciplinas,
-                                                                       'professores' : professores,
-                                                                       'curso'       : id_param,
-                                                                       'periodo'     : periodo})
+        return render(request, f'coordenacao/coordenador/visualizar-periodo.html', {'ofertas'     : ofertas,
+                                                                                    'disciplinas' : disciplinas,
+                                                                                    'professores' : professores,
+                                                                                    'curso'       : id_param,
+                                                                                    'periodo'     : periodo})
         # except:
         #     pass
     else:
@@ -324,10 +324,50 @@ def view_oferta_matriculados(request, id_param):
     else:
         return redirect(reverse('index'))
 
+def view_perfil(request):
+    # if request.method == 'GET' and request.session['user_id']:
+    #     try:
+            user = User.objects.get(cpf=request.session['user_id'])
+            if request.session['user_type'] == 1:
+                perfil_name = 'coordenador/perfil-coordenador'
+            elif request.session['user_type'] == 2:
+                perfil_name = 'professor/perfil-professor'
+            else:
+                perfil_name = 'aluno/perfil-aluno'
+            print(f'coordenacao/{perfil_name}.html')
+            return render(request, f'coordenacao/{perfil_name}.html', {'user':user})
+    #     except:
+    #         return redirect(reverse('index'))
+    # else:
+    #     return redirect(reverse('index'))
 
+def form_editar_perfil(request):
+    if request.session['user_id']:
+        try:
+            user = User.objects.get(cpf=request.session['user_id'])
+            return render(request, f'coordenacao/editar-dados.html', {'user':user})
+        except:
+            return redirect(reverse('index'))
+    else:
+            return redirect(reverse('index'))
 
-
-
+def edit_user(request):
+    if request.method == 'POST' and request.session['user_id']:
+        try:
+            user = User.objects.filter(pk=request.session['user_id']).update(
+                nome = request.POST['nome'],
+                email = request.POST['email'],
+                telefone = request.POST['telefone'],
+                endereco = request.POST['endereco'],
+                bairro = request.POST['bairro'],
+                cidade = request.POST['cidade'],
+                estado = request.POST['estado'])
+            print(user)
+            return redirect(reverse('view_perfil'))
+        except:
+            return redirect(reverse('index'))
+    else:   
+        return redirect(reverse('index'))
 
 
 

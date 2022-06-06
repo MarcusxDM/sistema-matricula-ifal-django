@@ -11,6 +11,7 @@
     {% load static %}
     <link rel="stylesheet" href="{% static "coordenacao/css/bootstrap.min.css"%}">
     <link rel="stylesheet" href="{% static "coordenacao/css/style.css"%}">
+    <link rel="shortcut icon" href="{% static "coordenacao/images/school.ico"%}">
 
 
 </head> 
@@ -18,8 +19,8 @@
 <body>
 
     <div class="wrapper">
-        <!-- Sidebar DETALHE: A NAVBAR DE PROFESSOR É DIFERENTE. USE navbar-professor.html  -->
-        {% include "coordenacao/professor/navbar-professor.html" %}
+        <!-- Sidebar DETALHE: A NAVBAR DE ALUNO É DIFERENTE. USE navbar-aluno.html  -->
+        {% include "coordenacao/aluno/navbar-aluno.html" %}
        
         <div id="conteudo">
           <div id="dados-pessoa">
@@ -32,35 +33,48 @@
               <h6>Bairro: {{user.bairro}}</h6>
               <h6>Cidade: {{user.cidade}}</h6>
               <h6>Estado: {{user.estado}}</h6>
-              <a href="{{user.professor.lattes}}"><h6>Lattes: {{user.professor.lattes}}</h6></a>
-              <h6>Área de Atuação: {{user.professor.area_atuacao}}</h6>
+              <h6>Período de Ingresso: {{user.aluno.periodo_ingresso}}</h6>
               <div class="text-right">
                 <a class="btn btn-primary mb-2" href="{% url 'form_perfil' %}" role="button">
                     <span class="glyphicon glyphicon-plus" aria-hidden="true">Editar</span>
                 </a>
               </div>
             {% endif %}
-          </div>   
+          </div>  
             
 
 
-          <div id="table2">
-            <H5 id="pf">Lista de Disciplinas Ministradas</H5> 
+          <div id="table2"> 
             
+            {% comment %} <!-- {% if tarefas %} --> {% endcomment %}
             
-            {% comment %} <!-- {% if  %} --> {% endcomment %}
             <table id = "second">
-              <thead>
-                  <tr>
-                      <th>Disciplina</th>
-                      <th>Data de Conclusão</th>
-                  </tr>
+              <header id="pf">Lista de Disciplinas Concluídas</header>
 
-                  {% comment %} <!--  {% for disciplina in  %}  --> {% endcomment %}
+              <div class="form-group row3">
+                <div class="progress">
+                  <div class="progress-bar" style="width: 65%;">
+                   <!--TAXA DE CONCLUSAO    NESSE  width ----- e  AQUI --> 65%
+                </div>
+              </div>
+              <h6 >Concluído: </h6>
+
+              </div>
+
+
+              <thead>
+
+                <tr>
+                      <th>Disciplina</th>
+                      <th>Nota Média</th>
+                      <th>Data de Conclusão</th>
+                </tr>
+
+                  {% comment %} <!--  {% for aluno in alunos %}  --> {% endcomment %}
                   <tr>
-                      <td>Fundamento de Redes</td>
-                      <td>30/07/22</td>
-                     
+                      <td>disciplina PROINT</td>
+                      <td>8.2</td>
+                      <td>09/06/2022</td> 
                   </tr>
                  {% comment %} <!--  {% endfor %}  --> {% endcomment %}
 
@@ -71,8 +85,6 @@
           </div>  
 
         </div>
-    </div>
-
 
 
 </body>

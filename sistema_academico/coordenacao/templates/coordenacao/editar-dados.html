@@ -9,9 +9,10 @@
 
     <!-- Bootstrap CSS CDN -->
     {% load static %}
-    <link rel="stylesheet" href="./css/bootstrap.min.css">
+    <link rel="stylesheet" href="{% static "coordenacao/css/bootstrap.min.css"%}">
+    <link rel="stylesheet" href="{% static "coordenacao/css/style.css"%}">
+    <link rel="shortcut icon" href="{% static "coordenacao/images/school.ico"%}">
 
-    <link rel="stylesheet" href="./css/style.css">
 
 
 </head>
@@ -21,34 +22,63 @@
     <div class="wrapper">
 
         <!-- Sidebar  -->
-        {% include "coordenacao/navbar.html" %}
+        {% if request.session.user_type == 1%}
+        {% include "coordenacao/coordenador/navbar-coordenador.html" %}
+        {% elif request.session.user_type == 2%}
+        {% include "coordenacao/professor/navbar-professor.html" %}
+        {% else %}
+        {% include "coordenacao/aluno/navbar-aluno.html" %}
+        {% endif %}
         
         <div id="conteudo">
             <div id="table-form">
                 <div id="title">
                     <H5>Dados Pessoais</H5>
                 </div>
-                <form method="post" action="">
+                <form method="post" action="{% url 'edit_user' %}">
                   {% csrf_token %}
                     <div class="form-group row">
-                        <label for="nome" class="col-sm-2 col-form-label">Nome</label>
+                        <label for="nome" class="col-sm-2 col-form-label">Nome:</label>
                         <div class="col-sm-10">
-                          <input type="text" required="True"  class="form-control" id="nome" name="nome" placeholder="Nome">
+                          <input type="text" required="True"  class="form-control" id="nome" value="{{user.nome}}" name="nome" placeholder="{{user.nome}}">
                         </div>
                       </div>
                     <div class="form-group row">
-                      <label for="inputEmail3" class="col-sm-2 col-form-label">Email</label>
+                      <label for="inputEmail3" class="col-sm-2 col-form-label">Email:</label>
                       <div class="col-sm-10">
-                        <input type="email" required="True" class="form-control" id="inputEmail3" name="email" placeholder="Email">
+                        <input type="email" required="True" class="form-control" id="inputEmail3" value="{{user.email}}" name="email" placeholder="{{user.email}}">
                       </div>
                     </div>
                     <div class="form-group row">
                       <label for="telefone" class="col-sm-2 col-form-label">Telefone:</label>
                       <div class="col-sm-10">
-                        <input type="text" required="True" class="form-control" id="telefone" name="telefone" placeholder="Telefone">
+                        <input type="text" required="True" class="form-control" id="telefone" value="{{user.telefone}}" name="telefone" placeholder="{{user.telefone}}">
                       </div>
                     </div>
-                    
+                    <div class="form-group row">
+                      <label for="nome" class="col-sm-2 col-form-label">Endereço:</label>
+                      <div class="col-sm-10">
+                        <input type="text" required="True"  class="form-control" id="endereco" value="{{user.endereco}}" name="endereco" placeholder="{{user.endereco}}">
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label for="nome" class="col-sm-2 col-form-label">Bairro:</label>
+                      <div class="col-sm-10">
+                        <input type="text" required="True"  class="form-control" id="bairro" value="{{user.bairro}}" name="bairro" placeholder="{{user.bairro}}">
+                      </div>
+                    </div>
+                  <div class="form-group row">
+                    <label for="cidade" class="col-sm-2 col-form-label">Cidade:</label>
+                    <div class="col-sm-10">
+                      <input type="text" required="True" class="form-control" id="cidade" value="{{user.cidade}}" name="cidade" placeholder="{{user.cidade}}">
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label for="telefone" class="col-sm-2 col-form-label">Estado:</label>
+                    <div class="col-sm-10">
+                      <input type="text" required="True" class="form-control" id="estado" value="{{user.estado}}" name="estado" placeholder="{{user.estado}}">
+                    </div>
+                  </div>
                          
                     <div class="text-right col-lg-12">
                         <button type="submit" class="btn btn-primary mb-2">Salvar</button>
@@ -59,17 +89,10 @@
 
             <div id="table-form2">
               <div id="title">
-                  <H5>Alterar e-mail e Senha</H5>
+                  <H5>Alterar Senha</H5>
               </div>
               <form method="post" action="">
                 {% csrf_token %}
- 
-                  <div class="form-group row">
-                    <label for="inputEmail3" class="col-sm-2 col-form-label">Novo e-mail</label>
-                    <div class="col-sm-10">
-                      <input type="email" required="True" class="form-control" id="inputEmail3" name="email" placeholder="Novo Email">
-                    </div>
-                  </div>
 
                   <div class="form-group row">
                     <label for="Password" class="col-sm-2 col-form-label">Senha atual</label>

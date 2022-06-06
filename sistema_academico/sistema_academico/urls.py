@@ -44,8 +44,19 @@ urlpatterns = [
         path('cadastrar/', include([
                 path('', views.form_periodo, name='form_periodo'),
                 path('success/', views.create_periodo, name='create_periodo')
+        ])),
+        path('<int:id_param>/', views.view_periodo, name='view_periodo'),
+    ])),
+
+    # Perfil
+    path('perfil/',  include([
+        path('', views.view_perfil, name='view_perfil'),
+        path('editar', include([
+            path('', views.form_editar_perfil, name='form_perfil'),
+            path('success', views.edit_user, name='edit_user')
+            ]))
         ]))
-    ]))
+
 
 
 

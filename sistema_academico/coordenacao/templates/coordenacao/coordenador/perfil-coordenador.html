@@ -10,8 +10,8 @@
     <!-- Bootstrap CSS CDN -->
     {% load static %}
     <link rel="stylesheet" href="{% static "coordenacao/css/bootstrap.min.css"%}">
-
-    <link rel="stylesheet" href="{% static "coordenacao/css//style.css"%}">
+    <link rel="stylesheet" href="{% static "coordenacao/css/style.css"%}">
+    <link rel="shortcut icon" href="{% static "coordenacao/images/school.ico"%}">
 
 
 </head> 
@@ -24,15 +24,21 @@
        
         <div id="conteudo">
           <div id="dados-pessoa">
+            {% if user %}
             <H5>Dados Pessoais</H5>
-              <h6>Nome: </h6>
-              <h6>E-mail: </h6>
-              <h6>Telefone: </h6>
+              <h6>Nome: {{user.nome}}</h6>
+              <h6>E-mail: {{user.email}}</h6>
+              <h6>Telefone: {{user.telefone}}</h6>
+              <h6>Endereço: {{user.endereco}}</h6>
+              <h6>Bairro: {{user.bairro}}</h6>
+              <h6>Cidade: {{user.cidade}}</h6>
+              <h6>Estado: {{user.estado}}</h6>
               <div class="text-right">
-                <a class="btn btn-primary mb-2" href="PÁGINA-EDITAR-DADOS" role="button">
+                <a class="btn btn-primary mb-2" href="{% url 'form_perfil' %}" role="button">
                     <span class="glyphicon glyphicon-plus" aria-hidden="true">Editar</span>
                 </a>
               </div>
+            {% endif %}
           </div>  
 
         </div>
