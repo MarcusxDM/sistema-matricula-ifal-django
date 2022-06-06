@@ -325,8 +325,8 @@ def view_oferta_matriculados(request, id_param):
         return redirect(reverse('index'))
 
 def view_perfil(request):
-    # if request.method == 'GET' and request.session['user_id']:
-    #     try:
+    if request.method == 'GET' and request.session['user_id']:
+        try:
             user = User.objects.get(cpf=request.session['user_id'])
             if request.session['user_type'] == 1:
                 perfil_name = 'coordenador/perfil-coordenador'
@@ -336,10 +336,10 @@ def view_perfil(request):
                 perfil_name = 'aluno/perfil-aluno'
             print(f'coordenacao/{perfil_name}.html')
             return render(request, f'coordenacao/{perfil_name}.html', {'user':user})
-    #     except:
-    #         return redirect(reverse('index'))
-    # else:
-    #     return redirect(reverse('index'))
+        except:
+            return redirect(reverse('index'))
+    else:
+        return redirect(reverse('index'))
 
 def form_editar_perfil(request):
     if request.session['user_id']:
