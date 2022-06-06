@@ -53,7 +53,8 @@ urlpatterns = [
         path('', views.view_perfil, name='view_perfil'),
         path('editar', include([
             path('', views.form_editar_perfil, name='form_perfil'),
-            path('success', views.edit_user, name='edit_user')
+            path('success', views.edit_user, name='edit_user'),
+            path('change-password', views.edit_password, name='edit_password')
             ]))
         ]))
 

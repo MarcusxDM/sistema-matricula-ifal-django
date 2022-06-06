@@ -362,8 +362,22 @@ def edit_user(request):
                 bairro = request.POST['bairro'],
                 cidade = request.POST['cidade'],
                 estado = request.POST['estado'])
-            print(user)
             return redirect(reverse('view_perfil'))
+        except:
+            return redirect(reverse('index'))
+    else:   
+        return redirect(reverse('index'))
+
+def edit_password(request):
+    if request.method == 'POST' and request.session['user_id']:
+        try:
+            user = User.objects.get(cpf=request.session['user_id'])
+            if request.POST['password'] == user.password:
+                user = User.objects.filter(cpf=request.session['user_id']).update(
+                    password = request.POST['password2'])
+                return redirect(reverse('view_perfil'))
+            else:
+                return redirect(reverse('form_perfil'))
         except:
             return redirect(reverse('index'))
     else:   

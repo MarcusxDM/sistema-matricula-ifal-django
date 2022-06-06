@@ -91,7 +91,7 @@
               <div id="title">
                   <H5>Alterar Senha</H5>
               </div>
-              <form method="post" action="">
+              <form method="post" action="{% url 'edit_password' %}">
                 {% csrf_token %}
 
                   <div class="form-group row">
@@ -105,7 +105,7 @@
                   <div class="form-group row">
                     <label for="Password" class="col-sm-2 col-form-label">Nova Senha</label>
                     <div class="col-sm-10">
-                      <input type="password" required="True" class="form-control" id="password" name="password" placeholder="Nova Senha">
+                      <input type="password" required="True" class="form-control" id="password2" name="password2" placeholder="Nova Senha">
                     </div>
                   </div>
                   
