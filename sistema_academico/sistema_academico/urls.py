@@ -65,6 +65,9 @@ urlpatterns = [
             ]))
         ])),
 
+    # Alunos - Matrícula
+    path('ofertas/', views.list_ofertas, name='ofertas'),
+
 
 
 ]

@@ -347,7 +347,6 @@ def form_oferta(request, id_param):
 
 def create_oferta(request, id_param):
     if request.method == 'POST' and request.session['user_type'] == 1:
-        print(request.POST['professor'])
         if request.POST['professor'] == "None":
             professor = None
         else:
@@ -433,6 +432,42 @@ def edit_password(request):
             return redirect(reverse('index'))
     else:   
         return redirect(reverse('index'))
+
+def list_ofertas(request):
+    if request.method == 'GET' and request.session['user_id']:
+        try:
+            user = User.objects.get(cpf=request.session['user_id'])
+            disciplinas = Disciplina.objects.filter(curso__pk=user.aluno.curso.id)
+            ofertas = Oferta.objects.filter(disciplina__in=disciplinas, periodo__pk__gte=user.aluno.periodo_ingresso.id)
+            return render(request, f'coordenacao/aluno/matricula.html', {'ofertas' : ofertas})
+        except:
+            return redirect(reverse('index'))
+
+def create_matricula(request):
+    if request.method == 'POST' and request.session['user_id']:
+        # try:
+            aluno = get_object_or_404(Aluno, pk=request.session['user_id'])
+            matriculas = []
+            for oferta in request.POST['ofertas']:
+                new_matricula = Matricula(aluno=aluno, oferta=oferta)
+                new_matricula.save()
+                matriculas.append(new_matricula)
+            render(request, f'coordenacao/aluno/matricula-realizada.html', {'matriculas' : matriculas})
+    else:   
+        return redirect(reverse('index'))
+
+def list_alunos_matriculados(request, id_param):
+    if request.method == 'GET' and request.session['user_id']:
+        # try:
+            oferta = get_object_or_404(Oferta, pk=id_param)
+            matriculas = Matricula.objects.filter(oferta__in=oferta)
+            render(request, f'coordenacao/coordenador/alunos-matriculados.html', {'matriculas' : matriculas})
+    else:   
+        return redirect(reverse('index'))
+            
+
+            
+            
 
 
 
