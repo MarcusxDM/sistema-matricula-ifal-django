@@ -181,7 +181,7 @@ a.article:hover {
     padding-top: 1rem;
     padding-left: 4rem;
     padding-right: 4rem;
-    padding-bottom: 0,5rem;
+    padding-bottom: 3rem;
     background-color: #7386D5;
     border-radius: 15px;
     color: #fafafa; 
@@ -213,12 +213,26 @@ a.article:hover {
 }
 
  th, td {
-    padding: 10px 20px;
+    padding: 20px 20px 20px 20px;
     border: 1px solid #000;
+    text-align: center;
 }
 
-H5{
-    text-align:center;
+H2, H5{
+    text-align: center;
+}
+
+H6{
+    text-align: right;
+}
+
+H3{
+    text-align: left;
+
+}
+
+.form-group{
+    text-align: right;
 }
 
 button#botao{
@@ -228,4 +242,10 @@ button#botao{
     float: right;
     border-radius: 15px;
    
+}
+
+.id_disciplina{
+    margin: 25px 90px 90px;
+
+
 }
