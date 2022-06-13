@@ -171,6 +171,71 @@ class Matricula(models.Model):
     def get_absolute_url(self):
         return reverse("matricula_detail", kwargs={"pk": self.pk})
 
+class Atividade(models.Model):
+    nome = models.CharField(max_length=50, null=False)
+    descricao = models.TextField(null=True, blank=True)
+    oferta = models.ForeignKey(Oferta, on_delete=models.CASCADE, null=False, blank=False)
+    arquivo = models.BinaryField(null=True, blank=True)
+    entrega_date = models.DateField(null=False, blank=False)
+    create_date = models.DateField(auto_now_add=True)
+
+    class Meta:
+        verbose_name = _("atividade")
+        verbose_name_plural = _("atividades")
+
+    def __str__(self):
+        return self.name
+
+    def get_absolute_url(self):
+        return reverse("view_atividade", kwargs={"pk": self.pk})
+
+class Resposta(models.Model):
+    atividade = models.ForeignKey(Atividade, on_delete=models.CASCADE)
+    aluno = models.ForeignKey(Aluno, on_delete=models.CASCADE)
+    descricao = models.TextField(null=True, blank=True)
+    arquivo = models.BinaryField(null=True, blank=True)
+    entrega_date = models.DateField(auto_now_add=True)
+    update_date = models.DateField(auto_now=True)
+
+    class Meta:
+        verbose_name = _("resposta")
+        verbose_name_plural = _("respostas")
+
+    def __str__(self):
+        return f'{self.pk} | {self.aluno.user.nome}'
+
+    def get_absolute_url(self):
+        return reverse("view_resposta", kwargs={"pk": self.pk})
+
+class Frequencia(models.Model):
+    aula_date = models.DateField(null=False, blank=False)
+    oferta = models.ForeignKey(Oferta, on_delete=models.CASCADE, null=False, blank=False)    
+
+    class Meta:
+        verbose_name = _("frequencia")
+        verbose_name_plural = _("frequencias")
+
+    def __str__(self):
+        return self.name
+
+    def get_absolute_url(self):
+        return reverse("view_frequencia", kwargs={"pk": self.pk})
+
+class AlunoFrequencia(models.Model):
+    frequencia = models.ForeignKey(Frequencia, on_delete=models.CASCADE)
+    aluno = models.ForeignKey(Aluno, on_delete=models.CASCADE)
+    
+    class Meta:
+        verbose_name = _("AlunoFrequencia")
+        verbose_name_plural = _("AlunoFrequencias")
+
+    def __str__(self):
+        return self.name
+
+    def get_absolute_url(self):
+        return reverse("AlunoFrequencia_detail", kwargs={"pk": self.pk})
+
+
 
 
 

@@ -459,17 +459,30 @@ def create_matricula(request):
 
 def list_alunos_matriculados(request, id_param, id_oferta):
     if request.method == 'GET' and request.session['user_id']:
-        # try:
-            oferta = get_object_or_404(Oferta, pk=id_oferta)
-            matriculas = Matricula.objects.filter(oferta=oferta)
-            return render(request, f'coordenacao/coordenador/alunos-matriculados.html', {'matriculas' : matriculas,
+        oferta = get_object_or_404(Oferta, pk=id_oferta)
+        matriculas = Matricula.objects.filter(oferta=oferta)
+        return render(request, f'coordenacao/coordenador/alunos-matriculados.html', {'matriculas' : matriculas,
                                                                                   'oferta' : oferta})
     else:   
         return redirect(reverse('index'))
             
+def list_ofertas_matriculadas(request):
+    if request.method == 'GET' and request.session['user_id']:
+        user = get_object_or_404(User, pk=request.session['user_id'])
+        matriculas = Matricula.objects.filter(aluno__pk=user.pk) 
+        return render(request, f'coordenacao/coordenador/lista-matriculas.html', {'matriculas' : matriculas})
+    else:   
+        return redirect(reverse('index'))
 
+def list_ofertas_matriculadas(request, id_param):
+    if request.method == 'GET' and request.session['user_id']:
+        user = get_object_or_404(User, pk=request.session['user_id'])
+        matriculas = Matricula.objects.filter(aluno__pk=user.pk) 
+        return render(request, f'coordenacao/coordenador/lista-matriculas.html', {'matriculas' : matriculas})
+    else:   
+        return redirect(reverse('index'))
             
-            
+           
 
 
 
