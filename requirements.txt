@@ -1,6 +1,10 @@
 asgiref==3.5.2
 Django==3.2.13
+django-extensions==3.1.5
+graphviz==0.20
 mysqlclient==2.1.0
+pydotplus==2.0.2
+pyparsing==3.0.9
 pytz==2022.1
 sqlparse==0.4.2
 typing-extensions==4.2.0
