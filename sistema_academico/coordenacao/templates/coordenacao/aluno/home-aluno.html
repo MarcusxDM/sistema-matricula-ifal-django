@@ -26,12 +26,15 @@
           <div id="table1">
             <H5>Lista de Disciplinas Matriculadas no Semestre</H5>
               <table id = "first">
-                <!--  {% for disciplina in disciplinas %}  -->
+                {% if ofertas %}
+               {% for oferta in ofertas %}
                 <tr>
-                  <td>Disciplina X</td>
+                  <td>{{oferta.disciplina}}</td>
                 </tr>
-                <!--  {% endfor %}  -->
-                
+                {% endfor %}
+                {% else %}
+                <H6>Sem disciplinas</H6>
+                {% endif %}
               </table>
           </div>  
             

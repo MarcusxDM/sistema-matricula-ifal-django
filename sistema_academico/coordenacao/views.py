@@ -4,6 +4,7 @@ from coordenacao.models import User, Coordenador, Professor, Aluno, Curso, Disci
 from django.core.mail import send_mail
 import secrets
 import string
+import datetime
 
 def generate_password(): 
     alphabet = string.ascii_letters + string.digits
@@ -98,19 +99,25 @@ def home(request):
     '''
     Página Home
     '''
-    try:
-        user_name = User.objects.get(cpf=request.session['user_id']).nome
-        request.session['user_name'] = user_name
-        if request.session['user_type'] == 1:
-            home_name = 'coordenador/home-coordenador'
-        elif request.session['user_type'] == 2:
-            home_name = 'professor/home-professor'
-        else:
-            home_name = 'aluno/home-aluno'
-        print(f'coordenacao/{home_name}.html')
-        return render(request, f'coordenacao/{home_name}.html')
-    except:
-        return redirect(reverse('index'))
+    # try:
+    user_name = User.objects.get(cpf=request.session['user_id']).nome
+    request.session['user_name'] = user_name
+    if request.session['user_type'] == 1:
+        home_name = 'coordenador/home-coordenador'
+        ofertas = Oferta.objects.filter(professor=None)
+    elif request.session['user_type'] == 2:
+        home_name = 'professor/home-professor'
+        ofertas = Oferta.objects.filter(professor__pk=request.session['user_id'], periodo__end_date__gte=datetime.date.today()) 
+    else:
+        home_name = 'aluno/home-aluno'
+        matriculas = Matricula.objects.filter(aluno__pk=request.session['user_id'], oferta__periodo__end_date__gte=datetime.date.today())
+        ofertas = []
+        for m in matriculas:
+            ofertas.append(m.oferta)
+    print(f'coordenacao/{home_name}.html')
+    return render(request, f'coordenacao/{home_name}.html', {'ofertas' : ofertas})
+    # except:
+    #     return redirect(reverse('index'))
 
 def logout(request):
     '''
@@ -470,15 +477,27 @@ def list_ofertas_matriculadas(request):
     if request.method == 'GET' and request.session['user_id']:
         user = get_object_or_404(User, pk=request.session['user_id'])
         matriculas = Matricula.objects.filter(aluno__pk=user.pk) 
-        return render(request, f'coordenacao/coordenador/lista-matriculas.html', {'matriculas' : matriculas})
+        return render(request, f'coordenacao/aluno/lista-matriculas.html', {'matriculas' : matriculas})
     else:   
         return redirect(reverse('index'))
 
 def list_ofertas_lecionadas(request):
     if request.method == 'GET' and request.session['user_id']:
         user = get_object_or_404(User, pk=request.session['user_id'])
-        ofertas = Oferta.objects.filter(professor__pk=user.pk) 
-        return render(request, f'coordenacao/coordenador/lista-ofertas.html', {'ofertas' : ofertas})
+        query = '''SELECT o.id, o.disciplina_id, d.nome, count(m.id) as count_alunos, count(a.id) as count_atividades FROM coordenacao_oferta o
+                    LEFT JOIN coordenacao_disciplina d
+                    ON o.disciplina_id = d.id
+                    LEFT JOIN coordenacao_matricula m
+                    ON o.id = m.oferta_id
+                    LEFT JOIN coordenacao_atividade a
+                    ON o.id = a.oferta_id
+                    where o.professor_id=%s
+                    group by o.id;
+                '''
+        ofertas = Oferta.objects.raw(query, [user.pk])
+        # ofertas = Oferta.objects.filter(professor__pk=user.pk) 
+        print(ofertas)
+        return render(request, f'coordenacao/professor/lista-de-disciplinas-professor.html', {'ofertas' : ofertas})
     else:   
         return redirect(reverse('index'))
 

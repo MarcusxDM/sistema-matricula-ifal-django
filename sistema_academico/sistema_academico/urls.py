@@ -87,7 +87,7 @@ urlpatterns = [
             path('atividade/<int:id_atividade>/', include([
                 path('', views.view_atividade, name='view_atividade'),
                 path('cadastrar-notas', views.view_atividade, name='update_reposta_nota'),
-                path('enviar-resposta', views.create_reposta, 'create_resposta')
+                path('enviar-resposta', views.create_reposta, name='create_resposta')
             ])),
             path('frequencias/', include([
                 path('', views.list_frequencias, name='list_frequencias'),
