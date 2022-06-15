@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="pt-br" xml:lang="pt-br" class="">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="">
+
+    <!-- Bootstrap CSS CDN -->
+    {% load static %}
+    <link rel="stylesheet" href="./css/bootstrap.min.css">
+
+    <link rel="stylesheet" href="./css/style.css">
+
+
+</head> 
+
+<body>
+
+    <div class="wrapper">
+        <!-- Sidebar DETALHE: A NAVBAR DE ALUNO É DIFERENTE. USE navbar-aluno.html  -->
+        {% include "coordenacao/navbar.html" %}
+       
+        <div id="conteudo">
+         
+
+          <div id="table2"> 
+            
+            <!-- {% if tarefas %} -->
+            
+            <table id = "second">
+              <header id="pf">Lista de Notas de Disciplinas no Semestre</header>
+
+           
+              <thead>
+
+               
+                  <!--  {% for aluno in alunos %}  -->
+                  <tr>
+                      <td>disciplina</td>
+                      <td>nota1</td>
+                      <td>nota2</td>
+                      <td>nota3</td> 
+                      <td>situação</td>
+                  </tr>
+                 <!--  {% endfor %}  -->
+
+              </thead>
+          </table>
+
+
+          </div>  
+
+        </div>
+
+
+</body>
+
+</html>

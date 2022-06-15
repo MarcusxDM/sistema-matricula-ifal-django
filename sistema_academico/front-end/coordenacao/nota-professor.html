@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="pt-br" xml:lang="pt-br" class="">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="">
+
+    <!-- Bootstrap CSS CDN -->
+    {% load static %}
+    <link rel="stylesheet" href="./css/bootstrap.min.css">
+
+    <link rel="stylesheet" href="./css/style.css">
+
+
+</head> 
+
+<body>
+
+    <div class="wrapper">
+        <!-- Sidebar DETALHE: A NAVBAR DE ALUNO É DIFERENTE. USE navbar-aluno.html  -->
+        {% include "coordenacao/navbar.html" %}
+       
+        <div id="conteudo">
+  
+          <div id="table2"> 
+            
+            <!-- {% if tarefas %} -->
+            
+            <table id = "ntprofessor">
+              <h6 id="title-ntprofessor"> Atividade 1</h6>
+
+              <thead>
+                  <tr>
+                    <th>Alunos</th>
+                    <th>Nota1</th>
+                    <th>Nota2</th>
+                    <th>Reposição</th>
+                    <th>Final</th>
+                    <th>Situação</th>
+                  </tr>
+                  <!--  {% for aluno in alunos %}  -->
+                  <tr>
+                      <td>aluno</td>
+                      <td>
+                      <form method="post">
+                        <div class="form-group">
+                          <input type="number" min="0"  id="put-nota" placeholder="Inserir">
+                        </div>
+                      </form>
+                      </td>
+                      <td>
+                        <form method="post">
+                          <div class="form-group">
+                            <input type="number" min="0"  id="put-nota" placeholder="Inserir">
+                          </div>
+                        </form>
+                      </td>
+                      <td>
+                        <form method="post">
+                          <div class="form-group">
+                            <input type="number" min="0"  id="put-nota" placeholder="Inserir">
+                          </div>
+                        </form>
+                      </td> 
+                      <td>
+                        <form method="post">
+                          <div class="form-group">
+                            <input type="number" min="0"  id="put-nota" placeholder="Inserir">
+                          </div>
+                        </form>
+                      </td>  
+
+                      <td>APROVADO</td>
+                  </tr>
+                 <!--  {% endfor %}  -->
+
+              </thead>
+              
+          </table>
+          <div class="text-right col-lg-12">
+            <button type="submit" class="btn btn-primary mb-2">Cadastrar</button>
+          </div>
+
+          </div>  
+
+        </div>
+
+
+</body>
+
+</html>
