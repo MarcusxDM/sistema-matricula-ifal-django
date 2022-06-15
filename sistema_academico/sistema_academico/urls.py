@@ -83,7 +83,10 @@ urlpatterns = [
                 path('', views.form_atividade, name='form-atividade'),
                 path('success', views.create_atividade, name='create-atividade')
                 ])),
-            path('atividade/<int:id_atividade>/', views.view_atividade, name='atividade')
+            path('atividade/<int:id_atividade>/', include([
+                path('', views.view_atividade, name='view_atividade'),
+                path('enviar-resposta', views.create_reposta, 'create-resposta')
+            ]))
         ]))
     ]))
 

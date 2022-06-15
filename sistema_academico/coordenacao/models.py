@@ -187,7 +187,8 @@ class Atividade(models.Model):
         return self.name
 
     def get_absolute_url(self):
-        return reverse("view_atividade", kwargs={"pk": self.pk})
+        return reverse("view_atividade", kwargs={"id_atividade": self.pk,
+                                                 'id_param'    : self.oferta.pk})
 
 class Resposta(models.Model):
     atividade = models.ForeignKey(Atividade, on_delete=models.CASCADE)

@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404, redirect, HttpResponse
 from django.urls import reverse
-from coordenacao.models import User, Coordenador, Professor, Aluno, Curso, Disciplina, Periodo, Oferta, Matricula, Atividade
+from coordenacao.models import User, Coordenador, Professor, Aluno, Curso, Disciplina, Periodo, Oferta, Matricula, Atividade, Resposta
 from django.core.mail import send_mail
 import secrets
 import string
@@ -499,7 +499,7 @@ def form_atividade(request, id_param):
         return redirect(reverse('index'))
             
 def create_atividade(request, id_param):
-    if request.method == 'POST' and request.session['user_type'] == 1:
+    if request.method == 'POST' and request.session['user_type'] == 2:
         oferta = get_object_or_404(Oferta, pk=id_param) 
         file = request.FILES['arquivo'].file.getvalue()
         new_atividade = Atividade(nome=request.POST['nome'], descricao=request.POST['descricao'],
@@ -513,9 +513,28 @@ def view_atividade(request, id_param, id_atividade):
     if request.method == 'GET' and request.session['user_id']:
         oferta = get_object_or_404(Oferta, pk=id_param)
         atividade = get_object_or_404(Atividade, pk=id_atividade)
-        return render(request, f'coordenacao/coordenador/view-atividade.html', {'oferta' : oferta,
-                                                                             'atividade' : atividade})
+        if request.session['user_type'] == 2:
+            html_name = 'view-atividade-professor'
+            respostas = Resposta.objects.filter(atividade=atividade)
+        else:
+            html_name = 'view-atividade-aluno'
+            respostas = Resposta.objects.filter(atividade=atividade, aluno__pk=request.session['user_id'])
+        return render(request, f'coordenacao/coordenador/{html_name}.html', {'oferta' : oferta,
+                                                                             'atividade' : atividade,
+                                                                             'respostas' : respostas})
     else:   
+        return redirect(reverse('index'))
+
+def create_reposta(request, id_param, id_atividade):
+    if request.method == 'POST' and request.session['user_type'] == 3:
+        oferta = get_object_or_404(Oferta, pk=id_param)
+        atividade = get_object_or_404(Atividade, pk=id_atividade) 
+        file = request.FILES['arquivo'].file.getvalue()
+        new_resposta = Resposta(atividade=atividade, aluno__pk=request.session['user_id'], descricao='',
+                        arquivo=file)
+        new_resposta.save()
+        return redirect(atividade)
+    else:
         return redirect(reverse('index'))          
 
 
