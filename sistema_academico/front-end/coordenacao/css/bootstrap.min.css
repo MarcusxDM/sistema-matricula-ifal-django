@@ -8221,6 +8221,13 @@ button.bg-dark:hover {
     margin-bottom: .5rem !important
 }
 
+.mb-x,
+.my-x {
+    margin-top: 2rem;
+    margin-bottom: .5rem !important
+}
+
+
 .ml-2,
 .mx-2 {
     margin-left: .5rem !important

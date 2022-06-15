@@ -235,3 +235,27 @@ button#botao{
 #group-atv{
     margin-top: 3rem;
 }
+
+/* CSS TELA lista-atividades*/
+
+#group-liatv{
+    background-color: #8496df;
+    margin-top: 3rem;
+}
+
+#nome-atv{
+    font-size: 2rem;
+    margin-top: 2rem;
+}
+
+
+/* CSS TELA atividade-e-nota*/
+
+#table-atv-nota th{
+    padding-top: 1rem;
+} 
+
+#tbatv td{
+    padding: 10px 20px;
+    border: 2px solid #fff;
+}
