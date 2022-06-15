@@ -62,15 +62,30 @@ urlpatterns = [
     # Perfil
     path('perfil/',  include([
         path('', views.view_perfil, name='view_perfil'),
-        path('editar', include([
+        path('editar/', include([
             path('', views.form_editar_perfil, name='form_perfil'),
             path('success', views.edit_user, name='edit_user'),
-            path('change-password', views.edit_password, name='edit_password')
+            path('change-password/', views.edit_password, name='edit_password')
             ]))
         ])),
 
     # Alunos - Matrícula
     path('ofertas/', views.list_ofertas, name='ofertas'),
+
+    # Disciplinas/Ofertas
+    path('disciplinas-matriculadas/', views.list_ofertas_matriculadas, name='disciplinas-matriculadas'),
+    path('disciplinas-lecionadas/', views.list_ofertas_lecionadas, name='disciplinas-lecionadas'),
+
+    path('disciplina/', include([
+        path('<int:id_param>/', include([
+            path('', views.view_oferta, name='oferta'),
+            path('cadastrar-atividade/', include([
+                path('', views.form_atividade, name='form-atividade'),
+                path('success', views.create_atividade, name='create-atividade')
+                ])),
+            path('atividade/<int:id_atividade>/', views.view_atividade, name='atividade')
+        ]))
+    ]))
 
 
 

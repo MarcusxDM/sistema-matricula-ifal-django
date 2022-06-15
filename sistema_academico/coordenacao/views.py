@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404, redirect, HttpResponse
 from django.urls import reverse
-from coordenacao.models import User, Coordenador, Professor, Aluno, Curso, Disciplina, Periodo, Oferta, Matricula
+from coordenacao.models import User, Coordenador, Professor, Aluno, Curso, Disciplina, Periodo, Oferta, Matricula, Atividade
 from django.core.mail import send_mail
 import secrets
 import string
@@ -474,15 +474,49 @@ def list_ofertas_matriculadas(request):
     else:   
         return redirect(reverse('index'))
 
-def list_ofertas_matriculadas(request, id_param):
+def list_ofertas_lecionadas(request):
     if request.method == 'GET' and request.session['user_id']:
         user = get_object_or_404(User, pk=request.session['user_id'])
-        matriculas = Matricula.objects.filter(aluno__pk=user.pk) 
-        return render(request, f'coordenacao/coordenador/lista-matriculas.html', {'matriculas' : matriculas})
+        ofertas = Oferta.objects.filter(professor__pk=user.pk) 
+        return render(request, f'coordenacao/coordenador/lista-ofertas.html', {'ofertas' : ofertas})
+    else:   
+        return redirect(reverse('index'))
+
+def view_oferta(request, id_param):
+    if request.method == 'GET' and request.session['user_id']:
+        oferta = get_object_or_404(Oferta, pk=id_param)
+        atividades = Atividade.objects.filter(oferta=oferta) 
+        return render(request, f'coordenacao/coordenador/view-oferta.html', {'oferta' : oferta,
+                                                                             'atividades' : atividades})
+    else:   
+        return redirect(reverse('index'))
+
+def form_atividade(request, id_param):
+    if request.method == 'GET' and request.session['user_id']:
+        oferta = get_object_or_404(Oferta, pk=id_param)
+        return render(request, f'coordenacao/coordenador/view-oferta.html', {'oferta' : oferta})
     else:   
         return redirect(reverse('index'))
             
-           
+def create_atividade(request, id_param):
+    if request.method == 'POST' and request.session['user_type'] == 1:
+        oferta = get_object_or_404(Oferta, pk=id_param) 
+        file = request.FILES['arquivo'].file.getvalue()
+        new_atividade = Atividade(nome=request.POST['nome'], descricao=request.POST['descricao'],
+                        arquivo=file, entrega=request.POST['entrega'])
+        new_atividade.save()
+        return redirect(new_atividade)
+    else:
+        return redirect(reverse('index'))
+
+def view_atividade(request, id_param, id_atividade):
+    if request.method == 'GET' and request.session['user_id']:
+        oferta = get_object_or_404(Oferta, pk=id_param)
+        atividade = get_object_or_404(Atividade, pk=id_atividade)
+        return render(request, f'coordenacao/coordenador/view-atividade.html', {'oferta' : oferta,
+                                                                             'atividade' : atividade})
+    else:   
+        return redirect(reverse('index'))          
 
 
 
