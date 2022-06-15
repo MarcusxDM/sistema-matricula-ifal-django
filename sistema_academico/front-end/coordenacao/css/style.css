@@ -321,4 +321,14 @@ table{
     padding: 10px 20px;
     border: 2px solid transparent; 
 }
-/*------------ */
+
+/*CSS nota-professor */
+#ntprofessor td{
+    padding: 10px 5px;
+    border: 2px solid transparent; 
+}
+
+#title-ntprofessor{
+    text-align: left;
+    margin-bottom: 2rem;
+}

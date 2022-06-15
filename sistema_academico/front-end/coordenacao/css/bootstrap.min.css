@@ -104,6 +104,13 @@ p {
     margin-bottom: 1rem
 }
 
+/* CSS DA TELA atividade-e-nota*/
+#descricao{
+    color: #fff;
+    margin-top: 1rem;
+    margin-bottom: 1rem
+}
+/* ------------------------*/ 
 abbr[data-original-title],
 abbr[title] {
     text-decoration: underline;
@@ -282,6 +289,13 @@ textarea {
 
 button,
 input {
+    overflow: visible
+}
+
+
+#put-nota{
+    height: 1.5rem;
+    width: 5rem;
     overflow: visible
 }
 
