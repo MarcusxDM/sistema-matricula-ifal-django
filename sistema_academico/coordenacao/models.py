@@ -195,6 +195,7 @@ class Resposta(models.Model):
     aluno = models.ForeignKey(Aluno, on_delete=models.CASCADE)
     descricao = models.TextField(null=True, blank=True)
     arquivo = models.BinaryField(null=True, blank=True)
+    nota = models.IntegerField(null=True, blank=True, default=0)
     entrega_date = models.DateField(auto_now_add=True)
     update_date = models.DateField(auto_now=True)
 

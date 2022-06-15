@@ -73,23 +73,33 @@ urlpatterns = [
     path('ofertas/', views.list_ofertas, name='ofertas'),
 
     # Disciplinas/Ofertas
-    path('disciplinas-matriculadas/', views.list_ofertas_matriculadas, name='disciplinas-matriculadas'),
-    path('disciplinas-lecionadas/', views.list_ofertas_lecionadas, name='disciplinas-lecionadas'),
+    path('disciplinas-matriculadas/', views.list_ofertas_matriculadas, name='disciplinas_matriculadas'),
+    path('disciplinas-lecionadas/', views.list_ofertas_lecionadas, name='disciplinas_lecionadas'),
 
     path('disciplina/', include([
         path('<int:id_param>/', include([
             path('', views.view_oferta, name='oferta'),
+            path('notas/', views.view_oferta_notas, name='view_oferta_notas'),
             path('cadastrar-atividade/', include([
-                path('', views.form_atividade, name='form-atividade'),
-                path('success', views.create_atividade, name='create-atividade')
+                path('', views.form_atividade, name='form_atividade'),
+                path('success', views.create_atividade, name='create_atividade')
                 ])),
             path('atividade/<int:id_atividade>/', include([
                 path('', views.view_atividade, name='view_atividade'),
-                path('enviar-resposta', views.create_reposta, 'create-resposta')
+                path('cadastrar-notas', views.view_atividade, name='update_reposta_nota'),
+                path('enviar-resposta', views.create_reposta, 'create_resposta')
+            ])),
+            path('frequencias/', include([
+                path('', views.list_frequencias, name='list_frequencias'),
+                # path('<int:id_frequencia>/', views.edit_frequencia, name='edit_frequencia'),
+                path('cadastrar-frequencia/', include([
+                    path('', views.form_frequencia, name='form_frequencia'),
+                    path('success', views.create_frequencia, name='create_frequencia')
+                ]))
             ]))
         ]))
     ]))
-
+    
 
 
 ]

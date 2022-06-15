@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404, redirect, HttpResponse
 from django.urls import reverse
-from coordenacao.models import User, Coordenador, Professor, Aluno, Curso, Disciplina, Periodo, Oferta, Matricula, Atividade, Resposta
+from coordenacao.models import User, Coordenador, Professor, Aluno, Curso, Disciplina, Periodo, Oferta, Matricula, Atividade, Resposta, Frequencia, AlunoFrequencia
 from django.core.mail import send_mail
 import secrets
 import string
@@ -525,6 +525,36 @@ def view_atividade(request, id_param, id_atividade):
     else:   
         return redirect(reverse('index'))
 
+def update_reposta_nota(request, id_param, id_atividade):
+    if request.method == 'POST' and request.session['user_type'] == 3:
+        oferta = get_object_or_404(Oferta, pk=id_param)
+        atividade = get_object_or_404(Atividade, pk=id_atividade) 
+        respostas = Resposta.objects.filter(atividade=atividade)
+        for resposta in respostas:
+            try:
+                resposta_update = Resposta.objects.filter(pk=resposta.id).update(
+                        nome = request.POST[f'{resposta.id}_nota'])
+            except:
+                pass
+        return redirect(atividade)
+    else:
+        return redirect(reverse('index')) 
+
+def view_oferta_notas(request, id_param):
+    if request.method == 'GET' and request.session['user_id']:
+        oferta = get_object_or_404(Oferta, pk=id_param)
+        query = '''SELECT m.aluno_id, sum(r.nota) as sum_nota FROM coordenacao_matricula m
+                    LEFT JOIN coordenacao_resposta r
+                    ON m.aluno_id = r.aluno_id
+                    where m.oferta_id=%s
+                    group by m.aluno_id;'''
+        matriculas = Aluno.objects.raw(query, [oferta.id])
+        
+        return render(request, f'coordenacao/coordenador/notas-oferta.html', {'oferta' : oferta,
+                                                                             'matriculas' : matriculas})
+    else:   
+        return redirect(reverse('index'))
+
 def create_reposta(request, id_param, id_atividade):
     if request.method == 'POST' and request.session['user_type'] == 3:
         oferta = get_object_or_404(Oferta, pk=id_param)
@@ -537,8 +567,42 @@ def create_reposta(request, id_param, id_atividade):
     else:
         return redirect(reverse('index'))          
 
+def list_frequencias(request, id_param):
+    if request.method == 'GET' and request.session['user_id']:
+        try:
+            oferta = get_object_or_404(Oferta, pk=id_param)
+            frequencias = Frequencia.objects.filter(oferta=oferta)
+            return render(request, f'coordenacao/aluno/list-frequencias.html', {'oferta' : oferta,
+                                                                                'frequencias' : frequencias })
+        except:
+            return redirect(reverse('index'))
 
+def form_frequencia(request, id_param):
+    if request.method == 'GET' and request.session['user_id']:
+        oferta = get_object_or_404(Oferta, pk=id_param)
+        matriculas = Matricula.objects.filter(oferta=oferta)
+        return render(request, f'coordenacao/coordenador/form-frequencia.html', {'oferta' : oferta,
+                                                                                 'matriculas' : matriculas})
+    else:   
+        return redirect(reverse('index'))
 
+def create_frequencia(request, id_param):
+    if request.method == 'POST' and request.session['user_type'] == 3:
+        oferta = get_object_or_404(Oferta, pk=id_param)
+
+        # Create frequencia
+        new_frequencia = Frequencia(aula_date=request.POST['aula_date'], oferta=oferta)
+        new_frequencia.save()
+
+        # Save alunos in frequencia
+        for aluno in request.POST['alunos']:
+            new_freq_aluno = AlunoFrequencia(frequencia=new_frequencia, aluno=aluno)
+            new_freq_aluno.save()
+            new_freq_aluno = None
+
+        return redirect(reverse('list_frequecias'))
+    else:
+        return redirect(reverse('index'))   
 
 
 
