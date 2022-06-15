@@ -251,6 +251,10 @@ th {
     text-align: inherit
 }
 
+#txt1{
+  text-align: center;
+}
+
 label {
     display: inline-block;
     margin-bottom: .5rem
@@ -638,6 +642,77 @@ pre code {
     margin-right: -15px;
     margin-left: -15px
 }
+/* CSS cadastrar-periodo */
+.row2 {
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-wrap: wrap;
+    flex-wrap: nowrap;
+    margin-right: -15px;
+    margin-left: -15px
+}
+
+.row2 #ano{
+    margin-left: 1rem;
+}
+
+.row2 #semestre{
+    margin-left: 2rem;
+}
+
+.row2 #slt{
+    margin-left: 1rem;
+}
+.row2 #slt1{
+    margin-left: -1rem;
+}
+/*------------------*/
+
+/* CSS cadastrar-disciplina*/
+.row2 #txt-ano{
+    margin-left: 1rem;
+    width: auto;
+}
+
+.row2 #txt-sem{
+    width: auto;
+    margin-left: 2rem;
+}
+
+.row #datas{
+    width: 50%;
+}   
+
+/*------------------*/
+/* CSS perfil-aluno*/
+.row3 {
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-wrap: wrap;
+    flex-wrap: nowrap;
+    flex-direction: row-reverse;
+    margin-right: -2rem;
+    margin-left: -15px
+}
+
+
+/*------------------*/
+
+/* CSS alunos-matriculados*/
+.row4 {
+    text-align: right;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+    flex-direction: column;
+    margin-right: -2rem;
+    margin-left: -15px
+}
+
+
+/*------------------*/
+
 
 .no-gutters {
     margin-right: 0;
@@ -5465,12 +5540,14 @@ input[type=submit].btn-block {
 }
 
 .progress {
+    margin-left: 1rem;
+    width: 20%; /* COMPRIMENTO DA BARRA*/
     display: -ms-flexbox;
     display: flex;
     height: 1rem;
     overflow: hidden;
     font-size: .75rem;
-    background-color: #e9ecef;
+    background-color: #fff; /* COR FUNDO */ 
     border-radius: .25rem
 }
 
@@ -5484,7 +5561,7 @@ input[type=submit].btn-block {
     color: #fff;
     text-align: center;
     white-space: nowrap;
-    background-color: #007bff;
+    background-color: #002bff; /* COR PREENCHIMENTO*/ 
     transition: width .6s ease
 }
 

@@ -104,6 +104,13 @@ p {
     margin-bottom: 1rem
 }
 
+/* CSS DA TELA atividade-e-nota*/
+#descricao{
+    color: #fff;
+    margin-top: 1rem;
+    margin-bottom: 1rem
+}
+/* ------------------------*/ 
 abbr[data-original-title],
 abbr[title] {
     text-decoration: underline;
@@ -282,6 +289,13 @@ textarea {
 
 button,
 input {
+    overflow: visible
+}
+
+
+#put-nota{
+    height: 1.5rem;
+    width: 5rem;
     overflow: visible
 }
 
@@ -8206,6 +8220,13 @@ button.bg-dark:hover {
 .my-2 {
     margin-bottom: .5rem !important
 }
+
+.mb-x,
+.my-x {
+    margin-top: 2rem;
+    margin-bottom: .5rem !important
+}
+
 
 .ml-2,
 .mx-2 {
