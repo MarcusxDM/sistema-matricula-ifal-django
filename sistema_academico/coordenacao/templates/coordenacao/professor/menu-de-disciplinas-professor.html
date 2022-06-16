@@ -32,8 +32,9 @@
                                     <a href="{% url 'list_atividades' id_param=oferta.id %}">
                                       <button type="submit" class="btn btn-primary mb-3">Listar</button>
                                     </a>
-                                    <button type="submit" class="btn btn-primary mb-3">Criar</button>
-
+                                    <a href="{% url 'form_atividade' id_param=oferta.id %}">
+                                      <button type="submit" class="btn btn-primary mb-3">Criar</button>
+                                    </a>
                                  </div>                                 
                             </td>                           
                           </tr>  

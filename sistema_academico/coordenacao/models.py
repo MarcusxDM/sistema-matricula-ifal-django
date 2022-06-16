@@ -184,7 +184,7 @@ class Atividade(models.Model):
         verbose_name_plural = _("atividades")
 
     def __str__(self):
-        return f"ATV{self.pk} | {self.nome}"
+        return f"ATV{self.pk} - {self.nome}"
 
     def get_absolute_url(self):
         return reverse("view_atividade", kwargs={"id_atividade": self.pk,

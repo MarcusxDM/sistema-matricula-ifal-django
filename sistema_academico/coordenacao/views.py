@@ -522,7 +522,7 @@ def list_atividades(request, id_param):
 def form_atividade(request, id_param):
     if request.method == 'GET' and request.session['user_id']:
         oferta = get_object_or_404(Oferta, pk=id_param)
-        return render(request, f'coordenacao/coordenador/view-oferta.html', {'oferta' : oferta})
+        return render(request, f'coordenacao/professor/criar-atividade-professor.html', {'oferta' : oferta})
     else:   
         return redirect(reverse('index'))
             
@@ -531,7 +531,7 @@ def create_atividade(request, id_param):
         oferta = get_object_or_404(Oferta, pk=id_param) 
         file = request.FILES['arquivo'].file.getvalue()
         new_atividade = Atividade(nome=request.POST['nome'], descricao=request.POST['descricao'],
-                        arquivo=file, entrega=request.POST['entrega'])
+                        arquivo=file, entrega_date=request.POST['entrega_date'], oferta=oferta)
         new_atividade.save()
         return redirect(new_atividade)
     else:
