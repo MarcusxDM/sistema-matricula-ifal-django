@@ -725,8 +725,17 @@ pre code {
 }
 
 
-/*------------------*/
-
+/*CSS tela atividade-aluno*/
+.rowatv {
+    justify-content: space-between;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-wrap: wrap;
+    flex-wrap: nowrap;
+    margin-right: -15px;
+    margin-left: -15px;
+    
+}
 
 .no-gutters {
     margin-right: 0;
@@ -4182,7 +4191,7 @@ input[type=submit].btn-block {
     padding: .375rem .75rem;
     line-height: 1.5;
     color: #495057;
-    content: "Browse";
+    content: "Procurar";
     background-color: #e9ecef;
     border-left: 1px solid #ced4da;
     border-radius: 0 .25rem .25rem 0

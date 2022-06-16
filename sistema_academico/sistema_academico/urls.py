@@ -88,11 +88,10 @@ urlpatterns = [
                 path('', views.list_atividades, name='list_atividades'),
                 path('<int:id_atividade>/', include([
                     path('', views.view_atividade, name='view_atividade'),
+                    path('enviar-resposta/', views.create_reposta, name='create_resposta'),
                     path('cadastrar-notas/', views.update_reposta_nota, name='update_reposta_nota'),
                     path('download-resposta/<int:pk>/', views.download_resposta, name='download_resposta')
                 ])),
-                
-                path('enviar-resposta', views.create_reposta, name='create_resposta')
             ])),
             path('frequencias/', include([
                 path('', views.list_frequencias, name='list_frequencias'),

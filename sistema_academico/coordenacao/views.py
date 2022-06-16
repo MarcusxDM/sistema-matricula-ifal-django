@@ -564,7 +564,7 @@ def view_atividade(request, id_param, id_atividade):
             html_name = 'professor/atividade-e-nota'
             respostas = Resposta.objects.filter(atividade=atividade)
         else:
-            html_name = 'view-atividade-aluno'
+            html_name = 'aluno/atividade-aluno'
             respostas = Resposta.objects.filter(atividade=atividade, aluno__pk=request.session['user_id'])
         return render(request, f'coordenacao/{html_name}.html', {'oferta' : oferta,
                                                                 'atividade' : atividade,
@@ -608,8 +608,8 @@ def create_reposta(request, id_param, id_atividade):
         oferta = get_object_or_404(Oferta, pk=id_param)
         atividade = get_object_or_404(Atividade, pk=id_atividade) 
         file = request.FILES['arquivo'].file.getvalue()
-        new_resposta = Resposta(atividade=atividade, aluno__pk=request.session['user_id'], descricao='',
-                        arquivo=file)
+        new_resposta = Resposta(atividade=atividade, aluno_id=request.session['user_id'], descricao='',
+                        arquivo=file, nota=None)
         new_resposta.save()
         return redirect(atividade)
     else:
