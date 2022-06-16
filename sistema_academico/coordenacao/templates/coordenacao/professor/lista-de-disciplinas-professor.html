@@ -25,15 +25,17 @@
                     {% if ofertas %} 
                     {% for oferta in ofertas %}                                                                                                          
                           <tr>
-                            <td><h2>{{oferta.disciplina}}</h2></td>   <!--  Editar espaçamento da celula da tabela no style.css linha 242.  -->  
+                            <td><h2>{{oferta}}</h2></td>   <!--  Editar espaçamento da celula da tabela no style.css linha 242.  -->  
                             <td>
                               <h5>{{oferta.count_alunos}} alunos</h5>
                               <h5>{{oferta.count_atividades}} atividades</h5> 
                             </td>
                             <td>
                                  <div class="text-right col-lg-10">
+                                  <a href="{% url 'view_oferta' id_param=oferta.id %}">
                                  <button type="submit" class="btn btn-primary mb-3">Abrir</button>
-                                 </div>
+                                  </a> 
+                                </div>
                             </td>
                           </tr>  
                           {% endfor %} 

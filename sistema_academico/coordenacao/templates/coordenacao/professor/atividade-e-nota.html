@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="pt-br" xml:lang="pt-br" class="">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="">
+
+    <!-- Bootstrap CSS CDN -->
+    {% load static %}
+    <link rel="stylesheet" href="{% static "coordenacao/css/bootstrap.min.css"%}">
+    <link rel="stylesheet" href="{% static "coordenacao/css/style-disciplina.css"%}">
+
+
+</head>
+
+<body>
+
+    <div class="wrapper">
+        <!-- SIDEBAR DE PROFESSOR AQUI  -->
+        {% include "coordenacao/professor/navbar-professor.html" %}
+       
+        <div id="conteudo">
+     
+          <div id="table1">
+            
+            <h6>{{atividade}}</h6>
+            <div class="form-group row5">
+            <h6 style="text-align: right;">Data de entrega</h6>
+            <h6 style="text-align: right;">{{atividade.entrega_date|date:"d/m/Y"}}</h6>
+          </div>
+  
+            <!-- for atividade in atividades-->
+            <div id="group-liatv">
+              <div>
+                <H5 id="title-atv">Descrição</H5>
+                <p id="descricao">{{atividade.descricao}}</p>
+
+              </div>
+
+            </div>
+
+        </div>
+        <div id="table2"> 
+            
+          {% comment %} <!-- {% if tarefas %} -->   {% endcomment %}
+          <table id = "tbatv">
+            <thead>
+              <tr>
+                <th>Alunos</th>
+                <th>Entregue?</th>
+                <th>Arquivos</th>
+                <th>Nota</th>
+              </tr>
+                {% comment %} <!--  {% for aluno in alunos %}  --> {% endcomment %}
+                <tr>
+                    <td>Aluno1</td>
+                    <form method="post">
+                      <td>
+                        <div class="form-check">
+                          <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
+                          <label class="form-check-label" for="defaultCheck1"></label>
+                        </div>
+                      </td>
+                     
+                      <td>
+                        <a class="btn btn-primary" href="CAMINHO DOWNLOAD AQUI" role="button">Baixar</a>
+                      </td>
+                      <!--if aluno.nota == Null-->
+                        <td>
+                          <input type="number" name="nota" id="" min="0" max="10" maxlength="2" placeholder="Inserir" inputmode="numeric">
+                        </td> 
+                    <!--else:.  Se já tiver nota, mostra ela abaixo.-->
+                      <!-- <td>aluno.nota</td> -->
+                    </form>
+                </tr>
+               {% comment %} <!--  {% endfor %}  --> {% endcomment %}
+              
+            </thead>
+        </table>
+
+        <div class="text-right col-lg-12">
+          <button type="submit" class="btn btn-primary mb-x">Cadastrar</button>
+        </div>
+        
+        </div>  
+        
+        </div>
+    </div>
+
+
+
+</body>
+
+</html>

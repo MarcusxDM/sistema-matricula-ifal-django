@@ -78,14 +78,15 @@ urlpatterns = [
 
     path('disciplina/', include([
         path('<int:id_param>/', include([
-            path('', views.view_oferta, name='oferta'),
+            path('', views.view_oferta, name='view_oferta'),
             path('notas/', views.view_oferta_notas, name='view_oferta_notas'),
             path('cadastrar-atividade/', include([
                 path('', views.form_atividade, name='form_atividade'),
                 path('success', views.create_atividade, name='create_atividade')
                 ])),
-            path('atividade/<int:id_atividade>/', include([
-                path('', views.view_atividade, name='view_atividade'),
+            path('atividades/', include([
+                path('', views.list_atividades, name='list_atividades'),
+                path('<int:id_atividade>/', views.view_atividade, name='view_atividade'),
                 path('cadastrar-notas', views.view_atividade, name='update_reposta_nota'),
                 path('enviar-resposta', views.create_reposta, name='create_resposta')
             ])),

@@ -504,9 +504,19 @@ def list_ofertas_lecionadas(request):
 def view_oferta(request, id_param):
     if request.method == 'GET' and request.session['user_id']:
         oferta = get_object_or_404(Oferta, pk=id_param)
-        atividades = Atividade.objects.filter(oferta=oferta) 
-        return render(request, f'coordenacao/coordenador/view-oferta.html', {'oferta' : oferta,
-                                                                             'atividades' : atividades})
+        atividades = Atividade.objects.filter(oferta=oferta).order_by('-create_date') 
+        return render(request, f'coordenacao/professor/menu-de-disciplinas-professor.html', {'oferta' : oferta,
+                                                                                             'atividades' : atividades,
+                                                                                             'count_atividades' : len(atividades)})
+    else:   
+        return redirect(reverse('index'))
+
+def list_atividades(request, id_param):
+    if request.method == 'GET' and request.session['user_id']:
+        oferta = get_object_or_404(Oferta, pk=id_param)
+        atividades = Atividade.objects.filter(oferta=oferta).order_by('-create_date') 
+        return render(request, f'coordenacao/professor/lista-atividades.html', {'oferta' : oferta,
+                                                                                'atividades' : atividades})
     else:   
         return redirect(reverse('index'))
 
@@ -533,12 +543,12 @@ def view_atividade(request, id_param, id_atividade):
         oferta = get_object_or_404(Oferta, pk=id_param)
         atividade = get_object_or_404(Atividade, pk=id_atividade)
         if request.session['user_type'] == 2:
-            html_name = 'view-atividade-professor'
+            html_name = 'professor/atividade-e-nota'
             respostas = Resposta.objects.filter(atividade=atividade)
         else:
             html_name = 'view-atividade-aluno'
             respostas = Resposta.objects.filter(atividade=atividade, aluno__pk=request.session['user_id'])
-        return render(request, f'coordenacao/coordenador/{html_name}.html', {'oferta' : oferta,
+        return render(request, f'coordenacao/{html_name}.html', {'oferta' : oferta,
                                                                              'atividade' : atividade,
                                                                              'respostas' : respostas})
     else:   

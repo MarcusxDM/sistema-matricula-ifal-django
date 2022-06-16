@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="pt-br" xml:lang="pt-br" class="">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menu de Disciplinas - Professor</title>
+    <!-- Bootstrap CSS CDN -->
+    {% load static %}
+    <link rel="stylesheet" href="{% static "coordenacao/css/bootstrap.min.css"%}">
+    <link rel="stylesheet" href="{% static "coordenacao/css/style01.css"%}">
+    <link rel="shortcut icon" href="{% static "coordenacao/css/school.ico"%}">
+<body>
+  <div class="wrapper">
+      <!-- Sidebar  -->
+      {% include "coordenacao/professor/navbar-professor.html" %}
+        <div id="conteudo">
+          <div class="id_disciplina">
+               <h1>{{oferta}}</h1>
+          </div>
+            <div id="table2">    <!--Mudar arquivo da tabela e propriedades no CSS para funcionar -->
+                <div id="title">
+                    <H2>Menu de Ações</H2>
+                  </div>
+                  <br>            
+                <table class = "table">                                             
+                  <tbody>                                                                                                              
+                          <tr>
+                            <td><h3>Atividades</h3></td>                    
+                            <td>
+                                 <div class="text-right col-lg-15">
+                                    <h6>{{count_atividades}} cadastradas</h6>
+                                    <a href="{% url 'list_atividades' id_param=oferta.id %}">
+                                      <button type="submit" class="btn btn-primary mb-3">Listar</button>
+                                    </a>
+                                    <button type="submit" class="btn btn-primary mb-3">Criar</button>
+
+                                 </div>                                 
+                            </td>                           
+                          </tr>  
+                          <tr>
+                            <td><h3>Frequência</h3></td>                 
+                            <td>
+                                 <div class="text-right col-lg-15">
+                                 <button type="submit" class="btn btn-primary mb-6">Editar</button>
+                                 </div>
+                            </td>
+                          </tr>                            
+                          <tr>
+                            <td><h3>Notas</h3></td>                           
+                            <td>
+                                 <div class="text-right col-lg-15">
+                                 <button type="submit" class="btn btn-primary mb-6">Editar</button>
+                                 </div>
+                            </td>
+                          </tr>                                                      
+                    </tbody>                                     
+              </table>              
+            </div> 
+        </div>
+    </div>
+</body>
+</html>
