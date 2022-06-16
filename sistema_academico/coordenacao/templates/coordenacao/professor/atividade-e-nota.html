@@ -44,45 +44,44 @@
         </div>
         <div id="table2"> 
             
-          {% comment %} <!-- {% if tarefas %} -->   {% endcomment %}
-          <table id = "tbatv">
+          {% if respostas %}  
+          <table style="width: 100%;" id = "tbatv">
             <thead>
               <tr>
-                <th>Alunos</th>
-                <th>Entregue?</th>
-                <th>Arquivos</th>
+                <th>Aluno</th>
+                <th>Arquivo</th>
                 <th>Nota</th>
               </tr>
-                {% comment %} <!--  {% for aluno in alunos %}  --> {% endcomment %}
+                {% for resposta in respostas %}
                 <tr>
-                    <td>Aluno1</td>
-                    <form method="post">
+                    <td>{{resposta.aluno}}</td>
+                    <form method="post" action="{% url 'update_reposta_nota' id_param=oferta.pk id_atividade=atividade.pk %}">
+                     {% csrf_token %}
                       <td>
-                        <div class="form-check">
-                          <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
-                          <label class="form-check-label" for="defaultCheck1"></label>
-                        </div>
+                        <a class="btn btn-primary" href="{% url 'download_resposta' id_param=oferta.pk id_atividade=atividade.pk pk=resposta.pk %}" role="button">Baixar</a>
                       </td>
-                     
-                      <td>
-                        <a class="btn btn-primary" href="CAMINHO DOWNLOAD AQUI" role="button">Baixar</a>
-                      </td>
-                      <!--if aluno.nota == Null-->
+                      {% if resposta.nota == None %}
                         <td>
-                          <input type="number" name="nota" id="" min="0" max="10" maxlength="2" placeholder="Inserir" inputmode="numeric">
+                          <input type="number" name="{{resposta.id}}_nota" id="" min="0" max="10" maxlength="2" placeholder="Inserir" inputmode="numeric">
                         </td> 
-                    <!--else:.  Se já tiver nota, mostra ela abaixo.-->
-                      <!-- <td>aluno.nota</td> -->
-                    </form>
+                    {% else %}
+                      <td>{{resposta.nota}}</td>
+                      {% endif %}
+                    
                 </tr>
-               {% comment %} <!--  {% endfor %}  --> {% endcomment %}
+               {% endfor %}
               
             </thead>
         </table>
-
         <div class="text-right col-lg-12">
           <button type="submit" class="btn btn-primary mb-x">Cadastrar</button>
         </div>
+      </form>
+        {% else %}
+        <h6>Sem envios.</h6>
+        {% endif %}
+
+        
         
         </div>  
         

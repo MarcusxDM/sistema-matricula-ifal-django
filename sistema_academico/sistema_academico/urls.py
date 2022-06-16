@@ -86,8 +86,12 @@ urlpatterns = [
                 ])),
             path('atividades/', include([
                 path('', views.list_atividades, name='list_atividades'),
-                path('<int:id_atividade>/', views.view_atividade, name='view_atividade'),
-                path('cadastrar-notas', views.view_atividade, name='update_reposta_nota'),
+                path('<int:id_atividade>/', include([
+                    path('', views.view_atividade, name='view_atividade'),
+                    path('cadastrar-notas/', views.update_reposta_nota, name='update_reposta_nota'),
+                    path('download-resposta/<int:pk>/', views.download_resposta, name='download_resposta')
+                ])),
+                
                 path('enviar-resposta', views.create_reposta, name='create_resposta')
             ])),
             path('frequencias/', include([

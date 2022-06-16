@@ -1,3 +1,5 @@
+import io
+from django.http import FileResponse, JsonResponse
 from django.shortcuts import render, get_object_or_404, redirect, HttpResponse
 from django.urls import reverse
 from coordenacao.models import User, Coordenador, Professor, Aluno, Curso, Disciplina, Periodo, Oferta, Matricula, Atividade, Resposta, Frequencia, AlunoFrequencia
@@ -42,7 +44,23 @@ def checkbox_week_days(request):
         pass
     return result
 
-
+def download_resposta(request, id_param, id_atividade, pk):
+    # this url is for download
+    try:
+        obj = Resposta.objects.get(pk=pk)
+    except Resposta.DoesNotExist as exc:
+        return JsonResponse({'status_message': 'No Resource Found'})
+    get_binary = obj.arquivo
+    if get_binary is None:
+        return JsonResponse({'status_message': 'Resource does not contain file'})
+    if isinstance(get_binary, memoryview):
+        binary_io = io.BytesIO(get_binary.tobytes())
+    else:
+        binary_io = io.BytesIO(get_binary)
+    response = FileResponse(binary_io)
+    response['Content-Type'] = 'application/x-binary'
+    response['Content-Disposition'] = 'attachment; filename="{obj}-{obj.aluno.nome}.pdf"'.format(pk) # You can set custom filename, which will be visible for clients.
+    return response
 
 def send_email_new_user(email_destinatario, password, user_nome):
     send_mail('SIACA - Sua conta foi criada!', 
@@ -538,9 +556,10 @@ def create_atividade(request, id_param):
         return redirect(reverse('index'))
 
 def view_atividade(request, id_param, id_atividade):
-    if request.method == 'GET' and request.session['user_id']:
+    # if request.method == 'GET' and request.session['user_id']:
         oferta = get_object_or_404(Oferta, pk=id_param)
         atividade = get_object_or_404(Atividade, pk=id_atividade)
+        aberta = (atividade.entrega_date >= datetime.date.today())
         if request.session['user_type'] == 2:
             html_name = 'professor/atividade-e-nota'
             respostas = Resposta.objects.filter(atividade=atividade)
@@ -548,20 +567,21 @@ def view_atividade(request, id_param, id_atividade):
             html_name = 'view-atividade-aluno'
             respostas = Resposta.objects.filter(atividade=atividade, aluno__pk=request.session['user_id'])
         return render(request, f'coordenacao/{html_name}.html', {'oferta' : oferta,
-                                                                             'atividade' : atividade,
-                                                                             'respostas' : respostas})
-    else:   
-        return redirect(reverse('index'))
+                                                                'atividade' : atividade,
+                                                                'respostas' : respostas,
+                                                                'aberta' : aberta})
+    # else:   
+    #     return redirect(reverse('index'))
 
 def update_reposta_nota(request, id_param, id_atividade):
-    if request.method == 'POST' and request.session['user_type'] == 3:
+    if request.method == 'POST' and request.session['user_type'] == 2:
         oferta = get_object_or_404(Oferta, pk=id_param)
         atividade = get_object_or_404(Atividade, pk=id_atividade) 
-        respostas = Resposta.objects.filter(atividade=atividade)
+        respostas = Resposta.objects.filter(atividade=atividade, nota=None)
         for resposta in respostas:
             try:
                 resposta_update = Resposta.objects.filter(pk=resposta.id).update(
-                        nome = request.POST[f'{resposta.id}_nota'])
+                        nota = request.POST[f'{resposta.id}_nota'])
             except:
                 pass
         return redirect(atividade)
