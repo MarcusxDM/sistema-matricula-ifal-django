@@ -43,27 +43,28 @@
           <div id="table2">
             <H5>Lista de Tarefas Pendentes</H5>
 
-            {% comment %} {% if tarefas %} {% endcomment %}
-            <table id = "second">
+            {% if atividades %}
+            <table style='width: 100%;' id = "second">
               <thead>
                   <tr>
-                      <th>Atividades</th>
+                      <th>Atividade</th>
                       <th>Disciplina</th>
                       <th>Data de Entrega</th>
                   </tr>
 
-                  {% comment %} {% for aluno in alunos %} {% endcomment %}
-                  <tr>
-                      <td>atividade 1</td>
-                      <td>disciplina PROINT</td>
-                      <td>09/06/2022</td> 
+                  {% for atividade in atividades %}
+                  <tr style='cursor: pointer;' class='clickable-row' data-url="{% url 'view_atividade' id_param=atividade.oferta.pk id_atividade=atividade.id %}">
+                      <td>{{atividade}}</td>
+                      <td>{{atividade.oferta}}</td>
+                      <td>{{atividade.entrega_date|date:"d/m/Y"}}</td> 
                   </tr>
-                 {% comment %} {% endfor %} {% endcomment %}
-            {% comment %} {% endif %} {% endcomment %}
+                 {% endfor %}
 
               </thead>
           </table>
-
+          {% else %}
+          <H6>Sem atividades.</H6>
+          {% endif %}
 
           </div>  
 

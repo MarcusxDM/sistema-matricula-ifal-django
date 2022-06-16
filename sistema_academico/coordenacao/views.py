@@ -59,7 +59,7 @@ def download_resposta(request, id_param, id_atividade, pk):
         binary_io = io.BytesIO(get_binary)
     response = FileResponse(binary_io)
     response['Content-Type'] = 'application/x-binary'
-    response['Content-Disposition'] = f'attachment; filename="{obj.atividade} - {obj.aluno.pk}.pdf"'.format(pk) # You can set custom filename, which will be visible for clients.
+    response['Content-Disposition'] = f'attachment; filename="{obj.atividade} - {obj.aluno.pk}.pdf"'.format(pk)
     return response
 
 def send_email_new_user(email_destinatario, password, user_nome):
@@ -132,8 +132,15 @@ def home(request):
         ofertas = []
         for m in matriculas:
             ofertas.append(m.oferta)
+        atividades = Atividade.objects.filter(oferta__in=ofertas, entrega_date__gte=datetime.date.today())
+        respostas = Resposta.objects.filter(atividade__in=atividades)
+        atividades_feitas = []
+        for r in respostas:
+            atividades_feitas.append(r.atividade.id)
+        atividades = Atividade.objects.exclude(pk__in=atividades_feitas)
     print(f'coordenacao/{home_name}.html')
-    return render(request, f'coordenacao/{home_name}.html', {'ofertas' : ofertas})
+    return render(request, f'coordenacao/{home_name}.html', {'ofertas' : ofertas,
+                                                            'atividades' : atividades})
     # except:
     #     return redirect(reverse('index'))
 
