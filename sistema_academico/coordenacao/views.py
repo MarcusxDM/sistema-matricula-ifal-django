@@ -59,7 +59,7 @@ def download_resposta(request, id_param, id_atividade, pk):
         binary_io = io.BytesIO(get_binary)
     response = FileResponse(binary_io)
     response['Content-Type'] = 'application/x-binary'
-    response['Content-Disposition'] = 'attachment; filename="{obj.atividade.nome}'-'{obj.aluno.nome}.pdf"'.format(pk) # You can set custom filename, which will be visible for clients.
+    response['Content-Disposition'] = f'attachment; filename="{obj.atividade} - {obj.aluno.pk}.pdf"'.format(pk) # You can set custom filename, which will be visible for clients.
     return response
 
 def send_email_new_user(email_destinatario, password, user_nome):
