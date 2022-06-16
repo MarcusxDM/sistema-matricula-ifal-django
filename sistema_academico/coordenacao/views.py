@@ -484,7 +484,7 @@ def list_ofertas_matriculadas(request):
 def list_ofertas_lecionadas(request):
     if request.method == 'GET' and request.session['user_id']:
         user = get_object_or_404(User, pk=request.session['user_id'])
-        query = '''SELECT o.id, o.disciplina_id, d.nome, count(m.id) as count_alunos, count(a.id) as count_atividades FROM coordenacao_oferta o
+        query = '''SELECT o.id, o.disciplina_id, d.nome, count(distinct m.id) as count_alunos, count(distinct a.id) as count_atividades FROM coordenacao_oferta o
                     LEFT JOIN coordenacao_disciplina d
                     ON o.disciplina_id = d.id
                     LEFT JOIN coordenacao_matricula m
@@ -496,7 +496,6 @@ def list_ofertas_lecionadas(request):
                 '''
         ofertas = Oferta.objects.raw(query, [user.pk])
         # ofertas = Oferta.objects.filter(professor__pk=user.pk) 
-        print(ofertas)
         return render(request, f'coordenacao/professor/lista-de-disciplinas-professor.html', {'ofertas' : ofertas})
     else:   
         return redirect(reverse('index'))
