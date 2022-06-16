@@ -250,7 +250,6 @@ button#botao{
 
 
 /* CSS TELA atividade-e-nota*/
-
 #table-atv-nota th{
     padding-top: 1rem;
 } 
@@ -258,4 +257,10 @@ button#botao{
 #tbatv td{
     padding: 10px 20px;
     border: 2px solid #fff;
+}
+
+/* CSS TELA atividade-aluno*/
+#group-liatvx{
+    background-color: #8496df;
+    margin-top: 3rem;
 }

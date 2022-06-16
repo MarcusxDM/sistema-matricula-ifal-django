@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="pt-br" xml:lang="pt-br" class="">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="">
+
+    <!-- Bootstrap CSS CDN -->
+    {% load static %}
+    <link rel="stylesheet" href="./css/bootstrap.min.css">
+
+    <link rel="stylesheet" href="./css/style-disciplina.css">
+
+
+</head>
+
+<body>
+
+    <div class="wrapper">
+        <!-- SIDEBAR DE ALUNO AQUI  -->
+        {% include "coordenacao/navbar.html" %}
+       
+        <div id="conteudo">
+     
+          <div id="table1">
+            
+            <div class="form-group rowatv">
+
+              <div> <h6>Atividade 1</h6> </div>
+              <div>  
+                <h6 >Data de entrega</h6>
+                <h6 >20/06/2022</h6> 
+              </div>
+            <div> 
+              <h6 >Nota</h6>
+              <h6 >8/10</h6> 
+            </div>
+
+            </div>
+
+            <div id="group-liatvx">
+              <div>
+                <H5 id="title-atv">Descrição</H5>
+                <p id="descricao">Lorem ipsum dolor sit amet consectetur adipisicing elit. Aut, veniam hic veritatis iste autem sit repudiandae harum delectus dolor quas, corporis nesciunt labore. Libero nemo eveniet error odio quae voluptates.</p>
+
+              </div>
+
+            </div>
+
+            <div id="group-liatvx">
+                <H6>Inserir Arquivo com Atividade</H6>
+                <form method="post">
+                <div class="input-group mb-3">
+                  <div class="custom-file">
+                    <label class="custom-file-label" for="inputGroupFile01" >Escolher arquivo</label>
+                    <input type="file" class="custom-file-input" id="inputGroupFile01" aria-describedby="inputGroupFileAddon01">
+                  </div>
+                </div>
+                <div class="text-right col-lg-12">
+                  <button type="submit" class="btn btn-primary mb-2">Enviar</button>
+                </div>
+              </form>
+           
+
+
+        </div>
+    
+        
+        </div>
+    </div>
+
+
+<!-- <script type="text/javascript" src="./js/atv-aluno.js"></script> -->
+</body>
+
+</html>
