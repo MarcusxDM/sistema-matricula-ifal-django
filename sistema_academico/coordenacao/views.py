@@ -166,13 +166,12 @@ def home(request):
         atividades_feitas = []
         for r in respostas:
             atividades_feitas.append(r.atividade.id)
-        print(atividades_feitas)
+
         ofertas_id = []
         for o in ofertas:
             ofertas_id.append(o.id)
         ofertas_nao_matriculadas = Oferta.objects.exclude(pk__in=ofertas_id)
         atividades = Atividade.objects.exclude(Q(pk__in=atividades_feitas) | Q(oferta__in=ofertas_nao_matriculadas)).order_by('entrega_date')
-        print(atividades)
     print(f'coordenacao/{home_name}.html')
     return render(request, f'coordenacao/{home_name}.html', {'ofertas' : ofertas,
                                                             'atividades' : atividades})
@@ -504,29 +503,34 @@ def edit_password(request):
 def list_ofertas(request):
     if request.method == 'GET' and request.session['user_id']:
         user = User.objects.get(cpf=request.session['user_id'])
-        matriculas = Matricula.objects.filter(oferta__periodo__start_date__gte=datetime.date.today(), 
-                                        oferta__periodo__end_date__lte=datetime.date.today())
+        matriculas = Matricula.objects.filter(aluno__pk=request.session['user_id'],
+                                            oferta__periodo__start_date__lte=datetime.date.today(), 
+                                            oferta__periodo__end_date__gte=datetime.date.today())
         if len(matriculas)>0:
             return render(request, f'coordenacao/aluno/matricula-realizada.html', {'matriculas' : matriculas})
         else:
             # form matricula
             disciplinas = Disciplina.objects.filter(curso__pk=user.aluno.curso.id)
-            ofertas = Oferta.objects.filter(disciplina__in=disciplinas, periodo__start_date__gte=datetime.date.today(), 
-                                            periodo__end_date__lte=datetime.date.today())
+            ofertas = Oferta.objects.filter(disciplina__in=disciplinas, periodo__start_date__lte=datetime.date.today(), 
+                                            periodo__end_date__gte=datetime.date.today())
         return render(request, f'coordenacao/aluno/new-matricula.html', {'ofertas' : ofertas})
     else:
         return redirect(reverse('index'))
 
 def create_matricula(request):
     if request.method == 'POST' and request.session['user_id']:
-        # try:
-            aluno = get_object_or_404(Aluno, pk=request.session['user_id'])
-            matriculas = []
-            for oferta in request.POST['ofertas']:
-                new_matricula = Matricula(aluno=aluno, oferta=oferta)
-                new_matricula.save()
-                matriculas.append(new_matricula)
-            render(request, f'coordenacao/aluno/matricula-realizada.html', {'matriculas' : matriculas})
+        aluno = get_object_or_404(Aluno, pk=request.session['user_id'])
+        disciplinas = Disciplina.objects.filter(curso__pk=aluno.curso.id)
+        ofertas = Oferta.objects.filter(disciplina__in=disciplinas, periodo__start_date__lte=datetime.date.today(), 
+                                        periodo__end_date__gte=datetime.date.today())
+        for oferta in ofertas:
+            try:
+                if request.POST[f'{oferta.id}_oferta'] == 'True':
+                    new_matricula = Matricula(aluno=aluno, oferta=oferta)
+                    new_matricula.save()
+            except:
+                pass
+        return redirect(reverse('ofertas'))
     else:   
         return redirect(reverse('index'))
 

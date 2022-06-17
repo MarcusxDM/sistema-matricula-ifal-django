@@ -70,7 +70,10 @@ urlpatterns = [
         ])),
 
     # Alunos - Matrícula
-    path('ofertas/', views.list_ofertas, name='ofertas'),
+    path('ofertas/', include([
+        path('', views.list_ofertas, name='ofertas'),
+        path('cadastrar/', views.create_matricula, name='create_matricula'),
+    ])),
 
     # Disciplinas/Ofertas
     path('disciplinas-matriculadas/', views.list_ofertas_matriculadas, name='disciplinas_matriculadas'),

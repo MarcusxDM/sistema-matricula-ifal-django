@@ -26,35 +26,38 @@
 
           <div id="table2">
             
-            
-            <table id="second">
+            <h5>Disciplinas Matrículadas no Semestre</h5>
+            <h6 style="text-align:right ;">
+              0 - Seg /
+              1 - Ter /
+              2 - Qua /
+              3 - Qui /
+              4 - Sex /
+              5 - Sáb /
+              6 - Dom<br>
+            </h6>
+            <table id = "second">
               <thead>
-                <tr>
-                  <th></th>
-                    <th>Segunda</th>
-                    <th>Terça</th>
-                    <th>Quarta</th>
-                    <th>Quinta</th>
-                    <th>Sexta</th>
-                </tr>
+                  <tr>
+                    <th>Disciplina</th>
+                    <th>Horário</th>
+                    <th>Dias</th>
+                    <th>Período</th>
 
-             
-                  <!--if horarioxdisciplina==7hr-->
-                  <tr>    
-                    <th>7:00</th>
-                    <td>disciplina</td> <!--SEGUNDA-->
-                    <td>teste</td><!--TERÇA-->
-                    <td>teste3</td><!--QUARTA-->
-                    <td>teste4</td><!--QUINTA-->
-                    <td>teste5</td><!--SEXTA-->
                   </tr>
+                  {% for matricula in matriculas %}
+                  <tr>
+                    <td>{{matricula.oferta}}</td>
+                    <td>{{matricula.oferta.aula_hora_inicio|date:"G:i"}} - {{matricula.oferta.aula_hora_fim|date:"G:i"}}</td>
+                    <td>{{matricula.oferta.aula_dias}}</td>
+                    <td>{{matricula.oferta.periodo}}</td>
+                  </tr>
+                  {% endfor %}
+                    
+              </thead>
 
-                  
-                  
-
-            </thead>
-            
-            </table>
+              
+          </table>
 
 
           </div>
