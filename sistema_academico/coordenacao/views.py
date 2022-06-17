@@ -62,6 +62,24 @@ def download_resposta(request, id_param, id_atividade, pk):
     response['Content-Disposition'] = f'attachment; filename="{obj.atividade} - {obj.aluno.pk}.pdf"'.format(pk)
     return response
 
+def download_atividade(request, id_param, id_atividade):
+    # this url is for download
+    try:
+        obj = Atividade.objects.get(pk=id_atividade)
+    except Atividade.DoesNotExist as exc:
+        return JsonResponse({'status_message': 'No Resource Found'})
+    get_binary = obj.arquivo
+    if get_binary is None:
+        return JsonResponse({'status_message': 'Resource does not contain file'})
+    if isinstance(get_binary, memoryview):
+        binary_io = io.BytesIO(get_binary.tobytes())
+    else:
+        binary_io = io.BytesIO(get_binary)
+    response = FileResponse(binary_io)
+    response['Content-Type'] = 'application/x-binary'
+    response['Content-Disposition'] = f'attachment; filename="{obj}.pdf"'.format(id_atividade)
+    return response
+
 def send_email_new_user(email_destinatario, password, user_nome):
     send_mail('SIACA - Sua conta foi criada!', 
     

@@ -55,7 +55,11 @@
               <div>
                 <H5 id="title-atv">Descrição</H5>
                 <p id="descricao">{{atividade.descricao}}</p>
-
+                <div class="text-right col-lg-12">
+                  <a class="btn btn-primary" href="{% url 'download_atividade' id_param=oferta.pk id_atividade=atividade.pk %}" role="button">
+                    Baixar Anexo
+                  </a>
+                </div>
               </div>
 
             </div>

@@ -90,7 +90,8 @@ urlpatterns = [
                     path('', views.view_atividade, name='view_atividade'),
                     path('enviar-resposta/', views.create_reposta, name='create_resposta'),
                     path('cadastrar-notas/', views.update_reposta_nota, name='update_reposta_nota'),
-                    path('download-resposta/<int:pk>/', views.download_resposta, name='download_resposta')
+                    path('download-resposta/<int:pk>/', views.download_resposta, name='download_resposta'),
+                    path('download-atividade/', views.download_atividade, name='download_atividade')
                 ])),
             ])),
             path('frequencias/', include([
