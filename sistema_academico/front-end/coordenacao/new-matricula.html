@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="pt-br" xml:lang="pt-br" class="">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="">
+
+    <!-- Bootstrap CSS CDN -->
+    {% load static %}
+    <link rel="stylesheet" href="./css/bootstrap.min.css">
+
+    <link rel="stylesheet" href="./css/style.css">
+
+
+</head> 
+
+<body>
+
+    <div class="wrapper">
+        <!-- Sidebar PROFESSOR AQUI  -->
+        {% include "coordenacao/navbar.html" %}
+       
+        <div id="conteudo">
+          <div id="table2">
+
+            <form method="POST">
+            <h5>Lista de Disciplinas disponíveis no Semestre</h5>
+            <h6 style="text-align:right ;">Matricular-se</h6>
+            
+            <!-- {% if  %} -->
+            <table id = "freq">
+              <thead>
+                  <tr>
+                    <th>Disciplina</th>
+                    <th>Horário</th>
+                    <th>Périodo</th>
+
+                  </tr>
+                  <!--  {% for disciplina in  %}  -->
+               
+                    <tr>
+                      <td>Redes Computadores</td>
+                      <td>19h - 21h</td>
+                      <td>2021.2</td>
+
+                      <td>
+                        <div class="form-check">
+                          <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                          <label class="form-check-label" for="flexCheckDefault"> </label>
+                        </div>
+                      </td>
+                     
+                    </tr>
+                    
+                 <!--  {% endfor %}  -->
+              </thead>
+
+              
+          </table>
+            
+            <div class="text-right col-lg-12">
+              <button type="submit" class="btn btn-primary mb-2">Salvar</button>
+            </div>
+
+          </form>
+          </div>  
+
+        </div>
+    </div>
+
+</body>
+
+</html>
