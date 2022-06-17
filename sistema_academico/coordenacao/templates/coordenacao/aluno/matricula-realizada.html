@@ -9,9 +9,9 @@
 
     <!-- Bootstrap CSS CDN -->
     {% load static %}
-    <link rel="stylesheet" href="./css/bootstrap.min.css">
-
-    <link rel="stylesheet" href="./css/style.css">
+    <link rel="stylesheet" href="{% static "coordenacao/css/bootstrap.min.css"%}">
+    <link rel="stylesheet" href="{% static "coordenacao/css/style.css"%}">
+    <link rel="shortcut icon" href="{% static "coordenacao/images/school.ico"%}">
 
 
 </head> 
@@ -20,7 +20,7 @@
 
     <div class="wrapper">
         <!-- Sidebar DETALHE: A NAVBAR DE PROFESSOR É DIFERENTE. USE navbar-professor.html  -->
-        {% include "coordenacao/navbar.html" %}
+        {% include "coordenacao/aluno/navbar-aluno.html" %}
        
         <div id="conteudo">
 

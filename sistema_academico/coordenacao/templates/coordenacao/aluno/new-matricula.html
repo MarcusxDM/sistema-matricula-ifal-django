@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="pt-br" xml:lang="pt-br" class="">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="">
+
+    <!-- Bootstrap CSS CDN -->
+    {% load static %}
+    <link rel="stylesheet" href="{% static "coordenacao/css/bootstrap.min.css"%}">
+    <link rel="stylesheet" href="{% static "coordenacao/css/style.css"%}">
+    <link rel="shortcut icon" href="{% static "coordenacao/images/school.ico"%}">
+
+
+</head> 
+
+<body>
+
+    <div class="wrapper">
+        <!-- Sidebar PROFESSOR AQUI  -->
+        {% include "coordenacao/aluno/navbar-aluno.html" %}
+       
+        <div id="conteudo">
+          <div id="table2">
+
+            <form method="POST">
+            <h5>Lista de Disciplinas disponíveis no Semestre</h5>
+            <h6 style="text-align:right ;">
+              0 - Seg /
+              1 - Ter /
+              2 - Qua /
+              3 - Qui /
+              4 - Sex /
+              5 - Sáb /
+              6 - Dom<br>
+            </h6>
+            {% comment %} <!-- {% if  %} --> {% endcomment %}
+            <table id = "freq">
+              <thead>
+                  <tr>
+                    <th>Disciplina</th>
+                    <th>Horário</th>
+                    <th>Dias</th>
+                    <th>Período</th>
+                    <th>Matricular-se?</th>
+
+                  </tr>
+                  {% for oferta in ofertas %}
+                  <tr>
+                    <td>{{oferta}}</td>
+                    <td>{{oferta.aula_hora_inicio|date:"G:i"}} - {{oferta.aula_hora_fim|date:"G:i"}}</td>
+                    <td>{{oferta.aula_dias}}</td>
+                    <td>{{oferta.periodo}}</td>
+
+                      <td>
+                        <div class="form-check">
+                          <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                          <label class="form-check-label" for="flexCheckDefault"> </label>
+                        </div>
+                      </td>
+                    </tr>
+                    {% endfor %}
+                    
+              </thead>
+
+              
+          </table>
+            
+            <div class="text-right col-lg-12">
+              <button type="submit" class="btn btn-primary mb-2">Salvar</button>
+            </div>
+
+          </form>
+          </div>  
+
+        </div>
+    </div>
+
+</body>
+
+</html>

@@ -7,6 +7,7 @@ from django.core.mail import send_mail
 import secrets
 import string
 import datetime
+from django.db.models import Q
 
 def generate_password(): 
     alphabet = string.ascii_letters + string.digits
@@ -43,6 +44,7 @@ def checkbox_week_days(request):
     except:
         pass
     return result
+
 
 def download_resposta(request, id_param, id_atividade, pk):
     # this url is for download
@@ -159,11 +161,18 @@ def home(request):
         for m in matriculas:
             ofertas.append(m.oferta)
         atividades = Atividade.objects.filter(oferta__in=ofertas, entrega_date__gte=datetime.date.today())
-        respostas = Resposta.objects.filter(atividade__in=atividades)
+        respostas = Resposta.objects.filter(aluno__pk=request.session['user_id'], atividade__in=atividades)
+
         atividades_feitas = []
         for r in respostas:
             atividades_feitas.append(r.atividade.id)
-        atividades = Atividade.objects.exclude(pk__in=atividades_feitas).order_by('entrega_date')
+        print(atividades_feitas)
+        ofertas_id = []
+        for o in ofertas:
+            ofertas_id.append(o.id)
+        ofertas_nao_matriculadas = Oferta.objects.exclude(pk__in=ofertas_id)
+        atividades = Atividade.objects.exclude(Q(pk__in=atividades_feitas) | Q(oferta__in=ofertas_nao_matriculadas)).order_by('entrega_date')
+        print(atividades)
     print(f'coordenacao/{home_name}.html')
     return render(request, f'coordenacao/{home_name}.html', {'ofertas' : ofertas,
                                                             'atividades' : atividades})
@@ -494,13 +503,19 @@ def edit_password(request):
 
 def list_ofertas(request):
     if request.method == 'GET' and request.session['user_id']:
-        try:
-            user = User.objects.get(cpf=request.session['user_id'])
+        user = User.objects.get(cpf=request.session['user_id'])
+        matriculas = Matricula.objects.filter(oferta__periodo__start_date__gte=datetime.date.today(), 
+                                        oferta__periodo__end_date__lte=datetime.date.today())
+        if len(matriculas)>0:
+            return render(request, f'coordenacao/aluno/matricula-realizada.html', {'matriculas' : matriculas})
+        else:
+            # form matricula
             disciplinas = Disciplina.objects.filter(curso__pk=user.aluno.curso.id)
-            ofertas = Oferta.objects.filter(disciplina__in=disciplinas, periodo__pk__gte=user.aluno.periodo_ingresso.id)
-            return render(request, f'coordenacao/aluno/matricula.html', {'ofertas' : ofertas})
-        except:
-            return redirect(reverse('index'))
+            ofertas = Oferta.objects.filter(disciplina__in=disciplinas, periodo__start_date__gte=datetime.date.today(), 
+                                            periodo__end_date__lte=datetime.date.today())
+        return render(request, f'coordenacao/aluno/new-matricula.html', {'ofertas' : ofertas})
+    else:
+        return redirect(reverse('index'))
 
 def create_matricula(request):
     if request.method == 'POST' and request.session['user_id']:
