@@ -49,7 +49,7 @@
                   </tr>
 
                   {% for oferta in ofertas %}
-                  <tr style='cursor: pointer;' class='clickable-row' data-url="{% url 'view_oferta' id_param=oferta.periodo.pk id_oferta=oferta.id %}">
+                  <tr style='cursor: pointer;' class='clickable-row' data-url="{% url 'edit_oferta' id_param=oferta.periodo.pk id_oferta=oferta.id %}">
                       <td>{{oferta}}</td> 
                       <td>{{oferta.disciplina.curso}}</td> 
                   </tr>

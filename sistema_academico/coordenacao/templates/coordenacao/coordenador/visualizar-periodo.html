@@ -56,10 +56,11 @@
                     {% comment %} <td>{{oferta.professor}}</td> {% endcomment %}
                     <td>  
                         <div class="text-right">
+                          <div>
                             <a class="btn btn-primary mb-2" href="{% url 'view_oferta' id_oferta=oferta.id id_param=periodo.id %}" role="button">
                                 <span class="glyphicon glyphicon-plus" aria-hidden="true">alunos</span>
                             </a>
-                            <a class="btn btn-primary mb-2" href="editar" role="button">
+                            <a class="btn btn-primary mb-2" href="{% url 'edit_oferta' id_oferta=oferta.id id_param=periodo.id %}" role="button">
                                 <span class="glyphicon glyphicon-plus" aria-hidden="true">editar</span>
                             </a>
                           </div>

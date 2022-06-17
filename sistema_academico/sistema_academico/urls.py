@@ -50,7 +50,11 @@ urlpatterns = [
         ])),
         path('<int:id_param>/', include([
             path('', views.view_periodo, name='view_periodo'),
-            path('<int:id_oferta>', views.list_alunos_matriculados, name='view_oferta'),
+            path('<int:id_oferta>/', views.list_alunos_matriculados, name='view_oferta'),
+            path('<int:id_oferta>/', include([
+                path('editar/', views.edit_oferta, name='edit_oferta'),
+                path('success/', views.edit_oferta_success, name='edit_oferta_success' )
+            ])),
             path('cadastrar-oferta/', include([
                 path('', views.form_oferta, name='form_oferta'),
                 path('success', views.create_oferta, name='create_oferta'),

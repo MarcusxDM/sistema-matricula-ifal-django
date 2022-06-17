@@ -438,6 +438,38 @@ def create_oferta(request, id_param):
     else:
         return redirect(reverse('index'))
 
+def edit_oferta(request, id_param, id_oferta):
+    periodo = get_object_or_404(Periodo, pk=id_param)
+    oferta = get_object_or_404(Oferta, pk=id_oferta)
+    cursos = Curso.objects.filter(created_by__pk=request.session['user_id'])
+    disciplinas = Disciplina.objects.filter(curso__in=cursos)
+    professores = Professor.objects.all()
+    return render(request, f'coordenacao/coordenador/edit-oferta.html',   {'professores' : professores,
+                                                                            'disciplinas' : disciplinas,
+                                                                            'periodo'     : periodo,
+                                                                            'oferta' : oferta})
+
+def edit_oferta_success(request, id_param, id_oferta):
+    if request.method == 'POST' and request.session['user_type'] == 1:
+        if request.POST['professor'] == "None":
+            professor = None
+        else:
+            professor = Professor.objects.get(pk=request.POST['professor'])
+        aula_dias = checkbox_week_days(request)
+        periodo = get_object_or_404(Periodo, pk=id_param)
+        disciplina = get_object_or_404(Disciplina, pk=request.POST['disciplina'])
+        oferta = Oferta.objects.filter(pk=id_oferta).update(
+                        periodo=periodo,
+                        disciplina=disciplina, 
+                        professor=professor,
+                        capacidade=request.POST['capacidade'],
+                        aula_dias=aula_dias, 
+                        aula_hora_inicio=request.POST['hora_inicio'],
+                        aula_hora_fim=request.POST['hora_fim'])
+        return redirect(periodo)
+    else:
+        return redirect(reverse('index'))
+
 def view_oferta_matriculados(request, id_param):
     if request.method == 'GET' and request.session['user_type'] == 1:
         matriculas = Matricula.objects.filter(oferta__pk=id_param)
