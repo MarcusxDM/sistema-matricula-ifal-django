@@ -42,7 +42,9 @@
                             <td><h3>Frequência</h3></td>                 
                             <td>
                                  <div class="text-right col-lg-15">
-                                 <button type="submit" class="btn btn-primary mb-6">Editar</button>
+                                  <a href="{% url 'list_frequencias' id_param=oferta.id %}">
+                                 <button type="submit" class="btn btn-primary mb-6">Listar</button>
+                                  </a>
                                  </div>
                             </td>
                           </tr>                            

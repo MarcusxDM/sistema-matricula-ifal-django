@@ -670,38 +670,40 @@ def create_reposta(request, id_param, id_atividade):
 
 def list_frequencias(request, id_param):
     if request.method == 'GET' and request.session['user_id']:
-        try:
-            oferta = get_object_or_404(Oferta, pk=id_param)
-            frequencias = Frequencia.objects.filter(oferta=oferta)
-            return render(request, f'coordenacao/aluno/list-frequencias.html', {'oferta' : oferta,
+        oferta = get_object_or_404(Oferta, pk=id_param)
+        frequencias = Frequencia.objects.filter(oferta=oferta)
+        return render(request, f'coordenacao/professor/frequencia-lista.html', {'oferta' : oferta,
                                                                                 'frequencias' : frequencias })
-        except:
-            return redirect(reverse('index'))
+    else:
+        return redirect(reverse('index'))
 
 def form_frequencia(request, id_param):
     if request.method == 'GET' and request.session['user_id']:
         oferta = get_object_or_404(Oferta, pk=id_param)
         matriculas = Matricula.objects.filter(oferta=oferta)
-        return render(request, f'coordenacao/coordenador/form-frequencia.html', {'oferta' : oferta,
-                                                                                 'matriculas' : matriculas})
+        return render(request, f'coordenacao/professor/criar-frequencia.html', {'oferta' : oferta,
+                                                                                'matriculas' : matriculas})
     else:   
         return redirect(reverse('index'))
 
 def create_frequencia(request, id_param):
     if request.method == 'POST' and request.session['user_type'] == 2:
         oferta = get_object_or_404(Oferta, pk=id_param)
-
+        matriculas = Matricula.objects.filter(oferta=oferta)
         # Create frequencia
         new_frequencia = Frequencia(aula_date=request.POST['aula_date'], oferta=oferta)
         new_frequencia.save()
 
         # Save alunos in frequencia
-        for aluno in request.POST['alunos']:
-            new_freq_aluno = AlunoFrequencia(frequencia=new_frequencia, aluno=aluno)
-            new_freq_aluno.save()
-            new_freq_aluno = None
+        for matricula in matriculas:
+            try:
+                if request.POST[f'{matricula.aluno.pk}_presenca'] == 'True':
+                    new_freq_aluno = AlunoFrequencia(frequencia=new_frequencia, aluno=matricula.aluno)
+                    new_freq_aluno.save()
+            except:
+                pass
 
-        return redirect(reverse('list_frequecias'))
+        return redirect('list_frequencias', id_param=id_param)
     else:
         return redirect(reverse('index'))   
 

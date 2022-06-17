@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="pt-br" xml:lang="pt-br" class="">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="">
+
+    <!-- Bootstrap CSS CDN -->
+    {% load static %}
+    <link rel="stylesheet" href="{% static "coordenacao/css/bootstrap.min.css"%}">
+    <link rel="stylesheet" href="{% static "coordenacao/css/style.css"%}">
+
+
+</head> 
+
+<body>
+
+    <div class="wrapper">
+        <!-- Sidebar PROFESSOR AQUI  -->
+        {% include "coordenacao/professor/navbar-professor.html" %}
+       
+        <div id="conteudo">
+          <div id="table2">
+
+            <form method="POST" action="{% url 'create_frequencia' id_param=oferta.id %}">
+              {% csrf_token %}
+            <div class="form-group rowatv">
+
+              <div> 
+                <h5>Frequência</h5> 
+              </div>
+              <div>  
+                <h6 >Selecionar Data</h6>
+                <input id="date-freq" name="aula_date" type="date">
+              </div>
+
+            </div>
+            
+            
+            {% if matriculas %}
+            <table id = "freq">
+              <thead>
+                  <tr>                      
+                    <th>Aluno</th>
+                    <th style="text-align: right;">Presente</th>
+                  </tr>
+
+                  {% for matricula in matriculas  %}
+                    <tr>
+                      <td>{{matricula.aluno}}</td>
+                      <td style="text-align: right;">
+                        <div class="form-check">
+                          <input class="form-check-input" type="checkbox" name="{{matricula.aluno.pk}}_presenca" value="True" id="flexCheckDefault">
+                          <label class="form-check-label" for="flexCheckDefault"> </label>
+                        </div>
+                      </td>
+                    </tr>
+                  {% endfor %}
+              </thead>
+          </table>
+          <div class="text-right col-lg-12">
+            <button type="submit" class="btn btn-primary mb-2">Cadastrar</button>
+          </div>
+          {% else %}
+          <h6>Sem alunos matriculados.</h6>
+          {% endif %}
+
+            
+
+          </form>
+          </div>  
+
+        </div>
+    </div>
+
+</body>
+
+</html>

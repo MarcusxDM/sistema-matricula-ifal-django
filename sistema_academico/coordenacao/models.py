@@ -210,7 +210,7 @@ class Resposta(models.Model):
         return reverse("view_resposta", kwargs={"pk": self.pk})
 
 class Frequencia(models.Model):
-    aula_date = models.DateField(null=False, blank=False)
+    aula_date = models.DateField(primary_key=True)
     oferta = models.ForeignKey(Oferta, on_delete=models.CASCADE, null=False, blank=False)    
 
     class Meta:

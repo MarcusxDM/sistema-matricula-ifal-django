@@ -332,3 +332,17 @@ table{
     text-align: left;
     margin-bottom: 2rem;
 }
+
+/* CSS frequencia-lista*/
+
+
+#freq td{
+    padding: 1px 20px;
+    border: 1px solid #fff; 
+}
+
+
+#date-freq{
+    margin-top: 0.2rem;
+}
+
