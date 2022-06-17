@@ -2,7 +2,7 @@ import io
 from django.http import FileResponse, JsonResponse
 from django.shortcuts import render, get_object_or_404, redirect, HttpResponse
 from django.urls import reverse
-from coordenacao.models import User, Coordenador, Professor, Aluno, Curso, Disciplina, Periodo, Oferta, Matricula, Atividade, Resposta, Frequencia, AlunoFrequencia
+from coordenacao.models import User, Coordenador, Professor, Aluno, Curso, Disciplina, Periodo, Oferta, Matricula, Atividade, Resposta, Frequencia, AlunoFrequencia, Nota
 from django.core.mail import send_mail
 import secrets
 import string
@@ -624,16 +624,39 @@ def update_reposta_nota(request, id_param, id_atividade):
 def view_oferta_notas(request, id_param):
     if request.method == 'GET' and request.session['user_id']:
         oferta = get_object_or_404(Oferta, pk=id_param)
-        query = '''SELECT m.aluno_id, sum(r.nota) as sum_nota FROM coordenacao_matricula m
+        notas = Nota.objects.filter(matricula__oferta=oferta)
+        query = '''SELECT m.id as id, m.aluno_id as aluno_id, m.oferta_id as oferta_id, COALESCE(ROUND(sum(r.nota)/4, 2),0) as sum_nota FROM coordenacao_matricula m
                     LEFT JOIN coordenacao_resposta r
                     ON m.aluno_id = r.aluno_id
                     where m.oferta_id=%s
-                    group by m.aluno_id;'''
-        matriculas = Aluno.objects.raw(query, [oferta.id])
-        
-        return render(request, f'coordenacao/coordenador/notas-oferta.html', {'oferta' : oferta,
-                                                                             'matriculas' : matriculas})
+                    group by id;'''
+        matriculas = Matricula.objects.raw(query, [oferta.id])
+        return render(request, f'coordenacao/professor/nota-professor.html', {'oferta' : oferta,
+                                                                              'matriculas' : matriculas,
+                                                                              'notas' : notas,
+                                                                              'notas_len' : len(notas)})
     else:   
+        return redirect(reverse('index'))
+
+def create_oferta_nota(request, id_param):
+    if request.method == 'POST' and request.session['user_type'] == 2:
+        oferta = get_object_or_404(Oferta, pk=id_param) 
+        matriculas = Matricula.objects.filter(oferta=oferta)
+        for matricula in matriculas:
+            # try:
+                av1 = float(request.POST[f'{matricula.id}_av1_nota'])
+                av2 = float(request.POST[f'{matricula.id}_av2_nota'])
+                reav = float(request.POST[f'{matricula.id}_reav_nota'])
+                final = (sum(sorted([av1, av2, reav])[-2:]))/2
+
+                new_nota = Nota(matricula=matricula, av1_nota=av1,
+                                av2_nota=av2, reav_nota=reav,
+                                final_nota=final)
+                new_nota.save()
+            # except:
+            #     pass
+        return redirect('view_oferta_notas', id_param=id_param)
+    else:
         return redirect(reverse('index'))
 
 def create_reposta(request, id_param, id_atividade):
@@ -684,7 +707,3 @@ def create_frequencia(request, id_param):
         return redirect(reverse('list_frequecias'))
     else:
         return redirect(reverse('index'))   
-
-
-
-            

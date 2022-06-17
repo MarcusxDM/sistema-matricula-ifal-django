@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="pt-br" xml:lang="pt-br" class="">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="">
+
+    <!-- Bootstrap CSS CDN -->
+    {% load static %}
+    <link rel="stylesheet" href="{% static "coordenacao/css/bootstrap.min.css"%}">
+    <link rel="stylesheet" href="{% static "coordenacao/css/style.css"%}">
+
+
+</head> 
+
+<body>
+
+    <div class="wrapper">
+        <!-- Sidebar DETALHE: A NAVBAR DE ALUNO É DIFERENTE. USE navbar-aluno.html  -->
+        {% include "coordenacao/professor/navbar-professor.html" %}
+       
+        <div id="conteudo">
+  
+          <div id="table2"> 
+                        
+            <table id = "ntprofessor">
+              <h6 id="title-ntprofessor"> {{oferta}}</h6>
+              {% if matriculas %}
+              <thead>
+                  <tr>
+                    <th>Aluno</th>
+                    <th>Nota 1</th>
+                    <th>Nota 2</th>
+                    <th>Reposição</th>
+                    <th>Final</th>
+                    <th>Situação</th>
+                  </tr>
+
+                  {% if notas_len > 0  %}
+                    {% for nota in notas %}
+                      <tr>
+                          <td>{{nota.matricula.aluno}}</td>
+                          <td>
+                              {{nota.av1_nota}}
+                          </td>
+                          <td>
+                              {{nota.av2_nota}}
+                          </td>
+                          <td>
+                            {{nota.reav_nota}}
+                          </td>
+                          <td>
+                            {{nota.final_nota}}
+                          </td> 
+                          {% if nota.final_nota >= 7 %}
+                          <td>APROVADO</td>
+                          {% else %}
+                          <td>REPROVADO</td>
+                          {% endif %}
+                      </tr>
+                    {% endfor %}
+
+                  {% else %}
+                  <form method="post" action="{% url 'create_oferta_nota' id_param=oferta.pk %}">
+                    {% csrf_token %}
+                  {% for matricula in matriculas %}
+                  <tr>
+                      <td>{{matricula.aluno}}</td>
+                      <td>
+                      
+                        <div class="form-group">
+                          <input type="number" step="0.01" min="0" value="{{matricula.sum_nota}}" name="{{matricula.pk}}_av1_nota"  id="put-nota" placeholder="Inserir">
+                        </div>
+                      
+                      </td>
+                      <td>
+                        
+                          <div class="form-group">
+                            <input type="number" step="0.01"  min="0" value="{{matricula.sum_nota}}" name="{{matricula.pk}}_av2_nota" id="put-nota" placeholder="Inserir">
+                          </div>
+                        
+                      </td>
+                      <td>
+                        
+                          <div class="form-group">
+                            <input type="number" step="0.01"  min="0" value="{{matricula.sum_nota}}" name="{{matricula.pk}}_reav_nota" id="put-nota" placeholder="Inserir">
+                          </div>
+                        
+                      </td> 
+                      <td>
+                        
+                      {{matricula.sum_nota}}
+                        
+                      </td>  
+
+                      <td>EM CURSO</td>
+                  </tr>
+                 {% endfor %}
+                 {% endif %}
+              </thead>
+              {% else %}
+              <h6>Sem matrículas na disciplina.</h6>
+              {% endif %}
+          </table>
+          {% if notas_len == 0  %}
+          <div class="text-right col-lg-12">
+            <button type="submit" class="btn btn-primary mb-2">Cadastrar</button>
+          </div>
+        </form>
+          {% endif %}
+          
+          </div>  
+
+        </div>
+
+
+</body>
+
+</html>

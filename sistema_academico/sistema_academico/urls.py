@@ -79,7 +79,10 @@ urlpatterns = [
     path('disciplina/', include([
         path('<int:id_param>/', include([
             path('', views.view_oferta, name='view_oferta'),
-            path('notas/', views.view_oferta_notas, name='view_oferta_notas'),
+            path('notas/', include([
+                path('', views.view_oferta_notas, name='view_oferta_notas'),
+                path('cadastrar/', views.create_oferta_nota, name='create_oferta_nota'),
+            ])),
             path('cadastrar-atividade/', include([
                 path('', views.form_atividade, name='form_atividade'),
                 path('success', views.create_atividade, name='create_atividade')

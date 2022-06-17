@@ -238,7 +238,22 @@ class AlunoFrequencia(models.Model):
         return reverse("AlunoFrequencia_detail", kwargs={"pk": self.pk})
 
 
+class Nota(models.Model):
+    matricula = models.ForeignKey(Matricula, on_delete=models.CASCADE)
+    av1_nota = models.FloatField(blank=True, null=False, default=0)
+    av2_nota = models.FloatField(blank=True, null=False, default=0)
+    reav_nota = models.FloatField(blank=True, null=False, default=0)
+    final_nota = models.FloatField(blank=True, null=False, default=0)
 
+    class Meta:
+        verbose_name = _("nota")
+        verbose_name_plural = _("notas")
+
+    def __str__(self):
+        return self.pk
+
+    def get_absolute_url(self):
+        return reverse("view_notas", kwargs={"pk": self.pk})
 
 
 
