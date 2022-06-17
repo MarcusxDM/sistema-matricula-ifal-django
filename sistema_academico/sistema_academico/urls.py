@@ -106,7 +106,9 @@ urlpatterns = [
                 ]))
             ]))
         ]))
-    ]))
+    ])),
+
+    path('boletim/', views.view_boletim, name='boletim')
     
 
 

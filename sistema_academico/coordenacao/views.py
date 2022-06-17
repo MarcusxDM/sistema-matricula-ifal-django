@@ -643,7 +643,6 @@ def create_oferta_nota(request, id_param):
         oferta = get_object_or_404(Oferta, pk=id_param) 
         matriculas = Matricula.objects.filter(oferta=oferta)
         for matricula in matriculas:
-            # try:
                 av1 = float(request.POST[f'{matricula.id}_av1_nota'])
                 av2 = float(request.POST[f'{matricula.id}_av2_nota'])
                 reav = float(request.POST[f'{matricula.id}_reav_nota'])
@@ -653,8 +652,6 @@ def create_oferta_nota(request, id_param):
                                 av2_nota=av2, reav_nota=reav,
                                 final_nota=final)
                 new_nota.save()
-            # except:
-            #     pass
         return redirect('view_oferta_notas', id_param=id_param)
     else:
         return redirect(reverse('index'))
@@ -691,7 +688,7 @@ def form_frequencia(request, id_param):
         return redirect(reverse('index'))
 
 def create_frequencia(request, id_param):
-    if request.method == 'POST' and request.session['user_type'] == 3:
+    if request.method == 'POST' and request.session['user_type'] == 2:
         oferta = get_object_or_404(Oferta, pk=id_param)
 
         # Create frequencia
@@ -707,3 +704,9 @@ def create_frequencia(request, id_param):
         return redirect(reverse('list_frequecias'))
     else:
         return redirect(reverse('index'))   
+
+def view_boletim(request):
+    if request.method == 'GET' and request.session['user_type'] == 3:
+        matriculas = Matricula.objects.filter(aluno__pk=request.session['user_id'])
+        notas = Nota.objects.filter(matricula__in=matriculas)
+        return render(request, f'coordenacao/aluno/boletim.html', {'notas' : notas})
