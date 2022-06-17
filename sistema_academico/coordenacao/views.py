@@ -120,12 +120,20 @@ def home(request):
     # try:
     user_name = User.objects.get(cpf=request.session['user_id']).nome
     request.session['user_name'] = user_name
+    atividades=[] 
     if request.session['user_type'] == 1:
         home_name = 'coordenador/home-coordenador'
         ofertas = Oferta.objects.filter(professor=None)
     elif request.session['user_type'] == 2:
         home_name = 'professor/home-professor'
-        ofertas = Oferta.objects.filter(professor__pk=request.session['user_id'], periodo__end_date__gte=datetime.date.today()) 
+        ofertas = Oferta.objects.filter(professor__pk=request.session['user_id'], periodo__end_date__gte=datetime.date.today())
+        atividades = Atividade.objects.filter(oferta__in=ofertas)
+        respostas = Resposta.objects.filter(atividade__in=atividades, nota=None)
+        atividades_sem_nota = []
+        for r in respostas:
+            atividades_sem_nota.append(r.atividade.id)
+        atividades = Atividade.objects.filter(pk__in=atividades_sem_nota).order_by('entrega_date')
+
     else:
         home_name = 'aluno/home-aluno'
         matriculas = Matricula.objects.filter(aluno__pk=request.session['user_id'], oferta__periodo__end_date__gte=datetime.date.today())

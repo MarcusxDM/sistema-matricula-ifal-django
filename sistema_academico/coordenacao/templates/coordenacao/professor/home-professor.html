@@ -27,7 +27,7 @@
               <table id = "first">
                 {% if ofertas %}
                 {% for oferta in ofertas %}
-                <tr>
+                <tr style='cursor: pointer;' class='clickable-row' data-url="{% url 'view_oferta' id_param=oferta.pk %}">
                   <td>{{oferta.disciplina}}</td>
                 </tr>
                 {% endfor %}
@@ -40,28 +40,30 @@
 
 
           <div id="table2">
-            <H5>Lista de Tarefas Sem Nota</H5>
+            <H5>Lista de Atividades Sem Nota</H5>
 
-            {% comment %} <!-- {% if tarefas %} --> {% endcomment %}
-            <table id = "second">
+            {% if atividades %}
+            <table style='width: 100%;' id = "second">
               <thead>
                   <tr>
-                      <th>Atividades</th>
+                      <th>Atividade</th>
                       <th>Disciplina</th>
                       <th>Data de Entrega</th>
                   </tr>
 
-                  {% comment %} <!--  {% for aluno in alunos %}  --> {% endcomment %}
-                  <tr>
-                      <td>atividade 4</td>
-                      <td>ESTRUTURA DE DADOS</td>
-                      <td>14/05/22</td> 
+                  {% for atividade in atividades %}
+                  <tr style='cursor: pointer;' class='clickable-row' data-url="{% url 'view_atividade' id_param=atividade.oferta.pk id_atividade=atividade.id %}">
+                      <td>{{atividade}}</td>
+                      <td>{{atividade.oferta.disciplina}}</td>
+                      <td>{{atividade.entrega_date|date:"d/m/Y"}}</td> 
                   </tr>
-                 {% comment %} <!--  {% endfor %}  --> {% endcomment %}
+                 {% endfor %}
 
               </thead>
           </table>
-          {% comment %} {% endif %} {% endcomment %}
+          {% else %}
+          <H6>Nenhuma sem nota</H6>
+          {% endif %}
 
           </div>  
 
@@ -69,7 +71,16 @@
     </div>
 
 
-
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 </body>
+<script>
+    jQuery(document).ready(function($) {
+      $(".clickable-row").click(function() {
+          window.location = $(this).data("url");
+      });
+  });
+</script>
 
 </html>
