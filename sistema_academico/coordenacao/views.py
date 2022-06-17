@@ -137,7 +137,7 @@ def home(request):
         atividades_feitas = []
         for r in respostas:
             atividades_feitas.append(r.atividade.id)
-        atividades = Atividade.objects.exclude(pk__in=atividades_feitas)
+        atividades = Atividade.objects.exclude(pk__in=atividades_feitas).order_by('entrega_date')
     print(f'coordenacao/{home_name}.html')
     return render(request, f'coordenacao/{home_name}.html', {'ofertas' : ofertas,
                                                             'atividades' : atividades})
@@ -528,7 +528,7 @@ def list_ofertas_lecionadas(request):
 def view_oferta(request, id_param):
     if request.method == 'GET' and request.session['user_id']:
         oferta = get_object_or_404(Oferta, pk=id_param)
-        atividades = Atividade.objects.filter(oferta=oferta).order_by('-create_date') 
+        atividades = Atividade.objects.filter(oferta=oferta).order_by('-entrega_date') 
         return render(request, f'coordenacao/professor/menu-de-disciplinas-professor.html', {'oferta' : oferta,
                                                                                              'atividades' : atividades,
                                                                                              'count_atividades' : len(atividades)})
@@ -538,7 +538,7 @@ def view_oferta(request, id_param):
 def list_atividades(request, id_param):
     if request.method == 'GET' and request.session['user_id']:
         oferta = get_object_or_404(Oferta, pk=id_param)
-        atividades = Atividade.objects.filter(oferta=oferta).order_by('-create_date') 
+        atividades = Atividade.objects.filter(oferta=oferta).order_by('-entrega_date') 
         return render(request, f'coordenacao/professor/lista-atividades.html', {'oferta' : oferta,
                                                                                 'atividades' : atividades})
     else:   
