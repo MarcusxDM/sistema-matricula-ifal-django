@@ -210,12 +210,17 @@ class Resposta(models.Model):
         return reverse("view_resposta", kwargs={"pk": self.pk})
 
 class Frequencia(models.Model):
-    aula_date = models.DateField(primary_key=True)
+    aula_date = models.DateField(null=False, blank=False)
     oferta = models.ForeignKey(Oferta, on_delete=models.CASCADE, null=False, blank=False)    
 
     class Meta:
         verbose_name = _("frequencia")
         verbose_name_plural = _("frequencias")
+        constraints = [
+            models.UniqueConstraint(
+                fields=['aula_date', 'oferta'], name='unique_aula_date_oferta_combination'
+            )
+        ]
 
     def __str__(self):
         return self.name
@@ -230,6 +235,7 @@ class AlunoFrequencia(models.Model):
     class Meta:
         verbose_name = _("AlunoFrequencia")
         verbose_name_plural = _("AlunoFrequencias")
+        
 
     def __str__(self):
         return self.name

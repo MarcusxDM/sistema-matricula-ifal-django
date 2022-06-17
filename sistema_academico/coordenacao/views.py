@@ -2,7 +2,7 @@ import io
 from django.http import FileResponse, JsonResponse
 from django.shortcuts import render, get_object_or_404, redirect, HttpResponse
 from django.urls import reverse
-from coordenacao.models import User, Coordenador, Professor, Aluno, Curso, Disciplina, Periodo, Oferta, Matricula, Atividade, Resposta, Frequencia, AlunoFrequencia, Nota
+from coordenacao.models import User, Coordenador, Professor, Aluno, Curso, Disciplina, Periodo, Oferta, Matricula, Atividade, Resposta, Nota, Frequencia, AlunoFrequencia 
 from django.core.mail import send_mail
 import secrets
 import string
@@ -691,8 +691,11 @@ def create_frequencia(request, id_param):
         oferta = get_object_or_404(Oferta, pk=id_param)
         matriculas = Matricula.objects.filter(oferta=oferta)
         # Create frequencia
-        new_frequencia = Frequencia(aula_date=request.POST['aula_date'], oferta=oferta)
+        new_frequencia, created = Frequencia.objects.get_or_create(aula_date=request.POST['aula_date'], oferta=oferta)
         new_frequencia.save()
+
+        # Delete alunos fre
+        AlunoFrequencia.objects.filter(frequencia=new_frequencia).delete()
 
         # Save alunos in frequencia
         for matricula in matriculas:
@@ -706,6 +709,29 @@ def create_frequencia(request, id_param):
         return redirect('list_frequencias', id_param=id_param)
     else:
         return redirect(reverse('index'))   
+    
+def edit_frequencia(request, id_param, id_freq):
+    if request.method == 'GET' and request.session['user_id']:
+        oferta = get_object_or_404(Oferta, pk=id_param)
+        frequencia = get_object_or_404(Frequencia, pk=id_freq)
+        frequencias = AlunoFrequencia.objects.filter(frequencia_id=id_freq)
+        
+        alunos_presentes = []
+        for f in frequencias:
+            alunos_presentes.append(f.aluno.pk)
+
+        matriculas = Matricula.objects.exclude(aluno_id__in=alunos_presentes)
+        matriculas_id = []
+        for m in matriculas:
+            matriculas_id.append(m.pk)
+        matriculas = Matricula.objects.filter(pk__in=matriculas_id, oferta=oferta)
+        return render(request, f'coordenacao/professor/criar-frequencia.html', {'oferta' : oferta,
+                                                                                'matriculas' : matriculas,
+                                                                                'frequencias' : frequencias,
+                                                                                'date_freq' : frequencia.aula_date})
+    else:
+        return redirect(reverse('index'))
+
 
 def view_boletim(request):
     if request.method == 'GET' and request.session['user_type'] == 3:

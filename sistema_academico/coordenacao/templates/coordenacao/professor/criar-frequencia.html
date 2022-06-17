@@ -33,13 +33,13 @@
               </div>
               <div>  
                 <h6 >Selecionar Data</h6>
-                <input id="date-freq" name="aula_date" type="date">
+                <input id="date-freq" name="aula_date" type="date" {% if date_freq %} value="{{date_freq|date:"Y-m-d"}}" {% endif %}>
               </div>
 
             </div>
             
             
-            {% if matriculas %}
+            {% if matriculas or frequencias %}
             <table id = "freq">
               <thead>
                   <tr>                      
@@ -47,17 +47,31 @@
                     <th style="text-align: right;">Presente</th>
                   </tr>
 
-                  {% for matricula in matriculas  %}
-                    <tr>
-                      <td>{{matricula.aluno}}</td>
-                      <td style="text-align: right;">
-                        <div class="form-check">
-                          <input class="form-check-input" type="checkbox" name="{{matricula.aluno.pk}}_presenca" value="True" id="flexCheckDefault">
-                          <label class="form-check-label" for="flexCheckDefault"> </label>
-                        </div>
-                      </td>
-                    </tr>
-                  {% endfor %}
+                  
+                  {% if date_freq %}
+                    {% for f in frequencias %}
+                      <tr>
+                        <td>{{f.aluno}}</td>
+                        <td style="text-align: right;">
+                          <div class="form-check">
+                            <input checked class="form-check-input" type="checkbox" name="{{f.aluno.pk}}_presenca" value="True" id="flexCheckDefault">
+                            <label class="form-check-label" for="flexCheckDefault"> </label>
+                          </div>
+                        </td>
+                      </tr>
+                    {% endfor %}
+                  {% endif %}
+                    {% for matricula in matriculas %}
+                      <tr>
+                        <td>{{matricula.aluno}}</td>
+                        <td style="text-align: right;">
+                          <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="{{matricula.aluno.pk}}_presenca" value="True" id="flexCheckDefault">
+                            <label class="form-check-label" for="flexCheckDefault"> </label>
+                          </div>
+                        </td>
+                      </tr>
+                    {% endfor %}
               </thead>
           </table>
           <div class="text-right col-lg-12">

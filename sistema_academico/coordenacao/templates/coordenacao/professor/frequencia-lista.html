@@ -39,7 +39,7 @@
                     <tr>
                       <td>{{frequencia.aula_date|date:"d/m/Y"}}</td>
                       <td style="text-align: right;">
-                        <a class="btn btn-primary mb-2" href="editar" role="button">
+                        <a class="btn btn-primary mb-2" href="{% url 'edit_frequencia' id_param=oferta.id id_freq=frequencia.pk %}" role="button">
                           <span class="glyphicon glyphicon-plus" aria-hidden="true">Editar</span>
                         </a>
                       </td>
