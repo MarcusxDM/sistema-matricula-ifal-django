@@ -2,8 +2,6 @@
 <html lang="pt-br" xml:lang="pt-br" class="">
 
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="shortcut icon" href="">
 
@@ -72,8 +70,7 @@
                     {% csrf_token %}
                       <div class="input-group mb-3">
                       <div class="custom-file">
-                        <label class="custom-file-label" for="inputGroupFile01" >Escolher arquivo</label>
-                        <input required type="file" accept="application/pdf" name='arquivo' class="custom-file-input" id="inputGroupFile01" aria-describedby="inputGroupFileAddon01">
+                        <input required type="file" accept="application/pdf"  class="form-control-file" name="arquivo" id="arquivo">
                       </div>
                     </div>
                     <div class="text-right col-lg-12">
@@ -97,8 +94,6 @@
         </div>
     </div>
 
-
-<!-- <script type="text/javascript" src="./js/atv-aluno.js"></script> -->
-</body>
+  </body>
 
 </html>
