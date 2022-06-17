@@ -141,9 +141,12 @@ def home(request):
     user_name = User.objects.get(cpf=request.session['user_id']).nome
     request.session['user_name'] = user_name
     atividades=[] 
+    cursos=[]
     if request.session['user_type'] == 1:
         home_name = 'coordenador/home-coordenador'
-        ofertas = Oferta.objects.filter(professor=None)
+        cursos = Curso.objects.filter(created_by__pk=request.session['user_id'])
+        disciplinas = Disciplina.objects.filter(curso__in=cursos)
+        ofertas = Oferta.objects.filter(professor=None, disciplina__in=disciplinas)
     elif request.session['user_type'] == 2:
         home_name = 'professor/home-professor'
         ofertas = Oferta.objects.filter(professor__pk=request.session['user_id'], periodo__end_date__gte=datetime.date.today())
@@ -174,7 +177,8 @@ def home(request):
         atividades = Atividade.objects.exclude(Q(pk__in=atividades_feitas) | Q(oferta__in=ofertas_nao_matriculadas)).order_by('entrega_date')
     print(f'coordenacao/{home_name}.html')
     return render(request, f'coordenacao/{home_name}.html', {'ofertas' : ofertas,
-                                                            'atividades' : atividades})
+                                                            'atividades' : atividades,
+                                                            'cursos' : cursos})
     # except:
     #     return redirect(reverse('index'))
 
