@@ -20,7 +20,13 @@
 
     <div class="wrapper">
         <!-- Sidebar de PROFESSOR  -->
+        {% if request.session.user_type == 1%}
+        {% include "coordenacao/coordenador/navbar-coordenador.html" %}
+        {% elif request.session.user_type == 2%}
         {% include "coordenacao/professor/navbar-professor.html" %}
+        {% else %}
+        {% include "coordenacao/aluno/navbar-aluno.html" %}
+        {% endif %}
        
         <div id="conteudo">
      
