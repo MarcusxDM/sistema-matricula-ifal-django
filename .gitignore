@@ -157,6 +157,10 @@ env/
 
 # Django
 sistema_academico/coordenacao/migrations/
+<<<<<<< HEAD
 # sistema_academico/sistema_academico/settings.py
 
 sistema_academico/staticfiles/
+=======
+sistema_academico/sistema_academico/settings.py
+>>>>>>> parent of e4d3953 (Update .gitignore)
