@@ -1,0 +1,1 @@
+web: gunicorn --pythonpath sistema_academico sistema_academico.wsgi
