@@ -1,1 +1,1 @@
-web: gunicorn --pythonpath sistema_academico/sistema_academico.wsgi
+web: gunicorn --pythonpath sistema_academico/ sistema_academico.wsgi
