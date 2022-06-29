@@ -24,6 +24,7 @@ Front-end:
 - HTML5
 - CSS
 - Javascript
+- Bootstrap 5
 
 Prototipagem:
 - Figma
