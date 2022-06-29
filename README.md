@@ -1,5 +1,6 @@
 # sistema-matricula-ifal-django
-Aplicação Web de gerência de matrículas para instituições da educação
+Aplicação Web de gerência de matrículas para instituições da educação.
+Acesso: https://siaca-django.herokuapp.com/
 
 ## Funcionalidades:
 - Cadastro de pessoas: aluno, professor e coordenador de curso
