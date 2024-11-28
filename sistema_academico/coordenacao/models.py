@@ -22,14 +22,14 @@ class User(models.Model):
 
     def get_absolute_url(self):
         return reverse("user_detail", kwargs={"pk": self.pk})
-    
+
 class Coordenador(models.Model):
     user = models.OneToOneField(
         User,
         on_delete=models.CASCADE,
         primary_key=True,
     )
-    
+
     class Meta:
         verbose_name = _("coordenador")
         verbose_name_plural = _("coordenadores")
@@ -136,7 +136,8 @@ class Oferta(models.Model):
     periodo = models.ForeignKey(Periodo, on_delete=models.CASCADE, null=False, blank=False)
     disciplina = models.ForeignKey(Disciplina, on_delete=models.CASCADE, null=False, blank=False)
     professor = models.ForeignKey(Professor, on_delete=models.CASCADE, null=True, blank=True)
-    aula_dias = models.CharField(max_length=7, null=False, blank=False) # '{0-6}' cada numero representa um dia da semana
+    # '{0-6}' cada numero representa um dia da semana
+    aula_dias = models.CharField(max_length=7, null=False, blank=False) 
     aula_hora_inicio = models.TimeField(null=False, blank=False)
     aula_hora_fim = models.TimeField(null=False, blank=False)
     capacidade = models.IntegerField(null=False, blank=False, default=1)
@@ -148,10 +149,9 @@ class Oferta(models.Model):
         verbose_name_plural = _("ofertas")
 
     def __str__(self):
-        if self.professor == None:
+        if self.professor is None:
             return f"{self.pk} | {self.disciplina.nome} | Sem professor"
-        else:
-            return f"{self.pk} | {self.disciplina.nome} | {self.professor.user.nome}"
+        return f"{self.pk} | {self.disciplina.nome} | {self.professor.user.nome}"
 
     def get_absolute_url(self):
         return reverse("oferta_detail", kwargs={"pk": self.pk})
@@ -160,7 +160,7 @@ class Matricula(models.Model):
     oferta = models.ForeignKey(Oferta, on_delete=models.CASCADE)
     aluno = models.ForeignKey(Aluno, on_delete=models.CASCADE)
     create_date = models.DateField(auto_now_add=True)
-    
+
     class Meta:
         verbose_name = _("matricula")
         verbose_name_plural = _("matriculas")
@@ -211,7 +211,7 @@ class Resposta(models.Model):
 
 class Frequencia(models.Model):
     aula_date = models.DateField(null=False, blank=False)
-    oferta = models.ForeignKey(Oferta, on_delete=models.CASCADE, null=False, blank=False)    
+    oferta = models.ForeignKey(Oferta, on_delete=models.CASCADE, null=False, blank=False)
 
     class Meta:
         verbose_name = _("frequencia")
@@ -231,11 +231,10 @@ class Frequencia(models.Model):
 class AlunoFrequencia(models.Model):
     frequencia = models.ForeignKey(Frequencia, on_delete=models.CASCADE)
     aluno = models.ForeignKey(Aluno, on_delete=models.CASCADE)
-    
+
     class Meta:
         verbose_name = _("AlunoFrequencia")
         verbose_name_plural = _("AlunoFrequencias")
-        
 
     def __str__(self):
         return self.name
@@ -260,6 +259,3 @@ class Nota(models.Model):
 
     def get_absolute_url(self):
         return reverse("view_notas", kwargs={"pk": self.pk})
-
-
-
