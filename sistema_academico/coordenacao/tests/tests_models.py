@@ -6,8 +6,7 @@ from django.test import TestCase, RequestFactory
 from unittest.mock import patch, MagicMock
 from django.urls import reverse
 import re
-from coordenacao.models import Disciplina, Oferta, User, Professor, Aluno, Coordenador, Curso, Periodo
-from coordenacao.views import create_oferta, edit_oferta, form_aluno
+from coordenacao.models import User, Coordenador
 
 COORDENADOR_USER_TYPE = 1
 PROFESSOR_USER_TYPE = 2
