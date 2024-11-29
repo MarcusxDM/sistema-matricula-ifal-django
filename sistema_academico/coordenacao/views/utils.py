@@ -39,8 +39,7 @@ def checkbox_week_days(request):
     return result
 
 def send_email_new_user(email_destinatario, password, user_nome):
-    send_mail('SIACA - Sua conta foi criada!\n\n',
-              f'Olá {user_nome}!\nSua conta do Sistema Acadêmico foi criada,
-               utilize seu CPF e a senha: {password} para fazer login.', 
+    send_mail('SIACA - Sua conta foi criada!', 
+              f'Olá {user_nome}!\nSua conta do Sistema Acadêmico foi criada, utilize seu CPF e a senha: {password} para fazer login.', 
             'mvgp1@aluno.ifal.edu.br',
     [email_destinatario], fail_silently=False)

@@ -7,7 +7,7 @@ from coordenacao.models import User, Coordenador, Professor, Aluno
 from coordenacao.models import Curso, Disciplina, Periodo, Oferta
 from coordenacao.models import Matricula, Atividade, Resposta
 from coordenacao.models import Nota, Frequencia, AlunoFrequencia
-from sistema_academico.coordenacao.views.utils import checkbox_week_days
+from coordenacao.views.utils import checkbox_week_days
 
 def download_resposta(pk):
     # this url is for download

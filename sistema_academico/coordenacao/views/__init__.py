@@ -1,0 +1,1 @@
+from . import login_auth, aluno, curso, matricula, oferta, perfil, periodo, professor, utils

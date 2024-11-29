@@ -2,7 +2,6 @@ from django.shortcuts import render, redirect
 from django.urls import reverse
 from coordenacao.models import User, Coordenador, Aluno
 from coordenacao.models import Curso, Periodo
-from sistema_academico.coordenacao.views.utils import generate_password, send_email_new_user
 
 def list_alunos(request):
     '''
