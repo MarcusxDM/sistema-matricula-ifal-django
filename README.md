@@ -1,6 +1,5 @@
 # sistema-matricula-ifal-django
 Aplicação Web de gerência de matrículas para instituições da educação.
-Acesso: https://siaca-django.herokuapp.com/
 
 ## Funcionalidades:
 - Cadastro de pessoas: aluno, professor e coordenador de curso
@@ -29,9 +28,7 @@ Front-end:
 Prototipagem:
 - Figma
 
-## Time:
-- José Vanderley	jvpsf1@aluno.ifal.edu.br
-- Isaac Fernando	ifms1@aluno.ifal.edu.br
-- João Victor	jvmv1@aluno.ifal.edu.br
-- Marcus Vinicius	mvgp1@aluno.ifal.edu.br
-- Mayson Medeiros	mfm1@aluno.ifal.edu.br 
+## Dockerização:
+- Marcus Pestana
+- Karla Araújo
+
