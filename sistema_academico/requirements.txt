@@ -9,6 +9,7 @@ isort==5.13.2
 Jinja2==3.1.4
 MarkupSafe==3.0.2
 mccabe==0.7.0
+mysqlclient
 packaging==24.2
 platformdirs==4.3.6
 pluggy==1.5.0
@@ -19,3 +20,4 @@ pylint-plugin-utils==0.8.2
 sqlparse==0.5.2
 tomlkit==0.13.2
 tzdata==2024.2
+python-decouple
