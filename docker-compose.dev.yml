@@ -10,7 +10,7 @@ services:
     ports:
       - "3306:3306"
     volumes:
-      - ./mysql-init:/docker-entrypoint-initdb.d:ro
+      - ./mysql-init:/initdb.d:ro
     # data will be lost
     # when the container stops.
     tmpfs:
