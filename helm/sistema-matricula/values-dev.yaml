@@ -2,7 +2,7 @@
 replicaCount: 1
 
 image:
-  tag: "develop-bca73b9"
+  tag: "develop-5b50aa3"
 
 service:
   type: NodePort
