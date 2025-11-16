@@ -3,8 +3,8 @@ replicaCount: 1
 
 image:
   repository: ghcr.io/marcusxdm/sistema-matricula-ifal-django
+  tag: "develop-bca73b9"   # <-- coloque a tag real que existe no GHCR
   pullPolicy: IfNotPresent
-  tag: "latest"
 
 service:
   type: ClusterIP
