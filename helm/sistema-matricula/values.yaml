@@ -1,0 +1,44 @@
+# Valores padrão
+replicaCount: 1
+
+image:
+  repository: ghcr.io/marcusxdm/sistema-matricula-ifal-django
+  pullPolicy: IfNotPresent
+  tag: "latest"
+
+service:
+  type: ClusterIP
+  port: 8000
+
+ingress:
+  enabled: false
+  className: ""
+  annotations: {}
+  hosts:
+    - host: sistema-matricula.local
+      paths:
+        - path: /
+          pathType: Prefix
+  tls: []
+
+resources:
+  limits:
+    cpu: 500m
+    memory: 512Mi
+  requests:
+    cpu: 250m
+    memory: 256Mi
+
+# Configuração do banco de dados
+database:
+  host: mysql
+  port: 3306
+  name: sistema_matricula
+  user: django_user
+  password: changeme123
+  rootPassword: rootpass123
+
+# Job de migrations
+migrations:
+  enabled: true
+  backoffLimit: 3

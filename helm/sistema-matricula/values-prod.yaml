@@ -1,0 +1,31 @@
+# Ambiente de Produção
+replicaCount: 3
+
+image:
+  tag: "prod"
+
+service:
+  type: ClusterIP
+
+database:
+  host: mysql-prod
+  name: sistema_matricula_prod
+  user: prod_user
+  password: prod_password_456
+  rootPassword: prod_root_password_456
+
+resources:
+  limits:
+    cpu: 1000m
+    memory: 1Gi
+  requests:
+    cpu: 500m
+    memory: 512Mi
+
+ingress:
+  enabled: true
+  hosts:
+    - host: sistema-matricula.local
+      paths:
+        - path: /
+          pathType: Prefix

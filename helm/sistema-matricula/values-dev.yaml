@@ -1,0 +1,23 @@
+# Ambiente de Desenvolvimento
+replicaCount: 1
+
+image:
+  tag: "dev"
+
+service:
+  type: NodePort
+
+database:
+  host: mysql-dev
+  name: sistema_matricula_dev
+  user: dev_user
+  password: dev_password_123
+  rootPassword: dev_root_password_123
+
+ingress:
+  enabled: true
+  hosts:
+    - host: dev.sistema-matricula.local
+      paths:
+        - path: /
+          pathType: Prefix
