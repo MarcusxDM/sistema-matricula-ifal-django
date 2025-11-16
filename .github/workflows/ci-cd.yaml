@@ -83,7 +83,7 @@ jobs:
           fi
           
           # Atualizar a tag da imagem
-          sed -i "s|tag:.*|tag: \\"${IMAGE_TAG}\\"|" $VALUES_FILE
+          sed -i "s|tag:.*|tag: \"${IMAGE_TAG}\"|" $VALUES_FILE
           
           # Commit apenas se houver mudanças
           git config user.name "GitHub Actions"
