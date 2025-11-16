@@ -7,7 +7,6 @@ on:
       - develop
     paths-ignore:
       - 'helm/**/values*.yaml'
-      - '.github/workflows/**'
 
 env:
   REGISTRY: ghcr.io
@@ -21,7 +20,7 @@ jobs:
       packages: write
     
     outputs:
-      image-tag: ${{ steps.meta.outputs.version }}
+      image-tag: ${{ steps.prepare-tag.outputs.tag }}
     
     steps:
       - name: Checkout code
@@ -39,23 +38,20 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Extract metadata
-        id: meta
-        uses: docker/metadata-action@v5
-        with:
-          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
-          tags: |
-            type=sha,prefix={{branch}}-
-            type=ref,event=branch
-            type=semver,pattern={{version}}
+      - name: Prepare tag
+        id: prepare-tag
+        run: |
+          BRANCH_NAME=${GITHUB_REF#refs/heads/}
+          IMAGE_TAG="${BRANCH_NAME}-${GITHUB_SHA::7}"
+          echo "tag=${IMAGE_TAG}" >> $GITHUB_OUTPUT
+          echo "Using tag: ${IMAGE_TAG}"
 
       - name: Build and push Docker image
         uses: docker/build-push-action@v5
         with:
           context: .
           push: true
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
+          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ steps.prepare-tag.outputs.tag }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
@@ -74,7 +70,7 @@ jobs:
       - name: Update Helm values
         run: |
           BRANCH_NAME=${GITHUB_REF#refs/heads/}
-          IMAGE_TAG="${BRANCH_NAME}-${GITHUB_SHA::7}"
+          IMAGE_TAG="${{ needs.build-and-push.outputs.image-tag }}"
           
           if [ "$BRANCH_NAME" == "main" ]; then
             VALUES_FILE="helm/sistema-matricula/values-prod.yaml"
@@ -82,8 +78,13 @@ jobs:
             VALUES_FILE="helm/sistema-matricula/values-dev.yaml"
           fi
           
+          echo "Atualizando ${VALUES_FILE} com a tag: ${IMAGE_TAG}"
+          
           # Atualizar a tag da imagem
           sed -i "s|tag:.*|tag: \"${IMAGE_TAG}\"|" $VALUES_FILE
+          
+          # Mostrar a mudança
+          git diff $VALUES_FILE
           
           # Commit apenas se houver mudanças
           git config user.name "GitHub Actions"
