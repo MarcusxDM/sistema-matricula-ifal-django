@@ -159,3 +159,4 @@ env/
 sistema_academico/coordenacao/migrations/
 sistema_academico/staticfiles/
 sistema_academico/sistema_academico/settings.py
+.github/copilot-instructions.md

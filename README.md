@@ -45,8 +45,13 @@ MYSQL_DATABASE=
 MYSQL_USER=
 MYSQL_PASSWORD=
 ```
+(Adicione quais valores quiser)
 
-### 2. Subir os containers (ou executar Dev Container presente no Projeto)
+### 2. Criar o arquivo `settings.py`
+
+Utilize settings.py.exemple
+
+### 3. Subir os containers (ou executar Dev Container presente no Projeto)
 
 Execute o comando:
 
@@ -94,3 +99,5 @@ Quando não precisar mais da aplicação rodando:
 ```bash
 docker-compose -f docker-compose.dev.yml down
 ```
+
+Obs.: o banco roda em modo temporário, toda vez que parado os dados são perdidos
