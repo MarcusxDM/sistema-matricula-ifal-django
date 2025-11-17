@@ -31,6 +31,9 @@ COPY --from=builder /usr/local /usr/local
 # Copiar projeto (todo o diretório sistema_academico)
 COPY sistema_academico/ /app/
 
+# Criar settings.py a partir do template
+RUN cp /app/sistema_academico/settings.py.template /app/sistema_academico/settings.py;
+
 ENV PYTHONUNBUFFERED=1
 ENV PYTHONPATH=/app:$PYTHONPATH
 ENV DJANGO_SETTINGS_MODULE=sistema_academico.settings
