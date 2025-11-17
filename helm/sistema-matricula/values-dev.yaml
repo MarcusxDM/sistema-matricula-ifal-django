@@ -2,7 +2,7 @@
 replicaCount: 1
 
 image:
-  tag: "develop-{{ .Values.gitCommit }}""
+  tag: "develop-{{ .Values.gitCommit }}"
   pullPolicy: Always
 
 debug: true
