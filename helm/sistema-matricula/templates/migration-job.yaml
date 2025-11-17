@@ -17,9 +17,7 @@ spec:
       containers:
       - name: migrations
         image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
-        command:
-            python manage.py migrate --noinput
-            echo "✔ Migrations concluídas"
+        command: ["sh", "-c", "python manage.py migrate --noinput && echo '✔ Migrations concluídas'"]
         env:
         - name: MYSQL_DATABASE
           value: {{ .Values.database.name | quote }}
