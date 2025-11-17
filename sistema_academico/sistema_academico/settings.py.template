@@ -66,7 +66,7 @@ DATABASES = {
         'NAME': config('MYSQL_DATABASE', default='sistemadb'),
         'USER': config('MYSQL_USER', default='sistemadbuser'),
         'PASSWORD': config('MYSQL_PASSWORD', default='sistemadbpass'),
-        'HOST': config('MYSQL_HOST', default='db'),
+        'HOST': config('MYSQL_HOST', default='mysql'),
         'PORT': config('MYSQL_PORT', default='3306'),
         'OPTIONS': {'ssl': None},
     }
