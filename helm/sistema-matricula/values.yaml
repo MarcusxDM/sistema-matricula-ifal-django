@@ -33,12 +33,12 @@ resources:
 
 # Configuração do banco de dados
 database:
-  host: mysql
   port: 3306
-  name: sistema_matricula
-  user: django_user
-  password: changeme123
-  rootPassword: rootpass123
+  host: mysql
+  name: sistema_matricula_dev
+  user: dev_user
+  password: dev_password_123
+  rootPassword: dev_root_password_123
   secret:
     enabled: true
 
