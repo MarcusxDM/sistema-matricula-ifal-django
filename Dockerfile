@@ -31,9 +31,6 @@ COPY --from=builder /usr/local /usr/local
 # Copiar projeto (todo o diretório sistema_academico)
 COPY sistema_academico/ /app/
 
-# Copiar template de settings
-COPY sistema_academico/sistema_academico/settings.py.template /app/sistema_academico/
-
 # Copiar entrypoint script
 COPY entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
