@@ -2,7 +2,7 @@
 replicaCount: 3
 
 image:
-  tag: "prod"
+  tag: "main-{{ .Values.gitCommit }}""
 
 debug: false
 

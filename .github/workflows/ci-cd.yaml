@@ -36,23 +36,30 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Prepare tag
+      - name: Prepare dynamic tag
         id: prepare-tag
         run: |
-          BRANCH_NAME=${GITHUB_REF#refs/heads/}
-          IMAGE_TAG="${BRANCH_NAME}-${GITHUB_SHA::7}"
-          # Converter para lowercase
+          BRANCH_NAME="${GITHUB_REF#refs/heads/}"
+          SHORT_SHA=$(echo $GITHUB_SHA | cut -c1-7)
+          
+          # Tag final no formato: branch-sha
+          IMAGE_TAG="${BRANCH_NAME}-${SHORT_SHA}"
+
+          # imagem sempre lowercase -> GHCR exige
           IMAGE_NAME_LOWER=$(echo "${{ env.IMAGE_NAME }}" | tr '[:upper:]' '[:lower:]')
+
           echo "tag=${IMAGE_TAG}" >> $GITHUB_OUTPUT
           echo "image-name=${IMAGE_NAME_LOWER}" >> $GITHUB_OUTPUT
-          echo "Using tag: ${IMAGE_TAG}"
-          echo "Using image: ${IMAGE_NAME_LOWER}"
+
+          echo "Using tag: $IMAGE_TAG"
+          echo "Using image: $IMAGE_NAME_LOWER"
 
       - name: Build and push Docker image
         uses: docker/build-push-action@v5
         with:
           context: .
           push: true
-          tags: ${{ env.REGISTRY }}/${{ steps.prepare-tag.outputs.image-name }}:${{ steps.prepare-tag.outputs.tag }}
+          tags: |
+            ${{ env.REGISTRY }}/${{ steps.prepare-tag.outputs.image-name }}:${{ steps.prepare-tag.outputs.tag }}
           cache-from: type=gha
           cache-to: type=gha,mode=max

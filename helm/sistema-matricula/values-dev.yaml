@@ -2,7 +2,8 @@
 replicaCount: 1
 
 image:
-  tag: "develop"
+  tag: "develop-{{ .Values.gitCommit }}""
+  pullPolicy: Always
 
 debug: true
 
@@ -25,3 +26,5 @@ ingress:
       paths:
         - path: /
           pathType: Prefix
+
+gitCommit: ""
