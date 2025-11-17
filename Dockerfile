@@ -27,8 +27,10 @@ RUN apt-get update && apt-get install -y \
 # Copiar libs instaladas
 COPY --from=builder /usr/local /usr/local
 
-# Copiar projeto corretamente (SEM duplicar diretórios)
+# Copiar projeto
 COPY sistema_academico/manage.py /app/
+COPY sistema_academico/coordenacao /app/
+COPY sistema_academico/front-end /app/
 COPY sistema_academico/sistema_academico /app/sistema_academico
 
 # Gerar settings.py
