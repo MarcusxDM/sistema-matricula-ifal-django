@@ -4,6 +4,8 @@ replicaCount: 1
 image:
   tag: "develop"
 
+debug: true
+
 service:
   type: NodePort
 

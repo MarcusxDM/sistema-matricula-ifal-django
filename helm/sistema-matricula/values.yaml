@@ -6,6 +6,8 @@ image:
   tag: "develop"   # <-- coloque a tag real que existe no GHCR
   pullPolicy: IfNotPresent
 
+debug: false
+
 service:
   type: ClusterIP
   port: 8000
