@@ -160,3 +160,8 @@ sistema_academico/coordenacao/migrations/
 sistema_academico/staticfiles/
 sistema_academico/sistema_academico/settings.py
 .github/copilot-instructions.md
+sistema_academico/pylint_report_old.json
+sistema_academico/pylint_report.json
+sistema_academico/sistema_academico/pylint_report_new2.html
+sistema_academico/sistema_academico/pylint_report_new2.json
+sistema_academico/sistema_academico/pylint_report.html

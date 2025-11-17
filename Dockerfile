@@ -40,5 +40,5 @@ ENV DJANGO_SETTINGS_MODULE=sistema_academico.settings
 
 EXPOSE 8000
 
-# Comando padrão para executar o server
-CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
+# Comando padrão para executar o server  
+CMD ["python manage.py makemigrations", "python manage.py migrate --noinput", "python", "manage.py", "runserver", "0.0.0.0:8000"]
