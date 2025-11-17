@@ -13,6 +13,8 @@ database:
   user: prod_user
   password: prod_password_456
   rootPassword: prod_root_password_456
+  secret:
+    enabled: true
 
 resources:
   limits:

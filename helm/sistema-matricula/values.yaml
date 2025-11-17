@@ -37,6 +37,8 @@ database:
   user: django_user
   password: changeme123
   rootPassword: rootpass123
+  secret:
+    enabled: true
 
 # Job de migrations
 migrations:

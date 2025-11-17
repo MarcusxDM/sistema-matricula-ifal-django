@@ -13,6 +13,8 @@ database:
   user: dev_user
   password: dev_password_123
   rootPassword: dev_root_password_123
+  secret:
+    enabled: true
 
 ingress:
   enabled: true
