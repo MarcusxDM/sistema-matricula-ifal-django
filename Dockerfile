@@ -32,7 +32,7 @@ COPY --from=builder /usr/local /usr/local
 COPY sistema_academico/ /app/
 
 # Criar settings.py a partir do template
-RUN cp /app/sistema_academico/sistema_academico/settings.py.template /app/sistema_academico/sistema_academico/settings.py;
+RUN cp /app/sistema_academico/settings.py.template /app/sistema_academico/settings.py;
 
 ENV PYTHONUNBUFFERED=1
 ENV PYTHONPATH=/app:$PYTHONPATH
