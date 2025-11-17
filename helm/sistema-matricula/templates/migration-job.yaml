@@ -12,10 +12,6 @@ metadata:
 spec:
   backoffLimit: {{ .Values.migrations.backoffLimit }}
   template:
-    metadata:
-      labels:
-        {{- include "sistema-matricula.selectorLabels" . | nindent 8 }}
-        job: migrations
     spec:
       restartPolicy: Never
       containers:
@@ -25,29 +21,19 @@ spec:
           - sh
           - -c
           - |
-            echo "Aguardando banco de dados..."
-            sleep 10
-            echo "Executando migrations..."
+            echo "⏳ Aguardando banco..."
+            until nc -z mysql 3306; do
+              sleep 2;
+            done
             python manage.py migrate --noinput
-            echo "Migrations concluídas!"
+            echo "✔ Migrations concluídas"
         env:
         - name: MYSQL_DATABASE
-          valueFrom:
-            secretKeyRef:
-              name: sistema-matricula-dev-db-secret
-              key: database
+          value: {{ .Values.database.name | quote }}
         - name: MYSQL_USER
-          valueFrom:
-            secretKeyRef:
-              name: sistema-matricula-dev-db-secret
-              key: username
+          value: {{ .Values.database.user | quote }}
         - name: MYSQL_PASSWORD
-          valueFrom:
-            secretKeyRef:
-              name: sistema-matricula-dev-db-secret
-              key: password
+          value: {{ .Values.database.password | quote }}
         - name: DJANGO_SETTINGS_MODULE
           value: sistema_academico.settings
-        - name: DEBUG
-          value: {{ .Values.debug | quote }}
 {{- end }}
