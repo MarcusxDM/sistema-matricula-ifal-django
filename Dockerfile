@@ -3,7 +3,6 @@ FROM python:3.11-slim AS builder
 
 WORKDIR /app
 
-# Dependências de build para compilar pacotes Python com extensões nativas
 RUN apt-get update && apt-get install -y \
     gcc \
     pkg-config \
@@ -14,31 +13,31 @@ RUN apt-get update && apt-get install -y \
 COPY sistema_academico/requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
+
 # Stage 2: Final image
 FROM python:3.11-slim
 
 WORKDIR /app
 
-# Dependências do MySQL
 RUN apt-get update && apt-get install -y \
     default-libmysqlclient-dev \
     mariadb-client \
  && rm -rf /var/lib/apt/lists/*
 
-# Copiando dados do stage de build
+# Copiar libs instaladas
 COPY --from=builder /usr/local /usr/local
 
-# Copiar projeto (todo o diretório sistema_academico)
-COPY sistema_academico/ /app/
+# Copiar projeto corretamente (SEM duplicar diretórios)
+COPY sistema_academico/manage.py /app/
+COPY sistema_academico/sistema_academico /app/sistema_academico
 
-# Criar settings.py a partir do template
-RUN cp /app/sistema_academico/settings.py.template /app/sistema_academico/settings.py;
+# Gerar settings.py
+RUN cp /app/sistema_academico/settings.py.template /app/sistema_academico/settings.py
 
 ENV PYTHONUNBUFFERED=1
-ENV PYTHONPATH=/app:$PYTHONPATH
 ENV DJANGO_SETTINGS_MODULE=sistema_academico.settings
 
 EXPOSE 8000
 
-# Comando padrão para executar o server  
-CMD ["python manage.py makemigrations", "python manage.py migrate --noinput", "python", "manage.py", "runserver", "0.0.0.0:8000"]
+# Comando final para K8s
+CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
