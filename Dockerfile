@@ -32,6 +32,7 @@ COPY --from=builder /usr/local /usr/local
 COPY sistema_academico/ /app/
 
 ENV PYTHONUNBUFFERED=1
+ENV PYTHONPATH=/app:$PYTHONPATH
 ENV DJANGO_SETTINGS_MODULE=sistema_academico.settings
 
 EXPOSE 8000
