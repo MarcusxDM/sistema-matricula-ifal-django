@@ -18,13 +18,13 @@ spec:
       - name: migrations
         image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
         command:
-          - sh
+          {% comment %} - sh
           - -c
           - |
             echo "⏳ Aguardando banco..."
             until nc -z mysql 3306; do
               sleep 2;
-            done
+            done {% endcomment %}
             python manage.py migrate --noinput
             echo "✔ Migrations concluídas"
         env:
