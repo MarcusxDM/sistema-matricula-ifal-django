@@ -1,6 +1,8 @@
 # Ambiente de Desenvolvimento
 replicaCount: 1
 
+fullnameOverride: sistema-matricula-dev
+
 image:
   tag: "develop-{{ .Values.gitCommit }}"
   pullPolicy: Always
