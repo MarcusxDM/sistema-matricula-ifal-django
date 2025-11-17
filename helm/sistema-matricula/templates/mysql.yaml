@@ -19,13 +19,13 @@ spec:
           image: mysql:8.0
           env:
             - name: MYSQL_ROOT_PASSWORD
-              value: rootpass123
+              value: dev_root_password_123
             - name: MYSQL_DATABASE
-              value: sistema_matricula
+              value: sistema_matricula_dev
             - name: MYSQL_USER
-              value: django_user
+              value: dev_user
             - name: MYSQL_PASSWORD
-              value: changeme123
+              value: dev_password_123
           ports:
             - containerPort: 3306
           volumeMounts:
