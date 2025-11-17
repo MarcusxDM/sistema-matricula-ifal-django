@@ -4,7 +4,7 @@ replicaCount: 1
 image:
   repository: ghcr.io/marcusxdm/sistema-matricula-ifal-django
   tag: "develop"   # <-- coloque a tag real que existe no GHCR
-  pullPolicy: IfNotPresent
+  pullPolicy: Always
 
 debug: false
 

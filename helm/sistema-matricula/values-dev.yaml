@@ -11,7 +11,7 @@ service:
   type: NodePort
 
 database:
-  host: mysql-dev
+  host: mysql
   name: sistema_matricula_dev
   user: dev_user
   password: dev_password_123
