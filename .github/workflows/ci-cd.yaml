@@ -42,10 +42,7 @@ jobs:
           BRANCH_NAME="${GITHUB_REF#refs/heads/}"
           SHORT_SHA=$(echo $GITHUB_SHA | cut -c1-7)
           
-          # Tag final no formato: branch-sha
           IMAGE_TAG="${BRANCH_NAME}-${SHORT_SHA}"
-
-          # imagem sempre lowercase -> GHCR exige
           IMAGE_NAME_LOWER=$(echo "${{ env.IMAGE_NAME }}" | tr '[:upper:]' '[:lower:]')
 
           echo "tag=${IMAGE_TAG}" >> $GITHUB_OUTPUT
@@ -59,7 +56,25 @@ jobs:
         with:
           context: .
           push: true
-          tags: |
-            ${{ env.REGISTRY }}/${{ steps.prepare-tag.outputs.image-name }}:${{ steps.prepare-tag.outputs.tag }}
+          tags: ${{ env.REGISTRY }}/${{ steps.prepare-tag.outputs.image-name }}:${{ steps.prepare-tag.outputs.tag }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
+
+      - name: Tag latest for Argo CD
+        run: |
+          BRANCH_NAME="${GITHUB_REF#refs/heads/}"
+          IMAGE="${{ env.REGISTRY }}/${{ steps.prepare-tag.outputs.image-name }}:${{ steps.prepare-tag.outputs.tag }}"
+          
+          if [ "$BRANCH_NAME" = "develop" ]; then
+            LATEST_TAG="develop-latest"
+          elif [ "$BRANCH_NAME" = "main" ]; then
+            LATEST_TAG="prod-latest"
+          else
+            echo "Branch $BRANCH_NAME não tem latest tag configurada, pulando..."
+            exit 0
+          fi
+
+          LATEST_IMAGE="${{ env.REGISTRY }}/${{ steps.prepare-tag.outputs.image-name }}:$LATEST_TAG"
+          echo "Tagging $IMAGE as $LATEST_IMAGE"
+          docker tag $IMAGE $LATEST_IMAGE
+          docker push $LATEST_IMAGE
