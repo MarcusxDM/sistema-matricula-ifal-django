@@ -10,7 +10,6 @@ image:
 debug: true
 
 service:
-  service:
   type: ClusterIP
   port: 8000
 
