@@ -28,18 +28,16 @@ RUN apt-get update && apt-get install -y \
 COPY --from=builder /usr/local /usr/local
 
 # Copiar projeto
-COPY sistema_academico/manage.py /app/
-COPY sistema_academico/coordenacao /app/
-COPY sistema_academico/front-end /app/
-COPY sistema_academico/sistema_academico /app/sistema_academico
+COPY sistema_academico/ /app/sistema_academico/
 
 # Gerar settings.py
-RUN cp /app/sistema_academico/settings.py.template /app/sistema_academico/settings.py
+RUN cp /app/sistema_academico/sistema_academico/settings.py.template /app/sistema_academico/sistema_academico/settings.py
 
 ENV PYTHONUNBUFFERED=1
 ENV DJANGO_SETTINGS_MODULE=sistema_academico.settings
 
 EXPOSE 8000
 
+WORKDIR /app/sistema_academico
 # Comando final para K8s
 CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
