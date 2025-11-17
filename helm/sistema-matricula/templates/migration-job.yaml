@@ -19,6 +19,8 @@ spec:
         image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
         command: ["sh", "-c", "python manage.py migrate --noinput && echo '✔ Migrations concluídas'"]
         env:
+        - name: MYSQL_HOST
+          value: {{ .Values.database.host | quote }}
         - name: MYSQL_DATABASE
           value: {{ .Values.database.name | quote }}
         - name: MYSQL_USER
