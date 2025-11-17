@@ -9,6 +9,7 @@ debug: true
 
 service:
   type: NodePort
+  port: 8000
 
 database:
   host: mysql
@@ -21,10 +22,12 @@ database:
 
 ingress:
   enabled: true
+  className: nginx
   hosts:
     - host: dev.sistema-matricula.local
       paths:
         - path: /
           pathType: Prefix
+          port: 8000
 
 gitCommit: ""
