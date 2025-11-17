@@ -23,7 +23,7 @@ spec:
             pathType: {{ .pathType }}
             backend:
               service:
-                name: {{ include "sistema-matricula.fullname" . }}
+                name: {{ include "sistema-matricula.fullname" $ }}
                 port:
                   number: {{ $.Values.service.port }}
         {{- end }}
