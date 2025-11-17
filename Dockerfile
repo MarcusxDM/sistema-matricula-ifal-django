@@ -31,17 +31,10 @@ COPY --from=builder /usr/local /usr/local
 # Copiar projeto (todo o diretório sistema_academico)
 COPY sistema_academico/ /app/
 
-# Copiar entrypoint script
-COPY entrypoint.sh /entrypoint.sh
-RUN chmod +x /entrypoint.sh
-
 ENV PYTHONUNBUFFERED=1
 ENV DJANGO_SETTINGS_MODULE=sistema_academico.settings
 
 EXPOSE 8000
-
-# Usar entrypoint script
-ENTRYPOINT ["/entrypoint.sh"]
 
 # Comando padrão para executar o server
 CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
