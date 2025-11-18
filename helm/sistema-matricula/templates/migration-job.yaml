@@ -12,22 +12,41 @@ metadata:
 spec:
   backoffLimit: {{ .Values.migrations.backoffLimit }}
   template:
+    metadata:
+      labels:
+        job: migrations
     spec:
       restartPolicy: Never
       containers:
       - name: migrations
         image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
         imagePullPolicy: Always
-        command: ["sh", "-c", "python manage.py migrate --noinput && echo '✔ Migrations concluídas'"]
+        command:
+          - sh
+          - -c
+          - |
+            echo "Aguardando MySQL...";
+            sleep 10;
+            python manage.py migrate --noinput;
+            echo "✔ Migrations concluídas!"
         env:
         - name: MYSQL_HOST
-          value: {{ .Values.database.host | quote }}
+          value: {{ include "sistema-matricula.fullname" . }}-mysql
         - name: MYSQL_DATABASE
-          value: {{ .Values.database.name | quote }}
+          valueFrom:
+            secretKeyRef:
+              name: {{ include "sistema-matricula.fullname" . }}-db-secret
+              key: MYSQL_DATABASE
         - name: MYSQL_USER
-          value: {{ .Values.database.user | quote }}
+          valueFrom:
+            secretKeyRef:
+              name: {{ include "sistema-matricula.fullname" . }}-db-secret
+              key: MYSQL_USER
         - name: MYSQL_PASSWORD
-          value: {{ .Values.database.password | quote }}
+          valueFrom:
+            secretKeyRef:
+              name: {{ include "sistema-matricula.fullname" . }}-db-secret
+              key: MYSQL_PASSWORD
         - name: DJANGO_SETTINGS_MODULE
           value: sistema_academico.settings
 {{- end }}

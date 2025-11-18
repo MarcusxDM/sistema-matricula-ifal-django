@@ -1,15 +1,21 @@
 # Ambiente de Produção
 replicaCount: 3
 
+fullnameOverride: sistema-matricula-prod
+
 image:
+  repository: ghcr.io/marcusxdm/sistema-matricula-ifal-django
   tag: "prod-latest"
+  pullPolicy: Always
 
 debug: false
 
 service:
   type: ClusterIP
+  port: 8000
 
 database:
+  port: 3306
   host: mysql-prod
   name: sistema_matricula_prod
   user: prod_user
@@ -28,8 +34,16 @@ resources:
 
 ingress:
   enabled: true
+  className: nginx
   hosts:
     - host: sistema-matricula.local
       paths:
         - path: /
           pathType: Prefix
+          port: 8000
+
+migrations:
+  enabled: true
+  backoffLimit: 3
+
+gitCommit: ""
