@@ -14,7 +14,7 @@ service:
   port: 8000
 
 database:
-  host: mysql
+  host: mysql-dev
   name: sistema_matricula_dev
   user: dev_user
   password: dev_password_123
