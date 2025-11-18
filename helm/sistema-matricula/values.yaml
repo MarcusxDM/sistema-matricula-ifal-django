@@ -3,7 +3,7 @@ replicaCount: 1
 
 image:
   repository: ghcr.io/marcusxdm/sistema-matricula-ifal-django
-  tag: "develop-latest"   # <-- coloque a tag real que existe no GHCR
+  tag: "develop-latest"
   pullPolicy: Always
 
 debug: false
@@ -46,3 +46,21 @@ database:
 migrations:
   enabled: true
   backoffLimit: 3
+
+# 🔥 ADICIONADO PARA EVITAR SEU ERRO
+mysql:
+  enabled: false
+  replicaCount: 1
+
+  image:
+    repository: mysql
+    tag: "8.0"
+
+  database: ""
+  user: ""
+  password: ""
+  rootPassword: ""
+
+  persistence:
+    enabled: false
+    size: 1Gi
