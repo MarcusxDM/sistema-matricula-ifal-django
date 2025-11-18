@@ -34,7 +34,8 @@ ingress:
 
 gitCommit: ""
 
-# 🔥 ATIVAR MYSQL PARA DEV
+env: dev
+
 mysql:
   enabled: true
   replicaCount: 1

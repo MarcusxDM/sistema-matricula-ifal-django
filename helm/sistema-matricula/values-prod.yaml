@@ -3,6 +3,8 @@ replicaCount: 3
 
 fullnameOverride: sistema-matricula-prod
 
+env: prod
+
 image:
   repository: ghcr.io/marcusxdm/sistema-matricula-ifal-django
   tag: "prod-latest"
