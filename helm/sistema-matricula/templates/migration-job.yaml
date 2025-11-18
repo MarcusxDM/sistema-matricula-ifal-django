@@ -1,0 +1,33 @@
+{{- if .Values.migrations.enabled }}
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ include "sistema-matricula.fullname" . }}-migrations
+  labels:
+    {{- include "sistema-matricula.labels" . | nindent 4 }}
+  annotations:
+    argocd.argoproj.io/hook: PreSync
+    argocd.argoproj.io/sync-wave: "-1"
+    argocd.argoproj.io/hook-delete-policy: BeforeHookCreation
+spec:
+  backoffLimit: {{ .Values.migrations.backoffLimit }}
+  template:
+    spec:
+      restartPolicy: Never
+      containers:
+      - name: migrations
+        image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+        imagePullPolicy: Always
+        command: ["sh", "-c", "python manage.py migrate --noinput && echo '✔ Migrations concluídas'"]
+        env:
+        - name: MYSQL_HOST
+          value: {{ .Values.database.host | quote }}
+        - name: MYSQL_DATABASE
+          value: {{ .Values.database.name | quote }}
+        - name: MYSQL_USER
+          value: {{ .Values.database.user | quote }}
+        - name: MYSQL_PASSWORD
+          value: {{ .Values.database.password | quote }}
+        - name: DJANGO_SETTINGS_MODULE
+          value: sistema_academico.settings
+{{- end }}

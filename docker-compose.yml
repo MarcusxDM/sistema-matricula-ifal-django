@@ -1,0 +1,41 @@
+services:
+  db:
+    image: mysql:8.0
+    restart: always
+    environment:
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./mysql-init:/initdb.d:ro
+    # data will be lost
+    # when the container stops.
+    tmpfs:
+      - /var/lib/mysql
+    command: --default-authentication-plugin=mysql_native_password
+
+  web:
+    build: .
+    environment:
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      DJANGO_SETTINGS_MODULE: sistema_academico.settings
+      DEBUG: "True"
+    volumes:
+      - ./sistema_academico:/app
+    ports:
+      - "8000:8000"
+    command: >
+      sh -c "
+        until mysqladmin ping -h db -u$MYSQL_USER -p$MYSQL_PASSWORD --silent --ssl=0; do
+          echo '⏳ Aguardando o banco ficar pronto...';
+          sleep 2;
+        done;
+        python manage.py makemigrations &&
+        python manage.py migrate --noinput &&
+        python manage.py runserver 0.0.0.0:8000
+      "

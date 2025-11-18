@@ -1,6 +1,5 @@
 # sistema-matricula-ifal-django
 Aplicação Web de gerência de matrículas para instituições da educação.
-Acesso: https://siaca-django.herokuapp.com/
 
 ## Funcionalidades:
 - Cadastro de pessoas: aluno, professor e coordenador de curso
@@ -29,9 +28,76 @@ Front-end:
 Prototipagem:
 - Figma
 
-## Time:
-- José Vanderley	jvpsf1@aluno.ifal.edu.br
-- Isaac Fernando	ifms1@aluno.ifal.edu.br
-- João Victor	jvmv1@aluno.ifal.edu.br
-- Marcus Vinicius	mvgp1@aluno.ifal.edu.br
-- Mayson Medeiros	mfm1@aluno.ifal.edu.br 
+## Dockerização:
+- Marcus Pestana
+- Karla Araújo
+
+
+## Configuração e execução da aplicação
+
+### 1. Criar o arquivo `.env`
+
+Crie um arquivo `.env` na raiz do projeto com as seguintes variáveis:
+
+```env
+MYSQL_ROOT_PASSWORD=
+MYSQL_DATABASE=
+MYSQL_USER=
+MYSQL_PASSWORD=
+```
+(Adicione quais valores quiser)
+
+### 2. Criar o arquivo `settings.py`
+
+Utilize settings.py.exemple
+
+### 3. Subir os containers (ou executar Dev Container presente no Projeto)
+
+Execute o comando:
+
+```bash
+docker-compose -f docker-compose.dev.yml up --build
+```
+
+Isso irá:
+
+* Construir a imagem da aplicação (`web`)
+* Subir o container do banco de dados (`db`)
+* Aguardar o banco ficar pronto antes de iniciar a aplicação Django
+
+### 3. Acessar a aplicação
+
+Abra o navegador e acesse:
+
+```
+http://localhost:8000
+```
+
+### 4. Entrar no container da aplicação web
+
+Caso precise executar comandos Django dentro do container:
+
+```bash
+docker-compose -f docker-compose.dev.yml exec web sh
+# ou bash se estiver disponível
+```
+
+### 5. Executar comandos Django
+
+Dentro do container `web` você pode rodar:
+
+```bash
+python manage.py migrate          # Aplica as migrations
+python manage.py createsuperuser  # Cria um superusuário
+python manage.py runserver 0.0.0.0:8000  # Roda o servidor de desenvolvimento
+```
+
+### 6. Parar os containers
+
+Quando não precisar mais da aplicação rodando:
+
+```bash
+docker-compose -f docker-compose.dev.yml down
+```
+
+Obs.: o banco roda em modo temporário, toda vez que parado os dados são perdidos

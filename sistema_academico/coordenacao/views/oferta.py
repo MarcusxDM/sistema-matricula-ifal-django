@@ -3,7 +3,7 @@ from django.shortcuts import get_object_or_404, render, redirect
 from django.urls import reverse
 from coordenacao.models import Atividade, Curso, Disciplina, Matricula
 from coordenacao.models import Oferta, Periodo, Professor, User
-from sistema_academico.coordenacao.views.utils import checkbox_week_days
+from coordenacao.views.utils import checkbox_week_days
 
 def form_oferta(request, id_param):
     '''

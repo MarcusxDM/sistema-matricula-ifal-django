@@ -1,0 +1,35 @@
+# Ambiente de Desenvolvimento
+replicaCount: 1
+
+fullnameOverride: sistema-matricula-dev
+
+image:
+  tag: "develop-latest"
+  pullPolicy: Always
+
+debug: true
+
+service:
+  type: ClusterIP
+  port: 8000
+
+database:
+  host: mysql
+  name: sistema_matricula_dev
+  user: dev_user
+  password: dev_password_123
+  rootPassword: dev_root_password_123
+  secret:
+    enabled: true
+
+ingress:
+  enabled: true
+  className: nginx
+  hosts:
+    - host: dev.sistema-matricula.local
+      paths:
+        - path: /
+          pathType: Prefix
+          port: 8000
+
+gitCommit: ""

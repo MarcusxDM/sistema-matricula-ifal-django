@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.urls import reverse
 from coordenacao.models import User, Professor
-from sistema_academico.coordenacao.views.utils import send_email_new_user, generate_password
+from coordenacao.views.utils import send_email_new_user, generate_password
 
 # Professor
 def list_professores(request):

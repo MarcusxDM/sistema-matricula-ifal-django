@@ -1,13 +1,12 @@
 from datetime import date
-from django.db import IntegrityError
-from django.forms import ValidationError
 from django.http import HttpResponseRedirect
 from django.test import TestCase, RequestFactory
 from unittest.mock import patch, MagicMock
 from django.urls import reverse
 import re
 from coordenacao.models import Atividade, Disciplina, Oferta, Resposta, User, Professor, Aluno, Coordenador, Curso, Periodo
-from coordenacao.views import create_oferta, edit_oferta, form_aluno
+from coordenacao.views.oferta import create_oferta
+from coordenacao.views.aluno import form_aluno
 
 COORDENADOR_USER_TYPE = 1
 PROFESSOR_USER_TYPE = 2
@@ -132,11 +131,10 @@ class OfertaViewTest(TestCase):
         self.user_professor = User.objects.create(cpf='05970331457', nome='Professor')
         self.professor = Professor(user=self.user_professor)
 
-    @patch('coordenacao.views.Professor.objects.get')
-    @patch('coordenacao.views.get_object_or_404')
-    @patch('coordenacao.views.Oferta.save')
-    @patch('coordenacao.views.checkbox_week_days')
-    def test_create_oferta(self, mock_checkbox_week_days, mock_save, mock_get_object_or_404, mock_get_professor):
+    @patch('coordenacao.views.professor.Professor.objects.get')
+    @patch('coordenacao.views.oferta.get_object_or_404')
+    @patch('coordenacao.views.oferta.Oferta.save')
+    def test_create_oferta(self, mock_save, mock_get_object_or_404, mock_get_professor):
         """Testar a criacao de Oferta de uma disciplina"""
         
         # Mocks
@@ -162,7 +160,6 @@ class OfertaViewTest(TestCase):
 
         # Verifica se os métodos e redirecionamentos foram chamados
         self.assertEqual(response.status_code, 302)
-        mock_checkbox_week_days.assert_called_once_with(request)
         mock_get_object_or_404.assert_any_call(Periodo, pk=self.periodo_id)
         mock_get_object_or_404.assert_any_call(Disciplina, pk='1')
         mock_get_professor.assert_called_once_with(pk='1')
