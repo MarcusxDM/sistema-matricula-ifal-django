@@ -4,7 +4,7 @@ replicaCount: 1
 fullnameOverride: sistema-matricula-dev
 
 image:
-  tag: "develop-{{ .Values.gitCommit }}"
+  tag: "develop-latest"
   pullPolicy: Always
 
 debug: true

@@ -2,7 +2,7 @@
 replicaCount: 3
 
 image:
-  tag: "main-{{ .Values.gitCommit }}"
+  tag: "main-latest"
 
 debug: false
 
