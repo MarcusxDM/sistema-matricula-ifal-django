@@ -2,7 +2,7 @@
 replicaCount: 3
 
 image:
-  tag: "main-latest"
+  tag: "prod-latest"
 
 debug: false
 
