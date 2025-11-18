@@ -12,6 +12,8 @@ def index(request):
     Página de index
     '''
     request.session.flush()
+    versao = "2.0.0"
+    print(f'Sistema de Matrícula - Versão {versao}')
     return render(request, 'coordenacao/login.html', {})
 
 def login(request):

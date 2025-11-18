@@ -14,7 +14,7 @@ service:
   port: 8000
 
 database:
-  host: mysql-dev
+  host: mysql
   name: sistema_matricula_dev
   user: dev_user
   password: dev_password_123
@@ -34,7 +34,8 @@ ingress:
 
 gitCommit: ""
 
-# 🔥 ATIVAR MYSQL PARA DEV
+env: dev
+
 mysql:
   enabled: true
   replicaCount: 1

@@ -47,7 +47,8 @@ migrations:
   enabled: true
   backoffLimit: 3
 
-# 🔥 ADICIONADO PARA EVITAR SEU ERRO
+env: prod
+
 mysql:
   enabled: false
   replicaCount: 1

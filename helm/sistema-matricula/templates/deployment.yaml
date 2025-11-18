@@ -11,6 +11,8 @@ spec:
       {{- include "sistema-matricula.selectorLabels" . | nindent 6 }}
   template:
     metadata:
+      annotations:
+        redeploy-timestamp: "{{ now | unixEpoch }}"
       labels:
         {{- include "sistema-matricula.selectorLabels" . | nindent 8 }}
     spec:

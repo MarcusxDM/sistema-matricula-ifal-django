@@ -16,12 +16,12 @@ spec:
     spec:
       containers:
         - name: mysql
-          image: "mysql:{{ .Values.mysql.version }}"
+          image: "{{ .Values.mysql.image.repository }}:{{ .Values.mysql.image.tag }}"
           env:
             - name: MYSQL_ROOT_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: mysql-secret
+                  name: sistema-matricula-{{ .Values.env }}-db-secret
                   key: MYSQL_ROOT_PASSWORD
 
             - name: MYSQL_DATABASE
@@ -39,7 +39,7 @@ spec:
             - name: MYSQL_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: mysql-secret
+                  name: sistema-matricula-{{ .Values.env }}-db-secret
                   key: MYSQL_PASSWORD
 
           ports:
