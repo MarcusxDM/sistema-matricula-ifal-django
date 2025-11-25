@@ -1,4 +1,4 @@
-name: CI/CD Pipeline - GitOps + Argo Rollouts
+name: CI/CD Pipeline
 
 on:
   push:
@@ -11,14 +11,14 @@ env:
   IMAGE_NAME: ${{ github.repository }}
 
 jobs:
-  build-and-push:
+  build-and-deploy:
     runs-on: ubuntu-latest
     permissions:
       contents: write
       packages: write
 
     steps:
-      - name: Checkout code
+      - name: Checkout app code
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
@@ -33,57 +33,69 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
+      # tags dinâmicas
       - name: Prepare dynamic tags
-        id: prepare-tag
+        id: prepare-tags
         run: |
           BRANCH_NAME="${GITHUB_REF#refs/heads/}"
           SHORT_SHA=$(echo $GITHUB_SHA | cut -c1-7)
           IMAGE_TAG="${BRANCH_NAME}-${SHORT_SHA}"
-          IMAGE_NAME_LOWER=$(echo "${{ env.IMAGE_NAME }}" | tr '[:upper:]' '[:lower:]')
 
-          # Define latest tag dependendo do branch
+          # Latest tag dependendo do branch
           if [ "$BRANCH_NAME" = "develop" ]; then
             LATEST_TAG="develop-latest"
+            GITOPS_PATH="dev"
           elif [ "$BRANCH_NAME" = "main" ]; then
             LATEST_TAG="prod-latest"
+            GITOPS_PATH="prod"
           else
+            echo "Branch $BRANCH_NAME não gera latest tag"
             LATEST_TAG=""
           fi
 
           echo "tag=${IMAGE_TAG}" >> $GITHUB_OUTPUT
-          echo "image-name=${IMAGE_NAME_LOWER}" >> $GITHUB_OUTPUT
           echo "latest-tag=${LATEST_TAG}" >> $GITHUB_OUTPUT
+          echo "gitops-path=${GITOPS_PATH}" >> $GITHUB_OUTPUT
+          echo "image=${{ env.REGISTRY }}/${{ github.repository }}" >> $GITHUB_OUTPUT
 
-      - name: Build and push Docker image
+      # build e push 
+      - name: Build and push Docker images
         uses: docker/build-push-action@v5
         with:
           context: .
           push: true
           tags: |
-            ${{ env.REGISTRY }}/${{ steps.prepare-tag.outputs.image-name }}:${{ steps.prepare-tag.outputs.tag }}
-            ${{ env.REGISTRY }}/${{ steps.prepare-tag.outputs.image-name }}:${{ steps.prepare-tag.outputs.latest-tag }}
+            ${{ steps.prepare-tags.outputs.image }}:${{ steps.prepare-tags.outputs.tag }}
+            ${{ steps.prepare-tags.outputs.image }}:${{ steps.prepare-tags.outputs.latest-tag }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
-      - name: Update rollout.yaml with new SHA tag
+      # checkout do repositório GitOps
+      - name: Checkout GitOps repo
+        uses: actions/checkout@v4
+        with:
+          repository: MarcusxDM/argocd-gitops
+          path: gitops
+          token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 0
+
+      # atualizar rollout.yaml no GitOps repo
+      - name: Update rollout.yaml in GitOps repo
         run: |
-          BRANCH_NAME="${GITHUB_REF#refs/heads/}"
-          IMAGE_TAG="${BRANCH_NAME}-${GITHUB_SHA::7}"
-          if [ "$BRANCH_NAME" = "develop" ]; then
-            ROLLOUT_FILE="deploy/dev/rollout.yaml"
-          elif [ "$BRANCH_NAME" = "main" ]; then
-            ROLLOUT_FILE="deploy/prod/rollout.yaml"
-          fi
+          IMAGE="${{ steps.prepare-tags.outputs.image }}:${{ steps.prepare-tags.outputs.tag }}"
+          LATEST="${{ steps.prepare-tags.outputs.image }}:${{ steps.prepare-tags.outputs.latest-tag }}"
+          PATH_ROLLOUT="gitops/${{ steps.prepare-tags.outputs.gitops-path }}/rollout.yaml"
 
-          echo "Updating rollout.yaml with image tag $IMAGE_TAG"
+          echo "Updating rollout.yaml at $PATH_ROLLOUT with image tag $IMAGE and latest $LATEST"
 
-          # Atualiza a imagem no rollout.yaml com yq
-          yq -i '.spec.template.spec.containers[0].image = "ghcr.io/marcusxdm/sistema-matricula-ifal-django:'"$IMAGE_TAG"'"' $ROLLOUT_FILE
+          sed -i "s|image: .*|image: $IMAGE|" $PATH_ROLLOUT
 
-      - name: Commit and push rollout.yaml update
+      # commit e push GitOps repo
+      - name: Commit & push changes to GitOps repo
         run: |
+          cd gitops
           git config user.name "github-actions"
           git config user.email "github-actions@github.com"
-          git add deploy/**/rollout.yaml
-          git commit -m "Update rollout image to $IMAGE_TAG [skip ci]" || echo "No changes to commit"
+          git add .
+          git commit -m "Update rollout image to $IMAGE"
           git push
