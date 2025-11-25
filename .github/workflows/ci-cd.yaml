@@ -74,7 +74,8 @@ jobs:
 
       - name: Clone GitOps repository
         run: |
-          git clone https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/marcusxdm/argocd-gitops.git gitops
+          git clone https://x-access-token:${{ secrets.GITOPS_PAT }}@github.com/marcusxdm/argocd-gitops.git gitops
+
           cd gitops
           git checkout master
         env:
