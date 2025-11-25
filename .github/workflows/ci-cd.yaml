@@ -37,13 +37,9 @@ jobs:
         run: |
           BRANCH_NAME="${GITHUB_REF#refs/heads/}"
           SHORT_SHA=$(echo $GITHUB_SHA | cut -c1-7)
-
-          # lowecase name
           IMAGE_NAME_LOWER=$(echo "${{ github.repository }}" | tr '[:upper:]' '[:lower:]')
-
           IMAGE_TAG="${BRANCH_NAME}-${SHORT_SHA}"
 
-          # branch variable
           if [ "$BRANCH_NAME" = "develop" ]; then
             LATEST_TAG="develop-latest"
             GITOPS_PATH="dev"
@@ -59,10 +55,6 @@ jobs:
           echo "latest-tag=${LATEST_TAG}" >> $GITHUB_OUTPUT
           echo "gitops-path=${GITOPS_PATH}" >> $GITHUB_OUTPUT
           echo "image=${{ env.REGISTRY }}/${IMAGE_NAME_LOWER}" >> $GITHUB_OUTPUT
-
-          echo "Using image: ${{ env.REGISTRY }}/${IMAGE_NAME_LOWER}"
-          echo "Using tag: $IMAGE_TAG"
-          echo "Using latest tag: $LATEST_TAG"
 
       - name: Build and push Docker image
         uses: docker/build-push-action@v5
@@ -80,17 +72,24 @@ jobs:
         run: |
           git clone https://github.com/marcusxdm/argocd-gitops.git gitops
           cd gitops
-          git checkout master
+          git checkout main
+        shell: bash
 
-      - name: Update Rollout manifest
+      - name: Update image tag in rollout.yaml
         if: steps.prepare-tags.outputs.gitops-path != ''
-        uses: stefanzweifel/git-auto-commit-action@v4
-        with:
-          commit_message: "Update image tag to ${{ steps.prepare-tags.outputs.tag }}"
-          branch: master
-          file_pattern: "gitops/apps/${{ steps.prepare-tags.outputs.gitops-path }}/rollout.yaml"
-          commit_user_name: "github-actions"
-          commit_user_email: "github-actions@users.noreply.github.com"
+        run: |
+          ROLLOUT_FILE="gitops/apps/${{ steps.prepare-tags.outputs.gitops-path }}/rollout.yaml"
+          echo "Updating $ROLLOUT_FILE with image tag $IMAGE_TAG"
+          sed -i "s|image:.*|image: ${{ steps.prepare-tags.outputs.image }}:${{ steps.prepare-tags.outputs.tag }}|" $ROLLOUT_FILE
+
+      - name: Commit and push changes
+        if: steps.prepare-tags.outputs.gitops-path != ''
+        run: |
+          cd gitops
+          git config user.name "github-actions"
+          git config user.email "github-actions@users.noreply.github.com"
+          git add apps/${{ steps.prepare-tags.outputs.gitops-path }}/rollout.yaml
+          git commit -m "Update image tag to ${{ steps.prepare-tags.outputs.tag }}" || echo "No changes to commit"
+          git push origin main
         env:
-          IMAGE_TAG: ${{ steps.prepare-tags.outputs.tag }}
-          IMAGE_NAME: ${{ steps.prepare-tags.outputs.image }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
