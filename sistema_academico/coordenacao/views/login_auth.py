@@ -12,7 +12,7 @@ def index(request):
     Página de index
     '''
     request.session.flush()
-    versao = "2.0.1"
+    versao = "4.0.2 Canary"
     print(f'Sistema de Matrícula - Versão {versao}')
     return render(request, 'coordenacao/login.html', {})
 

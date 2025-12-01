@@ -8,7 +8,6 @@ on:
 
 env:
   REGISTRY: ghcr.io
-  IMAGE_NAME: ${{ github.repository }}
 
 jobs:
   build-and-push:
@@ -34,31 +33,33 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Prepare dynamic tag
-        id: prepare-tag
+        id: prepare-tags
         run: |
           BRANCH_NAME="${GITHUB_REF#refs/heads/}"
           SHORT_SHA=$(echo $GITHUB_SHA | cut -c1-7)
-
+          IMAGE_NAME_LOWER=$(echo "${{ github.repository }}" | tr '[:upper:]' '[:lower:]')
           IMAGE_TAG="${BRANCH_NAME}-${SHORT_SHA}"
-          IMAGE_NAME_LOWER=$(echo "${{ env.IMAGE_NAME }}" | tr '[:upper:]' '[:lower:]')
 
-          # Define latest tag dependendo do branch
           if [ "$BRANCH_NAME" = "develop" ]; then
             LATEST_TAG="develop-latest"
+            GITOPS_PATH="dev"
           elif [ "$BRANCH_NAME" = "main" ]; then
             LATEST_TAG="prod-latest"
+            GITOPS_PATH="prod"
           else
-            echo "Branch $BRANCH_NAME não gera latest tag"
             LATEST_TAG=""
+            GITOPS_PATH=""
           fi
 
           echo "tag=${IMAGE_TAG}" >> $GITHUB_OUTPUT
-          echo "image-name=${IMAGE_NAME_LOWER}" >> $GITHUB_OUTPUT
           echo "latest-tag=${LATEST_TAG}" >> $GITHUB_OUTPUT
+          echo "gitops-path=${GITOPS_PATH}" >> $GITHUB_OUTPUT
+          echo "image=${{ env.REGISTRY }}/${IMAGE_NAME_LOWER}" >> $GITHUB_OUTPUT
 
+          echo "Using image: ${{ env.REGISTRY }}/${IMAGE_NAME_LOWER}"
           echo "Using tag: $IMAGE_TAG"
           echo "Using latest tag: $LATEST_TAG"
-          echo "Using image: $IMAGE_NAME_LOWER"
+          echo "GitOps path: $GITOPS_PATH"
 
       - name: Build and push Docker image
         uses: docker/build-push-action@v5
@@ -66,7 +67,32 @@ jobs:
           context: .
           push: true
           tags: |
-            ${{ env.REGISTRY }}/${{ steps.prepare-tag.outputs.image-name }}:${{ steps.prepare-tag.outputs.tag }}
-            ${{ env.REGISTRY }}/${{ steps.prepare-tag.outputs.image-name }}:${{ steps.prepare-tag.outputs.latest-tag }}
+            ${{ steps.prepare-tags.outputs.image }}:${{ steps.prepare-tags.outputs.tag }}
+            ${{ steps.prepare-tags.outputs.image }}:${{ steps.prepare-tags.outputs.latest-tag }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
+
+      - name: Clone GitOps repository
+        run: |
+          git clone https://x-access-token:${{ secrets.GITOPS_PAT }}@github.com/marcusxdm/argocd-gitops.git gitops
+
+          cd gitops
+          git checkout master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Update Rollout manifest
+        run: |
+          cd gitops
+          ROLLOUT_FILE="apps/${{ steps.prepare-tags.outputs.gitops-path }}/rollout.yaml"
+          
+          # Atualiza a tag da imagem no rollout.yaml
+          sed -i "s|image: .*|image: ${{ steps.prepare-tags.outputs.image }}:${{ steps.prepare-tags.outputs.tag }}|g" $ROLLOUT_FILE
+
+          git config user.name "github-actions"
+          git config user.email "github-actions@users.noreply.github.com"
+          git add $ROLLOUT_FILE
+          git commit -m "Update image tag to ${{ steps.prepare-tags.outputs.tag }}" || echo "No changes to commit"
+          git push origin master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
