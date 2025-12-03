@@ -33,8 +33,12 @@ COPY sistema_academico/ /app/sistema_academico/
 # Gerar settings.py
 RUN cp /app/sistema_academico/sistema_academico/settings.py.template /app/sistema_academico/sistema_academico/settings.py
 
+
 ENV PYTHONUNBUFFERED=1
 ENV DJANGO_SETTINGS_MODULE=sistema_academico.settings
+
+# Coletar arquivos estáticos
+RUN python manage.py collectstatic --noinput
 
 EXPOSE 8000
 

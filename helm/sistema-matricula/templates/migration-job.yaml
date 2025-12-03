@@ -29,7 +29,6 @@ spec:
             sleep 10;
             python manage.py makemigrations;
             python manage.py migrate --noinput;
-            python manage.py collectstatic --noinput;
             echo "✔ Migrations concluídas!"
         env:
         - name: MYSQL_HOST
