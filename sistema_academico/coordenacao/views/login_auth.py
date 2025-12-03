@@ -12,7 +12,7 @@ def index(request):
     Página de index
     '''
     request.session.flush()
-    versao = "4.0.3"
+    versao = "4.0.4"
     print(f'Sistema de Matrícula - Versão {versao}')
     return render(request, 'coordenacao/login.html', {})
 
