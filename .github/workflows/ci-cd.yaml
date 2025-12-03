@@ -56,11 +56,6 @@ jobs:
           echo "gitops-path=${GITOPS_PATH}" >> $GITHUB_OUTPUT
           echo "image=${{ env.REGISTRY }}/${IMAGE_NAME_LOWER}" >> $GITHUB_OUTPUT
 
-          echo "Using image: ${{ env.REGISTRY }}/${IMAGE_NAME_LOWER}"
-          echo "Using tag: $IMAGE_TAG"
-          echo "Using latest tag: $LATEST_TAG"
-          echo "GitOps path: $GITOPS_PATH"
-
       - name: Build and push Docker image
         uses: docker/build-push-action@v5
         with:
@@ -75,24 +70,34 @@ jobs:
       - name: Clone GitOps repository
         run: |
           git clone https://x-access-token:${{ secrets.GITOPS_PAT }}@github.com/marcusxdm/argocd-gitops.git gitops
-
           cd gitops
           git checkout master
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Update Rollout manifest
+      - name: Update GitOps manifests (rollout + application)
         run: |
           cd gitops
-          ROLLOUT_FILE="apps/${{ steps.prepare-tags.outputs.gitops-path }}/rollout.yaml"
           
-          # Atualiza a tag da imagem no rollout.yaml
-          sed -i "s|image: .*|image: ${{ steps.prepare-tags.outputs.image }}:${{ steps.prepare-tags.outputs.tag }}|g" $ROLLOUT_FILE
+          BASE_PATH="apps/${{ steps.prepare-tags.outputs.gitops-path }}"
+
+          ROLLOUT_FILE="$BASE_PATH/rollout.yaml"
+          APP_FILE="$BASE_PATH/sistema-matricula.yaml"
+
+          NEW_IMAGE="${{ steps.prepare-tags.outputs.image }}:${{ steps.prepare-tags.outputs.tag }}"
+          NEW_TAG="${{ steps.prepare-tags.outputs.tag }}"
+
+          echo "Updating rollout: $ROLLOUT_FILE"
+          sed -i "s|image: .*|image: ${NEW_IMAGE}|g" $ROLLOUT_FILE
+
+          echo "Updating ArgoCD Application: $APP_FILE"
+          sed -i "s|value: .*|value: ${NEW_TAG}|g" $APP_FILE
 
           git config user.name "github-actions"
           git config user.email "github-actions@users.noreply.github.com"
+
           git add $ROLLOUT_FILE
-          git commit -m "Update image tag to ${{ steps.prepare-tags.outputs.tag }}" || echo "No changes to commit"
+          git add $APP_FILE
+
+          git commit -m "Update image and tag to ${NEW_TAG}" || echo 'No changes to commit'
           git push origin master
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
